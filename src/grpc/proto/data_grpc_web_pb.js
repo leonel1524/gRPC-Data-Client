@@ -78,7 +78,7 @@ proto.data.DataServicePromiseClient =
  *   !proto.data.ValueObjectRequest,
  *   !proto.data.ValueObject>}
  */
-const methodInfo_DataService_RequestPO = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_DataService_RequestObject = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ValueObject,
   /** @param {!proto.data.ValueObjectRequest} request */
   function(request) {
@@ -98,13 +98,13 @@ const methodInfo_DataService_RequestPO = new grpc.web.AbstractClientBase.MethodI
  * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObject>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestPO =
+proto.data.DataServiceClient.prototype.requestObject =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestPO',
+      '/data.DataService/RequestObject',
       request,
       metadata,
-      methodInfo_DataService_RequestPO,
+      methodInfo_DataService_RequestObject,
       callback);
 };
 
@@ -117,10 +117,10 @@ proto.data.DataServiceClient.prototype.requestPO =
  * @return {!Promise<!proto.data.ValueObject>}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServicePromiseClient.prototype.requestPO =
+proto.data.DataServicePromiseClient.prototype.requestObject =
     function(request, metadata) {
   return new Promise((resolve, reject) => {
-    this.delegateClient_.requestPO(
+    this.delegateClient_.requestObject(
       request, metadata, (error, response) => {
         error ? reject(error) : resolve(response);
       });
@@ -134,7 +134,7 @@ proto.data.DataServicePromiseClient.prototype.requestPO =
  *   !proto.data.ValueObjectRequest,
  *   !proto.data.ValueObjectList>}
  */
-const methodInfo_DataService_RequestPOList = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_DataService_RequestObjectList = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ValueObjectList,
   /** @param {!proto.data.ValueObjectRequest} request */
   function(request) {
@@ -154,13 +154,13 @@ const methodInfo_DataService_RequestPOList = new grpc.web.AbstractClientBase.Met
  * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObjectList>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestPOList =
+proto.data.DataServiceClient.prototype.requestObjectList =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestPOList',
+      '/data.DataService/RequestObjectList',
       request,
       metadata,
-      methodInfo_DataService_RequestPOList,
+      methodInfo_DataService_RequestObjectList,
       callback);
 };
 
@@ -173,10 +173,10 @@ proto.data.DataServiceClient.prototype.requestPOList =
  * @return {!Promise<!proto.data.ValueObjectList>}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServicePromiseClient.prototype.requestPOList =
+proto.data.DataServicePromiseClient.prototype.requestObjectList =
     function(request, metadata) {
   return new Promise((resolve, reject) => {
-    this.delegateClient_.requestPOList(
+    this.delegateClient_.requestObjectList(
       request, metadata, (error, response) => {
         error ? reject(error) : resolve(response);
       });

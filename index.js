@@ -26,14 +26,14 @@ class Data {
   */
   requestObject(tableName, uuid) {
     //  Get PO Data
-    return this.getService().requestPO(this.getRequest(tableName, uuid));
+    return this.getService().requestObject(this.getRequest(tableName, uuid));
   }
 
   /**
   * Request PO from Criteria
   */
   requestObjectFromCriteria(criteria) {
-    return this.getService().requestPO(this.getRequestFromCriteria(criteria));
+    return this.getService().requestObject(this.getRequestFromCriteria(criteria));
   }
 
 
