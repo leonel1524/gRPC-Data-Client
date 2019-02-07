@@ -17,6 +17,8 @@ goog.exportSymbol('proto.data.ClientRequest', null, global);
 goog.exportSymbol('proto.data.Condition', null, global);
 goog.exportSymbol('proto.data.Condition.Operator', null, global);
 goog.exportSymbol('proto.data.Criteria', null, global);
+goog.exportSymbol('proto.data.OrderByProperty', null, global);
+goog.exportSymbol('proto.data.OrderByProperty.OrderType', null, global);
 goog.exportSymbol('proto.data.Value', null, global);
 goog.exportSymbol('proto.data.Value.ValueType', null, global);
 goog.exportSymbol('proto.data.ValueObject', null, global);
@@ -1263,7 +1265,7 @@ if (goog.DEBUG && !COMPILED) {
  * @private {!Array<number>}
  * @const
  */
-proto.data.Criteria.repeatedFields_ = [3];
+proto.data.Criteria.repeatedFields_ = [5,6];
 
 
 
@@ -1296,8 +1298,12 @@ proto.data.Criteria.toObject = function(includeInstance, msg) {
   var f, obj = {
     tablename: jspb.Message.getFieldWithDefault(msg, 1, ""),
     limit: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    whereclause: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    orderbyclause: jspb.Message.getFieldWithDefault(msg, 4, ""),
     conditionsList: jspb.Message.toObjectList(msg.getConditionsList(),
-    proto.data.Condition.toObject, includeInstance)
+    proto.data.Condition.toObject, includeInstance),
+    orderbycolumnList: jspb.Message.toObjectList(msg.getOrderbycolumnList(),
+    proto.data.OrderByProperty.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -1343,9 +1349,22 @@ proto.data.Criteria.deserializeBinaryFromReader = function(msg, reader) {
       msg.setLimit(value);
       break;
     case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWhereclause(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setOrderbyclause(value);
+      break;
+    case 5:
       var value = new proto.data.Condition;
       reader.readMessage(value,proto.data.Condition.deserializeBinaryFromReader);
       msg.addConditions(value);
+      break;
+    case 6:
+      var value = new proto.data.OrderByProperty;
+      reader.readMessage(value,proto.data.OrderByProperty.deserializeBinaryFromReader);
+      msg.addOrderbycolumn(value);
       break;
     default:
       reader.skipField();
@@ -1390,12 +1409,34 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getWhereclause();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getOrderbyclause();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
   f = message.getConditionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      3,
+      5,
       f,
       proto.data.Condition.serializeBinaryToWriter
+    );
+  }
+  f = message.getOrderbycolumnList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      6,
+      f,
+      proto.data.OrderByProperty.serializeBinaryToWriter
     );
   }
 };
@@ -1432,18 +1473,48 @@ proto.data.Criteria.prototype.setLimit = function(value) {
 
 
 /**
- * repeated Condition conditions = 3;
+ * optional string whereClause = 3;
+ * @return {string}
+ */
+proto.data.Criteria.prototype.getWhereclause = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.data.Criteria.prototype.setWhereclause = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string orderByClause = 4;
+ * @return {string}
+ */
+proto.data.Criteria.prototype.getOrderbyclause = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.data.Criteria.prototype.setOrderbyclause = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * repeated Condition conditions = 5;
  * @return {!Array<!proto.data.Condition>}
  */
 proto.data.Criteria.prototype.getConditionsList = function() {
   return /** @type{!Array<!proto.data.Condition>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.Condition, 3));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.Condition, 5));
 };
 
 
 /** @param {!Array<!proto.data.Condition>} value */
 proto.data.Criteria.prototype.setConditionsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 3, value);
+  jspb.Message.setRepeatedWrapperField(this, 5, value);
 };
 
 
@@ -1453,12 +1524,220 @@ proto.data.Criteria.prototype.setConditionsList = function(value) {
  * @return {!proto.data.Condition}
  */
 proto.data.Criteria.prototype.addConditions = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.data.Condition, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.data.Condition, opt_index);
 };
 
 
 proto.data.Criteria.prototype.clearConditionsList = function() {
   this.setConditionsList([]);
+};
+
+
+/**
+ * repeated OrderByProperty orderByColumn = 6;
+ * @return {!Array<!proto.data.OrderByProperty>}
+ */
+proto.data.Criteria.prototype.getOrderbycolumnList = function() {
+  return /** @type{!Array<!proto.data.OrderByProperty>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.data.OrderByProperty, 6));
+};
+
+
+/** @param {!Array<!proto.data.OrderByProperty>} value */
+proto.data.Criteria.prototype.setOrderbycolumnList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 6, value);
+};
+
+
+/**
+ * @param {!proto.data.OrderByProperty=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.data.OrderByProperty}
+ */
+proto.data.Criteria.prototype.addOrderbycolumn = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.OrderByProperty, opt_index);
+};
+
+
+proto.data.Criteria.prototype.clearOrderbycolumnList = function() {
+  this.setOrderbycolumnList([]);
+};
+
+
+
+/**
+ * Generated by JsPbCodeGenerator.
+ * @param {Array=} opt_data Optional initial data array, typically from a
+ * server response, or constructed directly in Javascript. The array is used
+ * in place and becomes part of the constructed object. It is not cloned.
+ * If no data is provided, the constructed object will be empty, but still
+ * valid.
+ * @extends {jspb.Message}
+ * @constructor
+ */
+proto.data.OrderByProperty = function(opt_data) {
+  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+};
+goog.inherits(proto.data.OrderByProperty, jspb.Message);
+if (goog.DEBUG && !COMPILED) {
+  proto.data.OrderByProperty.displayName = 'proto.data.OrderByProperty';
+}
+
+
+if (jspb.Message.GENERATE_TO_OBJECT) {
+/**
+ * Creates an object representation of this proto suitable for use in Soy templates.
+ * Field names that are reserved in JavaScript and will be renamed to pb_name.
+ * To access a reserved field use, foo.pb_<name>, eg, foo.pb_default.
+ * For the list of reserved names please see:
+ *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
+ * @param {boolean=} opt_includeInstance Whether to include the JSPB instance
+ *     for transitional soy proto support: http://goto/soy-param-migration
+ * @return {!Object}
+ */
+proto.data.OrderByProperty.prototype.toObject = function(opt_includeInstance) {
+  return proto.data.OrderByProperty.toObject(opt_includeInstance, this);
+};
+
+
+/**
+ * Static version of the {@see toObject} method.
+ * @param {boolean|undefined} includeInstance Whether to include the JSPB
+ *     instance for transitional soy proto support:
+ *     http://goto/soy-param-migration
+ * @param {!proto.data.OrderByProperty} msg The msg instance to transform.
+ * @return {!Object}
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.data.OrderByProperty.toObject = function(includeInstance, msg) {
+  var f, obj = {
+    columnname: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    ordertype: jspb.Message.getFieldWithDefault(msg, 2, 0)
+  };
+
+  if (includeInstance) {
+    obj.$jspbMessageInstance = msg;
+  }
+  return obj;
+};
+}
+
+
+/**
+ * Deserializes binary data (in protobuf wire format).
+ * @param {jspb.ByteSource} bytes The bytes to deserialize.
+ * @return {!proto.data.OrderByProperty}
+ */
+proto.data.OrderByProperty.deserializeBinary = function(bytes) {
+  var reader = new jspb.BinaryReader(bytes);
+  var msg = new proto.data.OrderByProperty;
+  return proto.data.OrderByProperty.deserializeBinaryFromReader(msg, reader);
+};
+
+
+/**
+ * Deserializes binary data (in protobuf wire format) from the
+ * given reader into the given message object.
+ * @param {!proto.data.OrderByProperty} msg The message object to deserialize into.
+ * @param {!jspb.BinaryReader} reader The BinaryReader to use.
+ * @return {!proto.data.OrderByProperty}
+ */
+proto.data.OrderByProperty.deserializeBinaryFromReader = function(msg, reader) {
+  while (reader.nextField()) {
+    if (reader.isEndGroup()) {
+      break;
+    }
+    var field = reader.getFieldNumber();
+    switch (field) {
+    case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setColumnname(value);
+      break;
+    case 2:
+      var value = /** @type {!proto.data.OrderByProperty.OrderType} */ (reader.readEnum());
+      msg.setOrdertype(value);
+      break;
+    default:
+      reader.skipField();
+      break;
+    }
+  }
+  return msg;
+};
+
+
+/**
+ * Serializes the message to binary data (in protobuf wire format).
+ * @return {!Uint8Array}
+ */
+proto.data.OrderByProperty.prototype.serializeBinary = function() {
+  var writer = new jspb.BinaryWriter();
+  proto.data.OrderByProperty.serializeBinaryToWriter(this, writer);
+  return writer.getResultBuffer();
+};
+
+
+/**
+ * Serializes the given message to binary data (in protobuf wire
+ * format), writing to the given BinaryWriter.
+ * @param {!proto.data.OrderByProperty} message
+ * @param {!jspb.BinaryWriter} writer
+ * @suppress {unusedLocalVariables} f is only used for nested messages
+ */
+proto.data.OrderByProperty.serializeBinaryToWriter = function(message, writer) {
+  var f = undefined;
+  f = message.getColumnname();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
+  f = message.getOrdertype();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      2,
+      f
+    );
+  }
+};
+
+
+/**
+ * @enum {number}
+ */
+proto.data.OrderByProperty.OrderType = {
+  ASCENDING: 0,
+  DESCENDING: 1
+};
+
+/**
+ * optional string columnName = 1;
+ * @return {string}
+ */
+proto.data.OrderByProperty.prototype.getColumnname = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/** @param {string} value */
+proto.data.OrderByProperty.prototype.setColumnname = function(value) {
+  jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional OrderType orderType = 2;
+ * @return {!proto.data.OrderByProperty.OrderType}
+ */
+proto.data.OrderByProperty.prototype.getOrdertype = function() {
+  return /** @type {!proto.data.OrderByProperty.OrderType} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+};
+
+
+/** @param {!proto.data.OrderByProperty.OrderType} value */
+proto.data.OrderByProperty.prototype.setOrdertype = function(value) {
+  jspb.Message.setProto3EnumField(this, 2, value);
 };
 
 
