@@ -20,10 +20,10 @@ const Data = require('@adempiere/grpc-data-client');
 let data = new Data('Version Epale', GRPC_HOST, 'es_VE');
 ```
 
-### Request a simple Object based on UUID
+### Request a simple Object based on Table and UUID
 ```javascript
 //  Value Object Request
-data.requestPO('8cc49692-fb40-11e8-a479-7a0060f0aa01')
+data.requestObject('AD_Element', '8cc49692-fb40-11e8-a479-7a0060f0aa01')
 .then(valueObject => {
   console.log("Value Object: " + valueObject);
 })

@@ -22,12 +22,20 @@ class Data {
   }
 
   /**
-  * Request a PO data from serverf
+  * Request a PO data from tableName and uuid
   */
-  requestPO(uuid) {
+  requestObject(tableName, uuid) {
     //  Get PO Data
-    return this.getService().requestPO(this.getRequest(uuid));
+    return this.getService().requestPO(this.getRequest(tableName, uuid));
   }
+
+  /**
+  * Request PO from Criteria
+  */
+  requestObjectFromCriteria(criteria) {
+    return this.getService().requestPO(this.getRequestFromCriteria(criteria));
+  }
+
 
   /**
   * Load gRPC Connection
@@ -44,7 +52,23 @@ class Data {
   /**
   * Get Client Request
   */
-  getRequest(uuid) {
+  getRequest(tableName, uuid) {
+    const {Criteria, ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setUuid(this.clientVersion);
+    clientRequest.setLanguage(this.language);
+    let request = new ValueObjectRequest();
+    request.setUuid(uuid);
+    request.setClientrequest(clientRequest);
+    request.setCriteria(this.getCriteria(tableName));
+    //  return
+    return request;
+  }
+
+  /**
+  * Get Client Request
+  */
+  getRequestFromCriteria(criteria) {
     const {ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setUuid(this.clientVersion);
@@ -52,8 +76,21 @@ class Data {
     let request = new ValueObjectRequest();
     request.setUuid(uuid);
     request.setClientrequest(clientRequest);
+    request.setCriteria(criteria);
     //  return
     return request;
   }
+
+  /**
+  * Get Criteria from Table Name
+  */
+  getCriteria(tableName) {
+    const {Criteria} = require('./src/grpc/proto/data_pb.js');
+    let criteria = new Criteria();
+    criteria.setTablename(tableName);
+    //  Return criteria
+    return criteria;
+  }
+
 }
 module.exports = Data;
