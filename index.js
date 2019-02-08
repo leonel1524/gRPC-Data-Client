@@ -14,18 +14,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.            *
  ************************************************************************************/
 class Data {
-  //  No authentication rerquired
-  constructor(clientVersion, host, language) {
+
+  /**
+   * Constructor, No authentication required
+   * @param {string} host 
+   * @param {string} clientVersion 
+   * @param {string} language Languaje i18n
+   */
+  constructor(host, clientVersion, language = 'en_US') {
     this.clientVersion = clientVersion;
     this.host = host;
     this.language = language;
   }
 
   /**
-  * Request a PO data from tableName and uuid
-  */
+   * Get or request a PO data from tableName and uuid
+   * @param {string} tableName Indicate table in db
+   * @param {string} uuid Universally Unique IDentifier
+   * @return {Object} Object with records.
+   */
   requestObject(tableName, uuid) {
-    //  Get PO Data
     return this.getService().requestObject(this.getRequest(tableName, uuid));
   }
 
@@ -38,8 +46,9 @@ class Data {
 
 
   /**
-  * Load gRPC Connection
-  */
+   * Load gRPC Connection
+   * @return {Object} requestService Return request for get data
+   */
   getService() {
     const grpc_promise = require('grpc-promise');
     const {DataServicePromiseClient} = require('./src/grpc/proto/data_grpc_web_pb.js');
@@ -50,8 +59,9 @@ class Data {
   }
 
   /**
-  * Get Client Request
-  */
+   * Get Client Request
+   * @return {Object} Return request for get data
+   */
   getRequest(tableName, uuid) {
     const {Criteria, ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
@@ -66,8 +76,10 @@ class Data {
   }
 
   /**
-  * Get Client Request
-  */
+   * Get Client Request
+   * @param {string} criteria
+   * @return {Object} Return request for get data
+   */
   getRequestFromCriteria(criteria) {
     const {ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
@@ -82,8 +94,9 @@ class Data {
   }
 
   /**
-  * Get Criteria from Table Name
-  */
+   * Get Criteria from Table Name
+   * @return {String} criteria
+   */
   getCriteria(tableName) {
     const {Criteria} = require('./src/grpc/proto/data_pb.js');
     let criteria = new Criteria();
