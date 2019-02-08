@@ -1,23 +1,28 @@
 # ADempiere Data Client for gRPC
 ADempiere Data Client write in Javascript for gRPC service, use it for connect with
 [ADempiere-gRPC-Server](https://github.com/erpcya/adempiere-gRPC-Server).
+
 ## Using it
 
 ``` bash
-# installing
-npm install @adempiere/grpc-data-client --save
+# installing via NPM
+npm install @adempiere/grpc-data-client
+```
+``` bash
+# installing via Yarn
+yarn add @adempiere/grpc-data-client
 ```
 
 ## A Example
-### Declare Dictionary
+### Declare Data
 ```javascript
 const Data = require('@adempiere/grpc-data-client');
-let data = new Data('Version Epale', GRPC_HOST);
+let data = new Data(GRPC_HOST, 'Version Epale');
 ```
-### Declare Dictionary with specific language
+### Declare Data with specific language
 ```javascript
 const Data = require('@adempiere/grpc-data-client');
-let data = new Data('Version Epale', GRPC_HOST, 'es_VE');
+let data = new Data(GRPC_HOST, 'Version Epale', 'es_VE');
 ```
 
 ### Request a simple Object based on Table and UUID
@@ -31,6 +36,7 @@ data.requestObject('AD_Element', '8cc49692-fb40-11e8-a479-7a0060f0aa01')
   console.log("Error " + err.code + ": " + err.message);
 });
 ```
+
 ## Recreate proto stup class (only for contribute to project)
 For recreate stup class you must have follow:
 - [protobuf](https://github.com/protocolbuffers/protobuf/releases)
