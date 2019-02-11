@@ -17,8 +17,8 @@ class Data {
 
   /**
    * Constructor, No authentication required
-   * @param {string} host 
-   * @param {string} clientVersion 
+   * @param {string} host
+   * @param {string} clientVersion
    * @param {string} language Languaje i18n
    */
   constructor(host, clientVersion, language = 'en_US') {
@@ -28,7 +28,7 @@ class Data {
   }
 
   /**
-   * Get or request a PO data from tableName and uuid
+   * Get or request a Object data from tableName and uuid
    * @param {string} tableName Indicate table in db
    * @param {string} uuid Universally Unique IDentifier
    * @return {Object} Object with records.
@@ -38,12 +38,18 @@ class Data {
   }
 
   /**
-  * Request PO from Criteria
+  * Request Object from Criteria
   */
   requestObjectFromCriteria(criteria) {
     return this.getService().requestObject(this.getRequestFromCriteria(criteria));
   }
 
+  /**
+  * Request Object List from Criteria
+  */
+  requestObjectListFromCriteria(criteria) {
+    return this.getService().requestObjectList(this.getRequestFromCriteria(criteria));
+  }
 
   /**
    * Load gRPC Connection
@@ -86,7 +92,6 @@ class Data {
     clientRequest.setUuid(this.clientVersion);
     clientRequest.setLanguage(this.language);
     let request = new ValueObjectRequest();
-    request.setUuid(uuid);
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
     //  return
