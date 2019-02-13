@@ -135,8 +135,8 @@ Name: System
 Description: ** Do not change **
 ```
 
-## Recreate proto stup class (only for contribute to project)
-For recreate stup class you must have follow:
+## Recreate proto stub class (only for contribute to project)
+For recreate stub class you must have follow:
 - [protobuf](https://github.com/protocolbuffers/protobuf/releases)
 - [protoc](https://github.com/grpc/grpc-web/releases)
 - Also you can see it: [gRPC-web](https://github.com/grpc/grpc-web)
