@@ -64,11 +64,25 @@ proto.data.DataServicePromiseClient =
   options['format'] = 'text';
 
   /**
-   * @private @const {!proto.data.DataServiceClient} The delegate callback based client
+   * @private @const {!grpc.web.GrpcWebClientBase} The client
    */
-  this.delegateClient_ = new proto.data.DataServiceClient(
-      hostname, credentials, options);
+  this.client_ = new grpc.web.GrpcWebClientBase(options);
 
+  /**
+   * @private @const {string} The hostname
+   */
+  this.hostname_ = hostname;
+
+  /**
+   * @private @const {?Object} The credentials to be used to connect
+   *    to the server
+   */
+  this.credentials_ = credentials;
+
+  /**
+   * @private @const {?Object} Options for the client
+   */
+  this.options_ = options;
 };
 
 
@@ -91,7 +105,7 @@ const methodInfo_DataService_RequestObject = new grpc.web.AbstractClientBase.Met
 /**
  * @param {!proto.data.ValueObjectRequest} request The
  *     request proto
- * @param {!Object<string, string>} metadata User defined
+ * @param {?Object<string, string>} metadata User defined
  *     call metadata
  * @param {function(?grpc.web.Error, ?proto.data.ValueObject)}
  *     callback The callback function(error, response)
@@ -103,7 +117,7 @@ proto.data.DataServiceClient.prototype.requestObject =
   return this.client_.rpcCall(this.hostname_ +
       '/data.DataService/RequestObject',
       request,
-      metadata,
+      metadata || {},
       methodInfo_DataService_RequestObject,
       callback);
 };
@@ -112,19 +126,18 @@ proto.data.DataServiceClient.prototype.requestObject =
 /**
  * @param {!proto.data.ValueObjectRequest} request The
  *     request proto
- * @param {!Object<string, string>} metadata User defined
+ * @param {?Object<string, string>} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.data.ValueObject>}
- *     The XHR Node Readable Stream
+ *     A native promise that resolves to the response
  */
 proto.data.DataServicePromiseClient.prototype.requestObject =
     function(request, metadata) {
-  return new Promise((resolve, reject) => {
-    this.delegateClient_.requestObject(
-      request, metadata, (error, response) => {
-        error ? reject(error) : resolve(response);
-      });
-  });
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/RequestObject',
+      request,
+      metadata || {},
+      methodInfo_DataService_RequestObject);
 };
 
 
@@ -147,7 +160,7 @@ const methodInfo_DataService_RequestObjectList = new grpc.web.AbstractClientBase
 /**
  * @param {!proto.data.ValueObjectRequest} request The
  *     request proto
- * @param {!Object<string, string>} metadata User defined
+ * @param {?Object<string, string>} metadata User defined
  *     call metadata
  * @param {function(?grpc.web.Error, ?proto.data.ValueObjectList)}
  *     callback The callback function(error, response)
@@ -159,7 +172,7 @@ proto.data.DataServiceClient.prototype.requestObjectList =
   return this.client_.rpcCall(this.hostname_ +
       '/data.DataService/RequestObjectList',
       request,
-      metadata,
+      metadata || {},
       methodInfo_DataService_RequestObjectList,
       callback);
 };
@@ -168,19 +181,18 @@ proto.data.DataServiceClient.prototype.requestObjectList =
 /**
  * @param {!proto.data.ValueObjectRequest} request The
  *     request proto
- * @param {!Object<string, string>} metadata User defined
+ * @param {?Object<string, string>} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.data.ValueObjectList>}
- *     The XHR Node Readable Stream
+ *     A native promise that resolves to the response
  */
 proto.data.DataServicePromiseClient.prototype.requestObjectList =
     function(request, metadata) {
-  return new Promise((resolve, reject) => {
-    this.delegateClient_.requestObjectList(
-      request, metadata, (error, response) => {
-        error ? reject(error) : resolve(response);
-      });
-  });
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/RequestObjectList',
+      request,
+      metadata || {},
+      methodInfo_DataService_RequestObjectList);
 };
 
 
@@ -203,7 +215,7 @@ const methodInfo_DataService_RequestCallout = new grpc.web.AbstractClientBase.Me
 /**
  * @param {!proto.data.CalloutRequest} request The
  *     request proto
- * @param {!Object<string, string>} metadata User defined
+ * @param {?Object<string, string>} metadata User defined
  *     call metadata
  * @param {function(?grpc.web.Error, ?proto.data.CalloutResponse)}
  *     callback The callback function(error, response)
@@ -215,7 +227,7 @@ proto.data.DataServiceClient.prototype.requestCallout =
   return this.client_.rpcCall(this.hostname_ +
       '/data.DataService/RequestCallout',
       request,
-      metadata,
+      metadata || {},
       methodInfo_DataService_RequestCallout,
       callback);
 };
@@ -224,19 +236,18 @@ proto.data.DataServiceClient.prototype.requestCallout =
 /**
  * @param {!proto.data.CalloutRequest} request The
  *     request proto
- * @param {!Object<string, string>} metadata User defined
+ * @param {?Object<string, string>} metadata User defined
  *     call metadata
  * @return {!Promise<!proto.data.CalloutResponse>}
- *     The XHR Node Readable Stream
+ *     A native promise that resolves to the response
  */
 proto.data.DataServicePromiseClient.prototype.requestCallout =
     function(request, metadata) {
-  return new Promise((resolve, reject) => {
-    this.delegateClient_.requestCallout(
-      request, metadata, (error, response) => {
-        error ? reject(error) : resolve(response);
-      });
-  });
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/RequestCallout',
+      request,
+      metadata || {},
+      methodInfo_DataService_RequestCallout);
 };
 
 

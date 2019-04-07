@@ -87,7 +87,7 @@ IsVendor: true
 IsCustomer: true
 ```
 
-### Request a Object LIst from criteria (User example)
+### Request a Object List from criteria (User example)
 ```javascript
 //  Request a Object LIst from criteria
 let criteriaForList = data.getCriteria('AD_User');
