@@ -21,12 +21,12 @@ yarn add @adempiere/grpc-data-client
 ### Declare Data
 ```javascript
 const Data = require('@adempiere/grpc-data-client');
-let data = new Data(GRPC_HOST, 'Version Epale');
+let data = new Data(GRPC_HOST, 'Session UUID');
 ```
 ### Declare Data with specific language
 ```javascript
 const Data = require('@adempiere/grpc-data-client');
-let data = new Data(GRPC_HOST, 'Version Epale', 'es_VE');
+let data = new Data(GRPC_HOST, 'Session UUID', 'es_VE');
 ```
 
 ### Request a simple Object based on Table and UUID
