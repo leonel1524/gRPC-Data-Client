@@ -18,11 +18,11 @@ class Data {
   /**
    * Constructor, No authentication required
    * @param {string} host
-   * @param {string} clientVersion
+   * @param {string} sessionUuid
    * @param {string} language Languaje i18n
    */
-  constructor(host, clientVersion, language = 'en_US') {
-    this.clientVersion = clientVersion;
+  constructor(host, sessionUuid, language = 'en_US') {
+    this.sessionUuid = sessionUuid;
     this.host = host;
     this.language = language;
   }
@@ -71,7 +71,7 @@ class Data {
   getRequest(tableName, uuid) {
     const {Criteria, ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
-    clientRequest.setUuid(this.clientVersion);
+    clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ValueObjectRequest();
     request.setUuid(uuid);
@@ -89,7 +89,7 @@ class Data {
   getRequestFromCriteria(criteria) {
     const {ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
-    clientRequest.setUuid(this.clientVersion);
+    clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ValueObjectRequest();
     request.setClientrequest(clientRequest);

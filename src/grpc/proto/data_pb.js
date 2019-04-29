@@ -264,11 +264,8 @@ proto.data.ClientRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.data.ClientRequest.toObject = function(includeInstance, msg) {
   var obj = {
-    uuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    language: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    clientversion: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    clientuuid: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    orguuid: jspb.Message.getFieldWithDefault(msg, 5, "")
+    sessionuuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    language: jspb.Message.getFieldWithDefault(msg, 2, "")
   };
 
   if (includeInstance) {
@@ -307,23 +304,11 @@ proto.data.ClientRequest.deserializeBinaryFromReader = function(msg, reader) {
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUuid(value);
+      msg.setSessionuuid(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
       msg.setLanguage(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setClientversion(value);
-      break;
-    case 4:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setClientuuid(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setOrguuid(value);
       break;
     default:
       reader.skipField();
@@ -354,7 +339,7 @@ proto.data.ClientRequest.prototype.serializeBinary = function() {
  */
 proto.data.ClientRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUuid();
+  f = message.getSessionuuid();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -368,41 +353,20 @@ proto.data.ClientRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getClientversion();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
-    );
-  }
-  f = message.getClientuuid();
-  if (f.length > 0) {
-    writer.writeString(
-      4,
-      f
-    );
-  }
-  f = message.getOrguuid();
-  if (f.length > 0) {
-    writer.writeString(
-      5,
-      f
-    );
-  }
 };
 
 
 /**
- * optional string uuid = 1;
+ * optional string sessionUuid = 1;
  * @return {string}
  */
-proto.data.ClientRequest.prototype.getUuid = function() {
+proto.data.ClientRequest.prototype.getSessionuuid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.data.ClientRequest.prototype.setUuid = function(value) {
+proto.data.ClientRequest.prototype.setSessionuuid = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
@@ -419,51 +383,6 @@ proto.data.ClientRequest.prototype.getLanguage = function() {
 /** @param {string} value */
 proto.data.ClientRequest.prototype.setLanguage = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string clientVersion = 3;
- * @return {string}
- */
-proto.data.ClientRequest.prototype.getClientversion = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/** @param {string} value */
-proto.data.ClientRequest.prototype.setClientversion = function(value) {
-  jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional string clientUuid = 4;
- * @return {string}
- */
-proto.data.ClientRequest.prototype.getClientuuid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
-};
-
-
-/** @param {string} value */
-proto.data.ClientRequest.prototype.setClientuuid = function(value) {
-  jspb.Message.setProto3StringField(this, 4, value);
-};
-
-
-/**
- * optional string orgUuid = 5;
- * @return {string}
- */
-proto.data.ClientRequest.prototype.getOrguuid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
-};
-
-
-/** @param {string} value */
-proto.data.ClientRequest.prototype.setOrguuid = function(value) {
-  jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
@@ -1385,7 +1304,7 @@ proto.data.ValueObjectRequest.prototype.hasCriteria = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.data.Criteria.repeatedFields_ = [5,6];
+proto.data.Criteria.repeatedFields_ = [5,6,7];
 
 
 
@@ -1417,13 +1336,16 @@ proto.data.Criteria.prototype.toObject = function(opt_includeInstance) {
 proto.data.Criteria.toObject = function(includeInstance, msg) {
   var obj = {
     tablename: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    limit: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    query: jspb.Message.getFieldWithDefault(msg, 2, ""),
     whereclause: jspb.Message.getFieldWithDefault(msg, 3, ""),
     orderbyclause: jspb.Message.getFieldWithDefault(msg, 4, ""),
     conditionsList: jspb.Message.toObjectList(msg.getConditionsList(),
     proto.data.Condition.toObject, includeInstance),
+    valuesList: jspb.Message.toObjectList(msg.getValuesList(),
+    proto.data.Value.toObject, includeInstance),
     orderbycolumnList: jspb.Message.toObjectList(msg.getOrderbycolumnList(),
-    proto.data.OrderByProperty.toObject, includeInstance)
+    proto.data.OrderByProperty.toObject, includeInstance),
+    limit: jspb.Message.getFieldWithDefault(msg, 8, 0)
   };
 
   if (includeInstance) {
@@ -1465,8 +1387,8 @@ proto.data.Criteria.deserializeBinaryFromReader = function(msg, reader) {
       msg.setTablename(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readInt64());
-      msg.setLimit(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setQuery(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
@@ -1482,9 +1404,18 @@ proto.data.Criteria.deserializeBinaryFromReader = function(msg, reader) {
       msg.addConditions(value);
       break;
     case 6:
+      var value = new proto.data.Value;
+      reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
+      msg.addValues(value);
+      break;
+    case 7:
       var value = new proto.data.OrderByProperty;
       reader.readMessage(value,proto.data.OrderByProperty.deserializeBinaryFromReader);
       msg.addOrderbycolumn(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setLimit(value);
       break;
     default:
       reader.skipField();
@@ -1522,9 +1453,9 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getLimit();
-  if (f !== 0) {
-    writer.writeInt64(
+  f = message.getQuery();
+  if (f.length > 0) {
+    writer.writeString(
       2,
       f
     );
@@ -1551,12 +1482,27 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
       proto.data.Condition.serializeBinaryToWriter
     );
   }
-  f = message.getOrderbycolumnList();
+  f = message.getValuesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
       6,
       f,
+      proto.data.Value.serializeBinaryToWriter
+    );
+  }
+  f = message.getOrderbycolumnList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      7,
+      f,
       proto.data.OrderByProperty.serializeBinaryToWriter
+    );
+  }
+  f = message.getLimit();
+  if (f !== 0) {
+    writer.writeInt64(
+      8,
+      f
     );
   }
 };
@@ -1578,17 +1524,17 @@ proto.data.Criteria.prototype.setTablename = function(value) {
 
 
 /**
- * optional int64 limit = 2;
- * @return {number}
+ * optional string query = 2;
+ * @return {string}
  */
-proto.data.Criteria.prototype.getLimit = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+proto.data.Criteria.prototype.getQuery = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {number} value */
-proto.data.Criteria.prototype.setLimit = function(value) {
-  jspb.Message.setProto3IntField(this, 2, value);
+/** @param {string} value */
+proto.data.Criteria.prototype.setQuery = function(value) {
+  jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -1657,18 +1603,52 @@ proto.data.Criteria.prototype.clearConditionsList = function() {
 
 
 /**
- * repeated OrderByProperty orderByColumn = 6;
+ * repeated Value values = 6;
+ * @return {!Array<!proto.data.Value>}
+ */
+proto.data.Criteria.prototype.getValuesList = function() {
+  return /** @type{!Array<!proto.data.Value>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.data.Value, 6));
+};
+
+
+/** @param {!Array<!proto.data.Value>} value */
+proto.data.Criteria.prototype.setValuesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 6, value);
+};
+
+
+/**
+ * @param {!proto.data.Value=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.data.Value}
+ */
+proto.data.Criteria.prototype.addValues = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.Value, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ */
+proto.data.Criteria.prototype.clearValuesList = function() {
+  this.setValuesList([]);
+};
+
+
+/**
+ * repeated OrderByProperty orderByColumn = 7;
  * @return {!Array<!proto.data.OrderByProperty>}
  */
 proto.data.Criteria.prototype.getOrderbycolumnList = function() {
   return /** @type{!Array<!proto.data.OrderByProperty>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.OrderByProperty, 6));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.OrderByProperty, 7));
 };
 
 
 /** @param {!Array<!proto.data.OrderByProperty>} value */
 proto.data.Criteria.prototype.setOrderbycolumnList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 6, value);
+  jspb.Message.setRepeatedWrapperField(this, 7, value);
 };
 
 
@@ -1678,7 +1658,7 @@ proto.data.Criteria.prototype.setOrderbycolumnList = function(value) {
  * @return {!proto.data.OrderByProperty}
  */
 proto.data.Criteria.prototype.addOrderbycolumn = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.OrderByProperty, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.data.OrderByProperty, opt_index);
 };
 
 
@@ -1687,6 +1667,21 @@ proto.data.Criteria.prototype.addOrderbycolumn = function(opt_value, opt_index) 
  */
 proto.data.Criteria.prototype.clearOrderbycolumnList = function() {
   this.setOrderbycolumnList([]);
+};
+
+
+/**
+ * optional int64 limit = 8;
+ * @return {number}
+ */
+proto.data.Criteria.prototype.getLimit = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/** @param {number} value */
+proto.data.Criteria.prototype.setLimit = function(value) {
+  jspb.Message.setProto3IntField(this, 8, value);
 };
 
 
