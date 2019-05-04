@@ -361,5 +361,60 @@ proto.data.DataServicePromiseClient.prototype.requestCallout =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ProcessRequest,
+ *   !proto.data.ProcessResponse>}
+ */
+const methodInfo_DataService_RequestProcess = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ProcessResponse,
+  /** @param {!proto.data.ProcessRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ProcessResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ProcessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ProcessResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ProcessResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.DataServiceClient.prototype.requestProcess =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.DataService/RequestProcess',
+      request,
+      metadata || {},
+      methodInfo_DataService_RequestProcess,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ProcessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ProcessResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.DataServicePromiseClient.prototype.requestProcess =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/RequestProcess',
+      request,
+      metadata || {},
+      methodInfo_DataService_RequestProcess);
+};
+
+
 module.exports = proto.data;
 

@@ -52,6 +52,13 @@ class Data {
   }
 
   /**
+  * Request Process
+  */
+  requestProcess(processRequest) {
+    return this.getService().requestProcess(processRequest);
+  }
+
+  /**
    * Load gRPC Connection
    * @return {Object} requestService Return request for get data
    */
@@ -87,13 +94,25 @@ class Data {
    * @return {Object} Return request for get data
    */
   getRequestFromCriteria(criteria) {
-    const {ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
+    const { ClientRequest, ValueObjectRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ValueObjectRequest();
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
+    //  return
+    return request;
+  }
+
+  // Get Process request from
+  getProcessRequest() {
+    const { ProcessRequest } = require('./src/grpc/proto/data_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ProcessRequest();
+    request.setClientrequest(clientRequest);
     //  return
     return request;
   }
