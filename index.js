@@ -107,7 +107,7 @@ class Data {
 
   // Get Process request from
   getProcessRequest() {
-    const { ProcessRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ProcessRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
