@@ -151,7 +151,7 @@ message ProcessRequest {
 	int32 tableId = 3;
 	int32 recordId = 4;
 	int32 tableSelectedId = 5;
-	string reportType = 6;
+	string reportExportType = 6;
 	repeated Selection selections = 7;
 	map<string, Value> parameters = 8;
 }
@@ -187,5 +187,5 @@ message ProcessOutput {
 	string output = 5;
 	bytes outputStream = 6;
 	//	Output Type
-	string reportType = 7;
+	string reportExportType = 7;
 }

@@ -2682,7 +2682,7 @@ proto.data.ProcessRequest.toObject = function(includeInstance, msg) {
     tableid: jspb.Message.getFieldWithDefault(msg, 3, 0),
     recordid: jspb.Message.getFieldWithDefault(msg, 4, 0),
     tableselectedid: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    reporttype: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    reportexporttype: jspb.Message.getFieldWithDefault(msg, 6, ""),
     selectionsList: jspb.Message.toObjectList(msg.getSelectionsList(),
     proto.data.Selection.toObject, includeInstance),
     parametersMap: (f = msg.getParametersMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : []
@@ -2745,7 +2745,7 @@ proto.data.ProcessRequest.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 6:
       var value = /** @type {string} */ (reader.readString());
-      msg.setReporttype(value);
+      msg.setReportexporttype(value);
       break;
     case 7:
       var value = new proto.data.Selection;
@@ -2823,7 +2823,7 @@ proto.data.ProcessRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getReporttype();
+  f = message.getReportexporttype();
   if (f.length > 0) {
     writer.writeString(
       6,
@@ -2939,16 +2939,16 @@ proto.data.ProcessRequest.prototype.setTableselectedid = function(value) {
 
 
 /**
- * optional string reportType = 6;
+ * optional string reportExportType = 6;
  * @return {string}
  */
-proto.data.ProcessRequest.prototype.getReporttype = function() {
+proto.data.ProcessRequest.prototype.getReportexporttype = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
 /** @param {string} value */
-proto.data.ProcessRequest.prototype.setReporttype = function(value) {
+proto.data.ProcessRequest.prototype.setReportexporttype = function(value) {
   jspb.Message.setProto3StringField(this, 6, value);
 };
 
@@ -3664,7 +3664,7 @@ proto.data.ProcessOutput.toObject = function(includeInstance, msg) {
     filename: jspb.Message.getFieldWithDefault(msg, 4, ""),
     output: jspb.Message.getFieldWithDefault(msg, 5, ""),
     outputstream: msg.getOutputstream_asB64(),
-    reporttype: jspb.Message.getFieldWithDefault(msg, 7, "")
+    reportexporttype: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -3727,7 +3727,7 @@ proto.data.ProcessOutput.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 7:
       var value = /** @type {string} */ (reader.readString());
-      msg.setReporttype(value);
+      msg.setReportexporttype(value);
       break;
     default:
       reader.skipField();
@@ -3800,7 +3800,7 @@ proto.data.ProcessOutput.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getReporttype();
+  f = message.getReportexporttype();
   if (f.length > 0) {
     writer.writeString(
       7,
@@ -3925,16 +3925,16 @@ proto.data.ProcessOutput.prototype.setOutputstream = function(value) {
 
 
 /**
- * optional string reportType = 7;
+ * optional string reportExportType = 7;
  * @return {string}
  */
-proto.data.ProcessOutput.prototype.getReporttype = function() {
+proto.data.ProcessOutput.prototype.getReportexporttype = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
 /** @param {string} value */
-proto.data.ProcessOutput.prototype.setReporttype = function(value) {
+proto.data.ProcessOutput.prototype.setReportexporttype = function(value) {
   jspb.Message.setProto3StringField(this, 7, value);
 };
 
