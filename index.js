@@ -52,6 +52,29 @@ class Data {
   }
 
   /**
+  * Request Lookup from Reference
+  */
+  requestLookupFromReference(reference) {
+    var criteria = this.getCriteria(reference.tableName)
+    criteria.setQuery(reference.parsedDirectQuery)
+    //  Add value
+    const {Value, ValueType} = require('./src/grpc/proto/data_pb.js');
+    let value = new Value();
+    value.setIntvalue(field.value)
+    value.setValuetype(ValueType.INTEGER)
+    return this.getService().requestLookup(this.getRequestFromCriteria(criteria));
+  }
+
+  /**
+  * Request Lookup List from Reference
+  */
+  requestLookupListFromReference(reference) {
+    var criteria = this.getCriteria(reference.tableName)
+    criteria.setQuery(reference.parsedQuery)
+    return this.getService().requestLookupList(this.getRequestFromCriteria(criteria));
+  }
+
+  /**
   * Request Process
   */
   requestProcess(processRequest) {
