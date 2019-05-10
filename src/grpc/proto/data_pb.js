@@ -21,7 +21,6 @@ goog.exportSymbol('proto.data.OrderByProperty', null, global);
 goog.exportSymbol('proto.data.OrderByProperty.OrderType', null, global);
 goog.exportSymbol('proto.data.ProcessInfoLog', null, global);
 goog.exportSymbol('proto.data.ProcessOutput', null, global);
-goog.exportSymbol('proto.data.ProcessOutput.OuputType', null, global);
 goog.exportSymbol('proto.data.ProcessRequest', null, global);
 goog.exportSymbol('proto.data.ProcessResponse', null, global);
 goog.exportSymbol('proto.data.Selection', null, global);
@@ -2647,7 +2646,7 @@ proto.data.CalloutResponse.prototype.hasValues = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.data.ProcessRequest.repeatedFields_ = [6];
+proto.data.ProcessRequest.repeatedFields_ = [7];
 
 
 
@@ -2683,6 +2682,7 @@ proto.data.ProcessRequest.toObject = function(includeInstance, msg) {
     tableid: jspb.Message.getFieldWithDefault(msg, 3, 0),
     recordid: jspb.Message.getFieldWithDefault(msg, 4, 0),
     tableselectedid: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    reporttype: jspb.Message.getFieldWithDefault(msg, 6, ""),
     selectionsList: jspb.Message.toObjectList(msg.getSelectionsList(),
     proto.data.Selection.toObject, includeInstance),
     parametersMap: (f = msg.getParametersMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : []
@@ -2744,11 +2744,15 @@ proto.data.ProcessRequest.deserializeBinaryFromReader = function(msg, reader) {
       msg.setTableselectedid(value);
       break;
     case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReporttype(value);
+      break;
+    case 7:
       var value = new proto.data.Selection;
       reader.readMessage(value,proto.data.Selection.deserializeBinaryFromReader);
       msg.addSelections(value);
       break;
-    case 7:
+    case 8:
       var value = msg.getParametersMap();
       reader.readMessage(value, function(message, reader) {
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
@@ -2819,17 +2823,24 @@ proto.data.ProcessRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getReporttype();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
   f = message.getSelectionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      6,
+      7,
       f,
       proto.data.Selection.serializeBinaryToWriter
     );
   }
   f = message.getParametersMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(7, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
+    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
   }
 };
 
@@ -2928,18 +2939,33 @@ proto.data.ProcessRequest.prototype.setTableselectedid = function(value) {
 
 
 /**
- * repeated Selection selections = 6;
+ * optional string reportType = 6;
+ * @return {string}
+ */
+proto.data.ProcessRequest.prototype.getReporttype = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ProcessRequest.prototype.setReporttype = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * repeated Selection selections = 7;
  * @return {!Array<!proto.data.Selection>}
  */
 proto.data.ProcessRequest.prototype.getSelectionsList = function() {
   return /** @type{!Array<!proto.data.Selection>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.Selection, 6));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.Selection, 7));
 };
 
 
 /** @param {!Array<!proto.data.Selection>} value */
 proto.data.ProcessRequest.prototype.setSelectionsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 6, value);
+  jspb.Message.setRepeatedWrapperField(this, 7, value);
 };
 
 
@@ -2949,7 +2975,7 @@ proto.data.ProcessRequest.prototype.setSelectionsList = function(value) {
  * @return {!proto.data.Selection}
  */
 proto.data.ProcessRequest.prototype.addSelections = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.Selection, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.data.Selection, opt_index);
 };
 
 
@@ -2962,14 +2988,14 @@ proto.data.ProcessRequest.prototype.clearSelectionsList = function() {
 
 
 /**
- * map<string, Value> parameters = 7;
+ * map<string, Value> parameters = 8;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
  * @return {!jspb.Map<string,!proto.data.Value>}
  */
 proto.data.ProcessRequest.prototype.getParametersMap = function(opt_noLazyCreate) {
   return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
-      jspb.Message.getMapField(this, 7, opt_noLazyCreate,
+      jspb.Message.getMapField(this, 8, opt_noLazyCreate,
       proto.data.Value));
 };
 
@@ -3638,7 +3664,7 @@ proto.data.ProcessOutput.toObject = function(includeInstance, msg) {
     filename: jspb.Message.getFieldWithDefault(msg, 4, ""),
     output: jspb.Message.getFieldWithDefault(msg, 5, ""),
     outputstream: msg.getOutputstream_asB64(),
-    outputtype: jspb.Message.getFieldWithDefault(msg, 7, 0)
+    reporttype: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -3700,8 +3726,8 @@ proto.data.ProcessOutput.deserializeBinaryFromReader = function(msg, reader) {
       msg.setOutputstream(value);
       break;
     case 7:
-      var value = /** @type {!proto.data.ProcessOutput.OuputType} */ (reader.readEnum());
-      msg.setOutputtype(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReporttype(value);
       break;
     default:
       reader.skipField();
@@ -3774,24 +3800,15 @@ proto.data.ProcessOutput.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getOutputtype();
-  if (f !== 0.0) {
-    writer.writeEnum(
+  f = message.getReporttype();
+  if (f.length > 0) {
+    writer.writeString(
       7,
       f
     );
   }
 };
 
-
-/**
- * @enum {number}
- */
-proto.data.ProcessOutput.OuputType = {
-  TEXT: 0,
-  HTML: 1,
-  FILE: 4
-};
 
 /**
  * optional string uuid = 1;
@@ -3908,17 +3925,17 @@ proto.data.ProcessOutput.prototype.setOutputstream = function(value) {
 
 
 /**
- * optional OuputType outputType = 7;
- * @return {!proto.data.ProcessOutput.OuputType}
+ * optional string reportType = 7;
+ * @return {string}
  */
-proto.data.ProcessOutput.prototype.getOutputtype = function() {
-  return /** @type {!proto.data.ProcessOutput.OuputType} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+proto.data.ProcessOutput.prototype.getReporttype = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
-/** @param {!proto.data.ProcessOutput.OuputType} value */
-proto.data.ProcessOutput.prototype.setOutputtype = function(value) {
-  jspb.Message.setProto3EnumField(this, 7, value);
+/** @param {string} value */
+proto.data.ProcessOutput.prototype.setReporttype = function(value) {
+  jspb.Message.setProto3StringField(this, 7, value);
 };
 
 
