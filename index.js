@@ -60,7 +60,6 @@ class Data {
     //  Add value
     const {Value, ValueType} = require('./src/grpc/proto/data_pb.js');
     var value = new Value();
-    console.log(typeof fieldValue);
     if(typeof(fieldValue) === 'number') {
       value.setIntvalue(fieldValue)
       value.setValuetype(Value.ValueType.INTEGER)
