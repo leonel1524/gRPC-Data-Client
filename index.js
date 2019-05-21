@@ -59,9 +59,16 @@ class Data {
     criteria.setQuery(reference.parsedDirectQuery)
     //  Add value
     const {Value, ValueType} = require('./src/grpc/proto/data_pb.js');
-    let value = new Value();
-    value.setIntvalue(fieldValue)
-    value.setValuetype(ValueType.INTEGER)
+    var value = new Value();
+    console.log(typeof fieldValue);
+    if(typeof(fieldValue) === 'number') {
+      value.setIntvalue(fieldValue)
+      value.setValuetype(Value.ValueType.INTEGER)
+    } else {
+      value.setStringvalue(fieldValue)
+      value.setValuetype(Value.ValueType.STRING)
+    }
+    criteria.addValues(value)
     return this.getService().requestLookup(this.getRequestFromCriteria(criteria));
   }
 
