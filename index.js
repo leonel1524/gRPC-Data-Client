@@ -88,6 +88,13 @@ class Data {
   }
 
   /**
+  * Request Process Activity List
+  */
+  requestProcessActivity(processActivityRequest) {
+    return this.getService().requestProcessActivity(processRequest);
+  }
+
+  /**
    * Load gRPC Connection
    * @return {Object} requestService Return request for get data
    */
@@ -141,6 +148,18 @@ class Data {
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ProcessRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
+  // Get Process request from
+  getProcessActivityRequest() {
+    const { ProcessActivityRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ProcessActivityRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;
