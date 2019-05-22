@@ -338,7 +338,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.data.Selection = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.data.Selection.repeatedFields_, null);
 };
 goog.inherits(proto.data.Selection, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -2906,7 +2906,7 @@ proto.data.CalloutResponse.prototype.hasValues = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.data.ProcessRequest.repeatedFields_ = [7,9];
+proto.data.ProcessRequest.repeatedFields_ = [7,8];
 
 
 
@@ -2945,8 +2945,7 @@ proto.data.ProcessRequest.toObject = function(includeInstance, msg) {
     reportexporttype: jspb.Message.getFieldWithDefault(msg, 6, ""),
     selectionsList: jspb.Message.toObjectList(msg.getSelectionsList(),
     proto.data.Selection.toObject, includeInstance),
-    parametersMap: (f = msg.getParametersMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : [],
-    populatedparametersList: jspb.Message.toObjectList(msg.getPopulatedparametersList(),
+    parametersList: jspb.Message.toObjectList(msg.getParametersList(),
     proto.data.KeyValue.toObject, includeInstance)
   };
 
@@ -3015,15 +3014,9 @@ proto.data.ProcessRequest.deserializeBinaryFromReader = function(msg, reader) {
       msg.addSelections(value);
       break;
     case 8:
-      var value = msg.getParametersMap();
-      reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
-         });
-      break;
-    case 9:
       var value = new proto.data.KeyValue;
       reader.readMessage(value,proto.data.KeyValue.deserializeBinaryFromReader);
-      msg.addPopulatedparameters(value);
+      msg.addParameters(value);
       break;
     default:
       reader.skipField();
@@ -3105,14 +3098,10 @@ proto.data.ProcessRequest.serializeBinaryToWriter = function(message, writer) {
       proto.data.Selection.serializeBinaryToWriter
     );
   }
-  f = message.getParametersMap(true);
-  if (f && f.getLength() > 0) {
-    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
-  }
-  f = message.getPopulatedparametersList();
+  f = message.getParametersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      9,
+      8,
       f,
       proto.data.KeyValue.serializeBinaryToWriter
     );
@@ -3263,39 +3252,18 @@ proto.data.ProcessRequest.prototype.clearSelectionsList = function() {
 
 
 /**
- * map<string, Value> parameters = 8;
- * @param {boolean=} opt_noLazyCreate Do not create the map if
- * empty, instead returning `undefined`
- * @return {!jspb.Map<string,!proto.data.Value>}
- */
-proto.data.ProcessRequest.prototype.getParametersMap = function(opt_noLazyCreate) {
-  return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
-      jspb.Message.getMapField(this, 8, opt_noLazyCreate,
-      proto.data.Value));
-};
-
-
-/**
- * Clears values from the map. The map will be non-null.
- */
-proto.data.ProcessRequest.prototype.clearParametersMap = function() {
-  this.getParametersMap().clear();
-};
-
-
-/**
- * repeated KeyValue populatedParameters = 9;
+ * repeated KeyValue parameters = 8;
  * @return {!Array<!proto.data.KeyValue>}
  */
-proto.data.ProcessRequest.prototype.getPopulatedparametersList = function() {
+proto.data.ProcessRequest.prototype.getParametersList = function() {
   return /** @type{!Array<!proto.data.KeyValue>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 9));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 8));
 };
 
 
 /** @param {!Array<!proto.data.KeyValue>} value */
-proto.data.ProcessRequest.prototype.setPopulatedparametersList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 9, value);
+proto.data.ProcessRequest.prototype.setParametersList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 8, value);
 };
 
 
@@ -3304,16 +3272,16 @@ proto.data.ProcessRequest.prototype.setPopulatedparametersList = function(value)
  * @param {number=} opt_index
  * @return {!proto.data.KeyValue}
  */
-proto.data.ProcessRequest.prototype.addPopulatedparameters = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 9, opt_value, proto.data.KeyValue, opt_index);
+proto.data.ProcessRequest.prototype.addParameters = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 8, opt_value, proto.data.KeyValue, opt_index);
 };
 
 
 /**
  * Clears the list making it empty but non-null.
  */
-proto.data.ProcessRequest.prototype.clearPopulatedparametersList = function() {
-  this.setPopulatedparametersList([]);
+proto.data.ProcessRequest.prototype.clearParametersList = function() {
+  this.setParametersList([]);
 };
 
 
@@ -3662,6 +3630,13 @@ proto.data.ProcessActivityRequest.prototype.setUseruuid = function(value) {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.data.Selection.repeatedFields_ = [2];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -3692,7 +3667,8 @@ proto.data.Selection.prototype.toObject = function(opt_includeInstance) {
 proto.data.Selection.toObject = function(includeInstance, msg) {
   var obj = {
     selectionid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    valuesMap: (f = msg.getValuesMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : []
+    valuesList: jspb.Message.toObjectList(msg.getValuesList(),
+    proto.data.KeyValue.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -3733,11 +3709,10 @@ proto.data.Selection.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {number} */ (reader.readInt32());
       msg.setSelectionid(value);
       break;
-    case 7:
-      var value = msg.getValuesMap();
-      reader.readMessage(value, function(message, reader) {
-        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
-         });
+    case 2:
+      var value = new proto.data.KeyValue;
+      reader.readMessage(value,proto.data.KeyValue.deserializeBinaryFromReader);
+      msg.addValues(value);
       break;
     default:
       reader.skipField();
@@ -3775,9 +3750,13 @@ proto.data.Selection.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getValuesMap(true);
-  if (f && f.getLength() > 0) {
-    f.serializeBinary(7, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
+  f = message.getValuesList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      2,
+      f,
+      proto.data.KeyValue.serializeBinaryToWriter
+    );
   }
 };
 
@@ -3798,23 +3777,36 @@ proto.data.Selection.prototype.setSelectionid = function(value) {
 
 
 /**
- * map<string, Value> values = 7;
- * @param {boolean=} opt_noLazyCreate Do not create the map if
- * empty, instead returning `undefined`
- * @return {!jspb.Map<string,!proto.data.Value>}
+ * repeated KeyValue values = 2;
+ * @return {!Array<!proto.data.KeyValue>}
  */
-proto.data.Selection.prototype.getValuesMap = function(opt_noLazyCreate) {
-  return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
-      jspb.Message.getMapField(this, 7, opt_noLazyCreate,
-      proto.data.Value));
+proto.data.Selection.prototype.getValuesList = function() {
+  return /** @type{!Array<!proto.data.KeyValue>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 2));
+};
+
+
+/** @param {!Array<!proto.data.KeyValue>} value */
+proto.data.Selection.prototype.setValuesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 2, value);
 };
 
 
 /**
- * Clears values from the map. The map will be non-null.
+ * @param {!proto.data.KeyValue=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.data.KeyValue}
  */
-proto.data.Selection.prototype.clearValuesMap = function() {
-  this.getValuesMap().clear();
+proto.data.Selection.prototype.addValues = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.data.KeyValue, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ */
+proto.data.Selection.prototype.clearValuesList = function() {
+  this.setValuesList([]);
 };
 
 

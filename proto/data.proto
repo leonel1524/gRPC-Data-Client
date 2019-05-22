@@ -163,8 +163,7 @@ message ProcessRequest {
 	int32 tableSelectedId = 5;
 	string reportExportType = 6;
 	repeated Selection selections = 7;
-	map<string, Value> parameters = 8;
-	repeated KeyValue populatedParameters = 9;
+	repeated KeyValue parameters = 8;
 }
 
 // Process Request Parameter
@@ -182,7 +181,7 @@ message ProcessActivityRequest {
 //	Process Selections
 message Selection {
 	int32 selectionId = 1;
-	map<string, Value> values = 7;
+	repeated KeyValue values = 2;
 }
 
 // Process Response List
