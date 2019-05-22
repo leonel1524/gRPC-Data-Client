@@ -71,6 +71,32 @@ class Data {
     return this.getService().requestLookup(this.getRequestFromCriteria(criteria));
   }
 
+  // Convert a parameter defined by columnName and value to Value Object
+  // parameter {
+  //   columnName,
+  //   value
+  // }
+  // Return a KeyValue Object
+  convertParameter(parameter) {
+    const { Value, ValueType, KeyValue } = require('./src/grpc/proto/data_pb.js');
+    var value = new Value();
+    var keyValue = new KeyValue();
+    if(typeof(parameter.value) === 'number') {
+      value.setDoublevalue(parameter.value)
+      value.setValuetype(Value.ValueType.DOUBLE)
+    } else if(typeof(parameter.value) === 'boolean') {
+      value.setBooleanvalue(parameter.value)
+      value.setValuetype(Value.ValueType.BOOLEAN)
+    } else {
+      value.setStringvalue(parameter.value)
+      value.setValuetype(Value.ValueType.STRING)
+    }
+    keyValue.setKey(parameter.columnName);
+    keyValue.setValue(value);
+    //  Return converted value
+    return keyValue;
+  }
+
   /**
   * Request Lookup List from Reference
   */
@@ -84,6 +110,7 @@ class Data {
   * Request Process
   */
   requestProcess(processRequest) {
+    console.log(processRequest)
     return this.getService().requestProcess(processRequest);
   }
 
