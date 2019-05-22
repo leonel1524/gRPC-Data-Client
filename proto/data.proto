@@ -61,6 +61,12 @@ message ValueObject {
 	map<string, Value> values = 4;
 }
 
+// Key and Value pairs
+message KeyValue {
+	string key = 1;
+	Value value = 2;
+}
+
 // Define value for object
 message Value {
 	int32 intValue = 1;
@@ -158,6 +164,13 @@ message ProcessRequest {
 	string reportExportType = 6;
 	repeated Selection selections = 7;
 	map<string, Value> parameters = 8;
+	repeated KeyValue populatedParameters = 9;
+}
+
+// Process Request Parameter
+message ProcessRequestParameter {
+	string columnName = 1;
+	Value value = 2;
 }
 
 // Process Activity Request
