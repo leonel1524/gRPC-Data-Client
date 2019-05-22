@@ -3568,7 +3568,7 @@ proto.data.ProcessResponseList.prototype.clearResponsesList = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.data.ProcessResponse.repeatedFields_ = [5];
+proto.data.ProcessResponse.repeatedFields_ = [6];
 
 
 
@@ -3603,6 +3603,7 @@ proto.data.ProcessResponse.toObject = function(includeInstance, msg) {
     iserror: jspb.Message.getFieldWithDefault(msg, 2, false),
     summary: jspb.Message.getFieldWithDefault(msg, 3, ""),
     resulttableid: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    isprocessing: jspb.Message.getFieldWithDefault(msg, 5, false),
     logsList: jspb.Message.toObjectList(msg.getLogsList(),
     proto.data.ProcessInfoLog.toObject, includeInstance),
     parametersMap: (f = msg.getParametersMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : [],
@@ -3660,17 +3661,21 @@ proto.data.ProcessResponse.deserializeBinaryFromReader = function(msg, reader) {
       msg.setResulttableid(value);
       break;
     case 5:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setIsprocessing(value);
+      break;
+    case 6:
       var value = new proto.data.ProcessInfoLog;
       reader.readMessage(value,proto.data.ProcessInfoLog.deserializeBinaryFromReader);
       msg.addLogs(value);
       break;
-    case 6:
+    case 7:
       var value = msg.getParametersMap();
       reader.readMessage(value, function(message, reader) {
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
          });
       break;
-    case 7:
+    case 8:
       var value = new proto.data.ProcessOutput;
       reader.readMessage(value,proto.data.ProcessOutput.deserializeBinaryFromReader);
       msg.setOutput(value);
@@ -3732,22 +3737,29 @@ proto.data.ProcessResponse.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getIsprocessing();
+  if (f) {
+    writer.writeBool(
+      5,
+      f
+    );
+  }
   f = message.getLogsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      5,
+      6,
       f,
       proto.data.ProcessInfoLog.serializeBinaryToWriter
     );
   }
   f = message.getParametersMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(6, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
+    f.serializeBinary(7, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
   }
   f = message.getOutput();
   if (f != null) {
     writer.writeMessage(
-      7,
+      8,
       f,
       proto.data.ProcessOutput.serializeBinaryToWriter
     );
@@ -3818,18 +3830,35 @@ proto.data.ProcessResponse.prototype.setResulttableid = function(value) {
 
 
 /**
- * repeated ProcessInfoLog logs = 5;
+ * optional bool isProcessing = 5;
+ * Note that Boolean fields may be set to 0/1 when serialized from a Java server.
+ * You should avoid comparisons like {@code val === true/false} in those cases.
+ * @return {boolean}
+ */
+proto.data.ProcessResponse.prototype.getIsprocessing = function() {
+  return /** @type {boolean} */ (jspb.Message.getFieldWithDefault(this, 5, false));
+};
+
+
+/** @param {boolean} value */
+proto.data.ProcessResponse.prototype.setIsprocessing = function(value) {
+  jspb.Message.setProto3BooleanField(this, 5, value);
+};
+
+
+/**
+ * repeated ProcessInfoLog logs = 6;
  * @return {!Array<!proto.data.ProcessInfoLog>}
  */
 proto.data.ProcessResponse.prototype.getLogsList = function() {
   return /** @type{!Array<!proto.data.ProcessInfoLog>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.ProcessInfoLog, 5));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.ProcessInfoLog, 6));
 };
 
 
 /** @param {!Array<!proto.data.ProcessInfoLog>} value */
 proto.data.ProcessResponse.prototype.setLogsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 5, value);
+  jspb.Message.setRepeatedWrapperField(this, 6, value);
 };
 
 
@@ -3839,7 +3868,7 @@ proto.data.ProcessResponse.prototype.setLogsList = function(value) {
  * @return {!proto.data.ProcessInfoLog}
  */
 proto.data.ProcessResponse.prototype.addLogs = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.data.ProcessInfoLog, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.ProcessInfoLog, opt_index);
 };
 
 
@@ -3852,14 +3881,14 @@ proto.data.ProcessResponse.prototype.clearLogsList = function() {
 
 
 /**
- * map<string, Value> parameters = 6;
+ * map<string, Value> parameters = 7;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
  * @return {!jspb.Map<string,!proto.data.Value>}
  */
 proto.data.ProcessResponse.prototype.getParametersMap = function(opt_noLazyCreate) {
   return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
-      jspb.Message.getMapField(this, 6, opt_noLazyCreate,
+      jspb.Message.getMapField(this, 7, opt_noLazyCreate,
       proto.data.Value));
 };
 
@@ -3873,18 +3902,18 @@ proto.data.ProcessResponse.prototype.clearParametersMap = function() {
 
 
 /**
- * optional ProcessOutput output = 7;
+ * optional ProcessOutput output = 8;
  * @return {?proto.data.ProcessOutput}
  */
 proto.data.ProcessResponse.prototype.getOutput = function() {
   return /** @type{?proto.data.ProcessOutput} */ (
-    jspb.Message.getWrapperField(this, proto.data.ProcessOutput, 7));
+    jspb.Message.getWrapperField(this, proto.data.ProcessOutput, 8));
 };
 
 
 /** @param {?proto.data.ProcessOutput|undefined} value */
 proto.data.ProcessResponse.prototype.setOutput = function(value) {
-  jspb.Message.setWrapperField(this, 7, value);
+  jspb.Message.setWrapperField(this, 8, value);
 };
 
 
@@ -3901,7 +3930,7 @@ proto.data.ProcessResponse.prototype.clearOutput = function() {
  * @return {boolean}
  */
 proto.data.ProcessResponse.prototype.hasOutput = function() {
-  return jspb.Message.getField(this, 7) != null;
+  return jspb.Message.getField(this, 8) != null;
 };
 
 

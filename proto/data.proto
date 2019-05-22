@@ -184,9 +184,10 @@ message ProcessResponse {
 	bool isError = 2;
 	string summary = 3;
 	int32 resultTableId = 4;
-	repeated ProcessInfoLog logs = 5;
-	map<string, Value> parameters = 6;
-	ProcessOutput output = 7;
+	bool isProcessing = 5;
+	repeated ProcessInfoLog logs = 6;
+	map<string, Value> parameters = 7;
+	ProcessOutput output = 8;
 }
 
 //	Process Log result
