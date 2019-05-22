@@ -114,6 +114,13 @@ class Data {
   }
 
   /**
+  * Request Browser
+  */
+  requestBrowser(browserRequest) {
+    return this.getService().requestBrowser(browserRequest);
+  }
+
+  /**
   * Request Process Activity List
   */
   requestProcessActivity(processActivityRequest) {
@@ -174,6 +181,18 @@ class Data {
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ProcessRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
+  // Get Browser request from
+  getBrowserRequest() {
+    const { BrowserRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new BrowserRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;

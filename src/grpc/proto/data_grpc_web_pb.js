@@ -419,12 +419,12 @@ proto.data.DataServicePromiseClient.prototype.requestProcess =
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ValueObjectRequest,
+ *   !proto.data.BrowserRequest,
  *   !proto.data.ValueObjectList>}
  */
 const methodInfo_DataService_RequestBrowser = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ValueObjectList,
-  /** @param {!proto.data.ValueObjectRequest} request */
+  /** @param {!proto.data.BrowserRequest} request */
   function(request) {
     return request.serializeBinary();
   },
@@ -433,7 +433,7 @@ const methodInfo_DataService_RequestBrowser = new grpc.web.AbstractClientBase.Me
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.BrowserRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
@@ -454,7 +454,7 @@ proto.data.DataServiceClient.prototype.requestBrowser =
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.BrowserRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
