@@ -91,7 +91,7 @@ class Data {
   * Request Process Activity List
   */
   requestProcessActivity(processActivityRequest) {
-    return this.getService().requestProcessActivity(processRequest);
+    return this.getService().requestProcessActivity(processActivityRequest);
   }
 
   /**
