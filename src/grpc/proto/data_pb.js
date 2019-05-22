@@ -4687,7 +4687,7 @@ proto.data.ProcessOutput.prototype.setReportexporttype = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.data.BrowserRequest.repeatedFields_ = [2];
+proto.data.BrowserRequest.repeatedFields_ = [3];
 
 
 
@@ -4718,6 +4718,7 @@ proto.data.BrowserRequest.prototype.toObject = function(opt_includeInstance) {
  */
 proto.data.BrowserRequest.toObject = function(includeInstance, msg) {
   var obj = {
+    uuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
     parametersList: jspb.Message.toObjectList(msg.getParametersList(),
     proto.data.KeyValue.toObject, includeInstance)
@@ -4758,11 +4759,15 @@ proto.data.BrowserRequest.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUuid(value);
+      break;
+    case 2:
       var value = new proto.data.ClientRequest;
       reader.readMessage(value,proto.data.ClientRequest.deserializeBinaryFromReader);
       msg.setClientrequest(value);
       break;
-    case 2:
+    case 3:
       var value = new proto.data.KeyValue;
       reader.readMessage(value,proto.data.KeyValue.deserializeBinaryFromReader);
       msg.addParameters(value);
@@ -4796,10 +4801,17 @@ proto.data.BrowserRequest.prototype.serializeBinary = function() {
  */
 proto.data.BrowserRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getUuid();
+  if (f.length > 0) {
+    writer.writeString(
+      1,
+      f
+    );
+  }
   f = message.getClientrequest();
   if (f != null) {
     writer.writeMessage(
-      1,
+      2,
       f,
       proto.data.ClientRequest.serializeBinaryToWriter
     );
@@ -4807,7 +4819,7 @@ proto.data.BrowserRequest.serializeBinaryToWriter = function(message, writer) {
   f = message.getParametersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      2,
+      3,
       f,
       proto.data.KeyValue.serializeBinaryToWriter
     );
@@ -4816,18 +4828,33 @@ proto.data.BrowserRequest.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional ClientRequest clientRequest = 1;
+ * optional string uuid = 1;
+ * @return {string}
+ */
+proto.data.BrowserRequest.prototype.getUuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/** @param {string} value */
+proto.data.BrowserRequest.prototype.setUuid = function(value) {
+  jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional ClientRequest clientRequest = 2;
  * @return {?proto.data.ClientRequest}
  */
 proto.data.BrowserRequest.prototype.getClientrequest = function() {
   return /** @type{?proto.data.ClientRequest} */ (
-    jspb.Message.getWrapperField(this, proto.data.ClientRequest, 1));
+    jspb.Message.getWrapperField(this, proto.data.ClientRequest, 2));
 };
 
 
 /** @param {?proto.data.ClientRequest|undefined} value */
 proto.data.BrowserRequest.prototype.setClientrequest = function(value) {
-  jspb.Message.setWrapperField(this, 1, value);
+  jspb.Message.setWrapperField(this, 2, value);
 };
 
 
@@ -4844,23 +4871,23 @@ proto.data.BrowserRequest.prototype.clearClientrequest = function() {
  * @return {boolean}
  */
 proto.data.BrowserRequest.prototype.hasClientrequest = function() {
-  return jspb.Message.getField(this, 1) != null;
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
 /**
- * repeated KeyValue parameters = 2;
+ * repeated KeyValue parameters = 3;
  * @return {!Array<!proto.data.KeyValue>}
  */
 proto.data.BrowserRequest.prototype.getParametersList = function() {
   return /** @type{!Array<!proto.data.KeyValue>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 2));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 3));
 };
 
 
 /** @param {!Array<!proto.data.KeyValue>} value */
 proto.data.BrowserRequest.prototype.setParametersList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 2, value);
+  jspb.Message.setRepeatedWrapperField(this, 3, value);
 };
 
 
@@ -4870,7 +4897,7 @@ proto.data.BrowserRequest.prototype.setParametersList = function(value) {
  * @return {!proto.data.KeyValue}
  */
 proto.data.BrowserRequest.prototype.addParameters = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 2, opt_value, proto.data.KeyValue, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.data.KeyValue, opt_index);
 };
 
 
