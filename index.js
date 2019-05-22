@@ -110,7 +110,6 @@ class Data {
   * Request Process
   */
   requestProcess(processRequest) {
-    console.log(processRequest)
     return this.getService().requestProcess(processRequest);
   }
 
