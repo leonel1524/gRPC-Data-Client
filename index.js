@@ -56,7 +56,7 @@ class Data {
   */
   requestLookupFromReference(reference, fieldValue) {
     var criteria = this.getCriteria(reference.tableName)
-    criteria.setQuery(reference.parsedDirectQuery)
+    criteria.setQuery(reference.directQuery)
     //  Add value
     const {Value, ValueType} = require('./src/grpc/proto/data_pb.js');
     var value = new Value();
@@ -102,7 +102,7 @@ class Data {
   */
   requestLookupListFromReference(reference) {
     var criteria = this.getCriteria(reference.tableName)
-    criteria.setQuery(reference.parsedQuery)
+    criteria.setQuery(reference.query)
     return this.getService().requestLookupList(this.getRequestFromCriteria(criteria));
   }
 
