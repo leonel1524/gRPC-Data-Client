@@ -87,6 +87,9 @@ class Data {
     } else if(typeof(parameter.value) === 'boolean') {
       value.setBooleanvalue(parameter.value)
       value.setValuetype(Value.ValueType.BOOLEAN)
+    } else if(typeof(parameter.value) === 'object') {
+      value.setLongvalue(parameter.value.getTime())
+      value.setValuetype(Value.ValueType.DATE)
     } else {
       value.setStringvalue(parameter.value)
       value.setValuetype(Value.ValueType.STRING)
