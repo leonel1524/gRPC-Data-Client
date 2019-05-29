@@ -87,7 +87,6 @@ class Data {
     } else if(typeof(parameter.value) === 'boolean') {
       value.setBooleanvalue(parameter.value)
       value.setValuetype(Value.ValueType.BOOLEAN)
-      
     } else if(Object.prototype.toString.call(value) === '[object Date]') {
       value.setLongvalue(parameter.value.getTime())
       value.setValuetype(Value.ValueType.DATE)
