@@ -71,33 +71,98 @@ class Data {
     return this.getService().requestLookup(this.getRequestFromCriteria(criteria));
   }
 
-  // Convert a parameter defined by columnName and value to Value Object
-  // parameter {
-  //   columnName,
-  //   value
-  // }
-  // Return a KeyValue Object
-  convertParameter(parameter) {
-    const { Value, ValueType, KeyValue } = require('./src/grpc/proto/data_pb.js');
-    var value = new Value();
-    var keyValue = new KeyValue();
-    if(typeof(parameter.value) === 'number') {
-      value.setDoublevalue(parameter.value)
-      value.setValuetype(Value.ValueType.DOUBLE)
-    } else if(typeof(parameter.value) === 'boolean') {
-      value.setBooleanvalue(parameter.value)
-      value.setValuetype(Value.ValueType.BOOLEAN)
+  /**
+   * Return value converted, compatible with grpc
+   * @param {mixed} value
+   */
+  convertValue(value) {
+    const { Value } = require('./src/grpc/proto/data_pb.js');
+    var valueConverted = new Value();
+
+    // evaluate type value
+    if(typeof(value) === 'number') {
+      if (Number.isInteger(value)) {
+        valueConverted.setIntvalue(value);
+        valueConverted.setValuetype(Value.ValueType.INTEGER);
+      } else {
+        valueConverted.setDoublevalue(parameter.value);
+        valueConverted.setValuetype(Value.ValueType.DOUBLE);
+      }
+    } else if(typeof(value) === 'boolean') {
+      valueConverted.setBooleanvalue(value);
+      valueConverted.setValuetype(Value.ValueType.BOOLEAN);
     } else if(Object.prototype.toString.call(value) === '[object Date]') {
-      value.setLongvalue(parameter.value.getTime())
-      value.setValuetype(Value.ValueType.DATE)
+      valueConverted.setLongvalue(value.getTime());
+      valueConverted.setValuetype(Value.ValueType.DATE);
     } else {
-      value.setStringvalue(parameter.value)
-      value.setValuetype(Value.ValueType.STRING)
+      valueConverted.setStringvalue(value);
+      valueConverted.setValuetype(Value.ValueType.STRING);
     }
+
+    return valueConverted;
+  }
+
+  /**
+   * Convert a parameter defined by columnName and value to Value Object
+   *
+   * parameter {
+   *   columnName,
+   *   value
+   * }
+   *
+   * Return a KeyValue Object
+   */
+  convertParameter(parameter) {
+    const { KeyValue } = require('./src/grpc/proto/data_pb.js');
+    var keyValue = new KeyValue();
     keyValue.setKey(parameter.columnName);
-    keyValue.setValue(value);
+    var convertedValue = this.convertValue(parameter.value)
+    keyValue.setValue(convertedValue);
     //  Return converted value
     return keyValue;
+  }
+
+  /**
+   * Convert a list of parameter defined by columnName and value to Value Object
+   *
+   * [
+   *   {
+   *    selectionId: keyColumn Value,
+   *    selectionValues: [
+   *      { columname, value },
+   *      { columname, value },
+   *      { columname, value }
+   *    ]
+   *  },
+   *  {
+   *    selectionId: keyColumn Value,
+   *    selectionValues: [
+   *      { columname, value },
+   *      { columname, value }
+   *    ]
+   *  }
+   * ]
+   *
+   * Return a list of KeyValue Object
+   */
+  convertSelection(record) {
+    const { Selection } = require('./src/grpc/proto/data_pb.js');
+    var selectionReturn = new Selection();
+
+    var selectionId = this.convertValue(record.selectionId);
+    // set selection id from record
+    selectionReturn.setSelectionid(selectionId);
+
+    var columnValueList = [];
+    record.selectionValues.forEach(columnValue => {
+      var convertedColunmValue = this.convertParameter(columnValue);
+      columnValueList.push(convertedColunmValue);
+      return convertedColunmValue;
+    });
+    // converted selection list
+    selectionReturn.setValuesList(columnValueList);
+
+    return selectionReturn;
   }
 
   /**
