@@ -147,22 +147,14 @@ class Data {
    */
   convertSelection(record) {
     const { Selection } = require('./src/grpc/proto/data_pb.js');
-    var selectionReturn = new Selection();
-
-    var selectionId = this.convertValue(record.selectionId);
+    var selection = new Selection();
     // set selection id from record
-    selectionReturn.setSelectionid(selectionId);
-
-    var columnValueList = [];
+    selection.setSelectionid(record.selectionId);
+    //  Convert values to selection
     record.selectionValues.forEach(columnValue => {
-      var convertedColunmValue = this.convertParameter(columnValue);
-      columnValueList.push(convertedColunmValue);
-      return convertedColunmValue;
+      selection.addValues(this.convertParameter(columnValue));
     });
-    // converted selection list
-    selectionReturn.setValuesList(columnValueList);
-
-    return selectionReturn;
+    return selection;
   }
 
   /**
