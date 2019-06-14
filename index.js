@@ -270,6 +270,19 @@ class Data {
     return request;
   }
 
+
+  // Get Recent Item request from
+  getRecentItemRequest() {
+    const { RecentItemsRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new RecentItemsRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
   /**
    * Get Criteria from Table Name
    * @return {String} criteria
