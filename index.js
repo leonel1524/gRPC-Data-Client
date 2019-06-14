@@ -181,13 +181,6 @@ class Data {
   }
 
   /**
-  * Request Process Activity List
-  */
-  requestProcessActivity(processActivityRequest) {
-    return this.getService().requestProcessActivity(processActivityRequest);
-  }
-
-  /**
    * Load gRPC Connection
    * @return {Object} requestService Return request for get data
    */
@@ -205,7 +198,7 @@ class Data {
    * @return {Object} Return request for get data
    */
   getRequest(tableName, uuid) {
-    const {Criteria, ClientRequest, ValueObjectRequest} = require('./src/grpc/proto/data_pb.js');
+    const { ClientRequest, ValueObjectRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -246,18 +239,6 @@ class Data {
     return request;
   }
 
-  // Get Browser request from
-  getBrowserRequest() {
-    const { BrowserRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
-    let clientRequest = new ClientRequest();
-    clientRequest.setSessionuuid(this.sessionUuid);
-    clientRequest.setLanguage(this.language);
-    let request = new BrowserRequest();
-    request.setClientrequest(clientRequest);
-    //  return
-    return request;
-  }
-
   // Get Process request from
   getProcessActivityRequest() {
     const { ProcessActivityRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
@@ -270,6 +251,26 @@ class Data {
     return request;
   }
 
+  /**
+  * Request Process Activity List
+  */
+  requestProcessActivity() {
+    return this.getService().requestProcessActivity(
+      this.getProcessActivityRequest()
+    );
+  }
+
+  // Get Browser request from
+  getBrowserRequest() {
+    const { BrowserRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new BrowserRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
 
   // Get Recent Item request from
   getRecentItemRequest() {
@@ -281,6 +282,15 @@ class Data {
     request.setClientrequest(clientRequest);
     //  return
     return request;
+  }
+
+  /**
+  * Request Recent Items Activity List
+  */
+  requestRecentItems() {
+    return this.getService().requestRecentItems(
+      this.getRecentItemRequest()
+    );
   }
 
   /**
@@ -296,4 +306,5 @@ class Data {
   }
 
 }
+
 module.exports = Data;
