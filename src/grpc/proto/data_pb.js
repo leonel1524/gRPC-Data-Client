@@ -5113,8 +5113,9 @@ proto.data.ProcessOutput.toObject = function(includeInstance, msg) {
     description: jspb.Message.getFieldWithDefault(msg, 3, ""),
     filename: jspb.Message.getFieldWithDefault(msg, 4, ""),
     output: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    mimetype: jspb.Message.getFieldWithDefault(msg, 6, ""),
     outputstream: msg.getOutputstream_asB64(),
-    reportexporttype: jspb.Message.getFieldWithDefault(msg, 7, "")
+    reportexporttype: jspb.Message.getFieldWithDefault(msg, 8, "")
   };
 
   if (includeInstance) {
@@ -5172,10 +5173,14 @@ proto.data.ProcessOutput.deserializeBinaryFromReader = function(msg, reader) {
       msg.setOutput(value);
       break;
     case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMimetype(value);
+      break;
+    case 7:
       var value = /** @type {!Uint8Array} */ (reader.readBytes());
       msg.setOutputstream(value);
       break;
-    case 7:
+    case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setReportexporttype(value);
       break;
@@ -5243,17 +5248,24 @@ proto.data.ProcessOutput.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getMimetype();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
   f = message.getOutputstream_asU8();
   if (f.length > 0) {
     writer.writeBytes(
-      6,
+      7,
       f
     );
   }
   f = message.getReportexporttype();
   if (f.length > 0) {
     writer.writeString(
-      7,
+      8,
       f
     );
   }
@@ -5336,16 +5348,31 @@ proto.data.ProcessOutput.prototype.setOutput = function(value) {
 
 
 /**
- * optional bytes outputStream = 6;
+ * optional string mimeType = 6;
  * @return {string}
  */
-proto.data.ProcessOutput.prototype.getOutputstream = function() {
+proto.data.ProcessOutput.prototype.getMimetype = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
+/** @param {string} value */
+proto.data.ProcessOutput.prototype.setMimetype = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
 /**
- * optional bytes outputStream = 6;
+ * optional bytes outputStream = 7;
+ * @return {string}
+ */
+proto.data.ProcessOutput.prototype.getOutputstream = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * optional bytes outputStream = 7;
  * This is a type-conversion wrapper around `getOutputstream()`
  * @return {string}
  */
@@ -5356,7 +5383,7 @@ proto.data.ProcessOutput.prototype.getOutputstream_asB64 = function() {
 
 
 /**
- * optional bytes outputStream = 6;
+ * optional bytes outputStream = 7;
  * Note that Uint8Array is not supported on all browsers.
  * @see http://caniuse.com/Uint8Array
  * This is a type-conversion wrapper around `getOutputstream()`
@@ -5370,22 +5397,22 @@ proto.data.ProcessOutput.prototype.getOutputstream_asU8 = function() {
 
 /** @param {!(string|Uint8Array)} value */
 proto.data.ProcessOutput.prototype.setOutputstream = function(value) {
-  jspb.Message.setProto3BytesField(this, 6, value);
+  jspb.Message.setProto3BytesField(this, 7, value);
 };
 
 
 /**
- * optional string reportExportType = 7;
+ * optional string reportExportType = 8;
  * @return {string}
  */
 proto.data.ProcessOutput.prototype.getReportexporttype = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
 /** @param {string} value */
 proto.data.ProcessOutput.prototype.setReportexporttype = function(value) {
-  jspb.Message.setProto3StringField(this, 7, value);
+  jspb.Message.setProto3StringField(this, 8, value);
 };
 
 
