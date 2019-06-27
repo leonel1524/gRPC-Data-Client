@@ -1,4 +1,12 @@
 # ADempiere Data Client for gRPC
+
+[![npm version](https://img.shields.io/npm/v/@adempiere/grpc-data-client.svg)](https://www.npmjs.com/package/@adempiere/grpc-data-client)
+[![License](https://img.shields.io/npm/l/@adempiere/grpc-data-client.svg)](https://github.com/erpcya/adempiere-gRPC-Server/blob/master/LICENSE)
+[![Downloads](https://img.shields.io/npm/dm/@adempiere/grpc-data-client.svg)](https://www.npmjs.com/package/@adempiere/grpc-data-client)
+<!--
+[![Dependencies](https://img.shields.io/librariesio/github/erpcya/grpc-data-client.svg)](https://www.npmjs.com/package/@adempiere/grpc-data-client)
+-->
+
 ADempiere Data Client write in Javascript for gRPC service, use it for connect with
 [ADempiere-gRPC-Server](https://github.com/erpcya/adempiere-gRPC-Server).
 
@@ -10,7 +18,7 @@ ADempiere Data Client write in Javascript for gRPC service, use it for connect w
 
 ``` bash
 # installing via NPM
-npm install @adempiere/grpc-data-client
+npm i @adempiere/grpc-data-client
 ```
 ``` bash
 # installing via Yarn

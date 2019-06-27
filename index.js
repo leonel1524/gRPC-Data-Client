@@ -85,7 +85,7 @@ class Data {
         valueConverted.setIntvalue(value);
         valueConverted.setValuetype(Value.ValueType.INTEGER);
       } else {
-        valueConverted.setDoublevalue(parameter.value);
+        valueConverted.setDoublevalue(value);
         valueConverted.setValuetype(Value.ValueType.DOUBLE);
       }
     } else if(typeof(value) === 'boolean') {
