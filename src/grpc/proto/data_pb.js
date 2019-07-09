@@ -693,7 +693,8 @@ proto.data.ValueObjectList.toObject = function(includeInstance, msg) {
   var f, obj = {
     recordcount: jspb.Message.getFieldWithDefault(msg, 1, 0),
     recordsList: jspb.Message.toObjectList(msg.getRecordsList(),
-    proto.data.ValueObject.toObject, includeInstance)
+    proto.data.ValueObject.toObject, includeInstance),
+    nextPageToken: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -739,6 +740,10 @@ proto.data.ValueObjectList.deserializeBinaryFromReader = function(msg, reader) {
       reader.readMessage(value,proto.data.ValueObject.deserializeBinaryFromReader);
       msg.addRecords(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNextPageToken(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -781,6 +786,13 @@ proto.data.ValueObjectList.serializeBinaryToWriter = function(message, writer) {
       2,
       f,
       proto.data.ValueObject.serializeBinaryToWriter
+    );
+  }
+  f = message.getNextPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
     );
   }
 };
@@ -832,6 +844,21 @@ proto.data.ValueObjectList.prototype.addRecords = function(opt_value, opt_index)
  */
 proto.data.ValueObjectList.prototype.clearRecordsList = function() {
   this.setRecordsList([]);
+};
+
+
+/**
+ * optional string next_page_token = 3;
+ * @return {string}
+ */
+proto.data.ValueObjectList.prototype.getNextPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ValueObjectList.prototype.setNextPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -1531,7 +1558,9 @@ proto.data.ValueObjectRequest.toObject = function(includeInstance, msg) {
     id: jspb.Message.getFieldWithDefault(msg, 1, 0),
     uuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    criteria: (f = msg.getCriteria()) && proto.data.Criteria.toObject(includeInstance, f)
+    criteria: (f = msg.getCriteria()) && proto.data.Criteria.toObject(includeInstance, f),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 6, "")
   };
 
   if (includeInstance) {
@@ -1585,6 +1614,14 @@ proto.data.ValueObjectRequest.deserializeBinaryFromReader = function(msg, reader
       var value = new proto.data.Criteria;
       reader.readMessage(value,proto.data.Criteria.deserializeBinaryFromReader);
       msg.setCriteria(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPageToken(value);
       break;
     default:
       reader.skipField();
@@ -1643,6 +1680,20 @@ proto.data.ValueObjectRequest.serializeBinaryToWriter = function(message, writer
       4,
       f,
       proto.data.Criteria.serializeBinaryToWriter
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
     );
   }
 };
@@ -1741,6 +1792,36 @@ proto.data.ValueObjectRequest.prototype.clearCriteria = function() {
  */
 proto.data.ValueObjectRequest.prototype.hasCriteria = function() {
   return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional int32 page_size = 5;
+ * @return {number}
+ */
+proto.data.ValueObjectRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {number} value */
+proto.data.ValueObjectRequest.prototype.setPageSize = function(value) {
+  jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional string page_token = 6;
+ * @return {string}
+ */
+proto.data.ValueObjectRequest.prototype.getPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ValueObjectRequest.prototype.setPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
@@ -3786,7 +3867,8 @@ proto.data.RecentItem.toObject = function(includeInstance, msg) {
     tabuuid: jspb.Message.getFieldWithDefault(msg, 4, ""),
     tableid: jspb.Message.getFieldWithDefault(msg, 5, 0),
     recordid: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    displayname: jspb.Message.getFieldWithDefault(msg, 7, "")
+    displayname: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    updated: jspb.Message.getFieldWithDefault(msg, 8, 0)
   };
 
   if (includeInstance) {
@@ -3850,6 +3932,10 @@ proto.data.RecentItem.deserializeBinaryFromReader = function(msg, reader) {
     case 7:
       var value = /** @type {string} */ (reader.readString());
       msg.setDisplayname(value);
+      break;
+    case 8:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setUpdated(value);
       break;
     default:
       reader.skipField();
@@ -3926,6 +4012,13 @@ proto.data.RecentItem.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       7,
+      f
+    );
+  }
+  f = message.getUpdated();
+  if (f !== 0) {
+    writer.writeInt64(
+      8,
       f
     );
   }
@@ -4034,6 +4127,21 @@ proto.data.RecentItem.prototype.getDisplayname = function() {
 /** @param {string} value */
 proto.data.RecentItem.prototype.setDisplayname = function(value) {
   jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
+ * optional int64 updated = 8;
+ * @return {number}
+ */
+proto.data.RecentItem.prototype.getUpdated = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+};
+
+
+/** @param {number} value */
+proto.data.RecentItem.prototype.setUpdated = function(value) {
+  jspb.Message.setProto3IntField(this, 8, value);
 };
 
 

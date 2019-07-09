@@ -53,6 +53,7 @@ message ClientRequest {
 message ValueObjectList {
 	int64 recordCount = 1;
 	repeated ValueObject records = 2;
+	string next_page_token = 3;
 }
 
 // Value Object from ADempiere
@@ -94,6 +95,8 @@ message ValueObjectRequest {
 	ClientRequest clientRequest = 3;
 	// Query
 	Criteria criteria = 4;
+	int32 page_size = 5;
+	string page_token = 6;
 }
 
 // Query for Request Object
@@ -190,6 +193,7 @@ message RecentItem {
 	int32 tableId = 5;
 	int32 recordId = 6;
 	string displayName = 7;
+	int64 updated = 8;
 }
 
 //	Recent Items List
