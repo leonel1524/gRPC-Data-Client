@@ -89,495 +89,495 @@ proto.data.DataServicePromiseClient =
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ValueObjectRequest,
- *   !proto.data.ValueObject>}
+ *   !proto.data.GetEntityRequest,
+ *   !proto.data.Entity>}
  */
-const methodInfo_DataService_RequestObject = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ValueObject,
-  /** @param {!proto.data.ValueObjectRequest} request */
+const methodInfo_DataService_GetEntity = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Entity,
+  /** @param {!proto.data.GetEntityRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ValueObject.deserializeBinary
+  proto.data.Entity.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.GetEntityRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ValueObject)}
+ * @param {function(?grpc.web.Error, ?proto.data.Entity)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObject>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestObject =
+proto.data.DataServiceClient.prototype.getEntity =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestObject',
+      '/data.DataService/GetEntity',
       request,
       metadata || {},
-      methodInfo_DataService_RequestObject,
+      methodInfo_DataService_GetEntity,
       callback);
 };
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.GetEntityRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ValueObject>}
+ * @return {!Promise<!proto.data.Entity>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestObject =
+proto.data.DataServicePromiseClient.prototype.getEntity =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestObject',
+      '/data.DataService/GetEntity',
       request,
       metadata || {},
-      methodInfo_DataService_RequestObject);
+      methodInfo_DataService_GetEntity);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ValueObjectRequest,
- *   !proto.data.ValueObjectList>}
+ *   !proto.data.ListEntitiesRequest,
+ *   !proto.data.ListEntitiesResponse>}
  */
-const methodInfo_DataService_RequestObjectList = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ValueObjectList,
-  /** @param {!proto.data.ValueObjectRequest} request */
+const methodInfo_DataService_ListEntities = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListEntitiesResponse,
+  /** @param {!proto.data.ListEntitiesRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ValueObjectList.deserializeBinary
+  proto.data.ListEntitiesResponse.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.ListEntitiesRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ValueObjectList)}
+ * @param {function(?grpc.web.Error, ?proto.data.ListEntitiesResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObjectList>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListEntitiesResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestObjectList =
+proto.data.DataServiceClient.prototype.listEntities =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestObjectList',
+      '/data.DataService/ListEntities',
       request,
       metadata || {},
-      methodInfo_DataService_RequestObjectList,
+      methodInfo_DataService_ListEntities,
       callback);
 };
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.ListEntitiesRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ValueObjectList>}
+ * @return {!Promise<!proto.data.ListEntitiesResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestObjectList =
+proto.data.DataServicePromiseClient.prototype.listEntities =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestObjectList',
+      '/data.DataService/ListEntities',
       request,
       metadata || {},
-      methodInfo_DataService_RequestObjectList);
+      methodInfo_DataService_ListEntities);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ValueObjectRequest,
- *   !proto.data.ValueObject>}
+ *   !proto.data.GetLookupItemRequest,
+ *   !proto.data.LookupItem>}
  */
-const methodInfo_DataService_RequestLookup = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ValueObject,
-  /** @param {!proto.data.ValueObjectRequest} request */
+const methodInfo_DataService_GetLookupItem = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.LookupItem,
+  /** @param {!proto.data.GetLookupItemRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ValueObject.deserializeBinary
+  proto.data.LookupItem.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.GetLookupItemRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ValueObject)}
+ * @param {function(?grpc.web.Error, ?proto.data.LookupItem)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObject>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.LookupItem>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestLookup =
+proto.data.DataServiceClient.prototype.getLookupItem =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestLookup',
+      '/data.DataService/GetLookupItem',
       request,
       metadata || {},
-      methodInfo_DataService_RequestLookup,
+      methodInfo_DataService_GetLookupItem,
       callback);
 };
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.GetLookupItemRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ValueObject>}
+ * @return {!Promise<!proto.data.LookupItem>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestLookup =
+proto.data.DataServicePromiseClient.prototype.getLookupItem =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestLookup',
+      '/data.DataService/GetLookupItem',
       request,
       metadata || {},
-      methodInfo_DataService_RequestLookup);
+      methodInfo_DataService_GetLookupItem);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ValueObjectRequest,
- *   !proto.data.ValueObjectList>}
+ *   !proto.data.ListLookupItemsRequest,
+ *   !proto.data.ListLookupItemsResponse>}
  */
-const methodInfo_DataService_RequestLookupList = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ValueObjectList,
-  /** @param {!proto.data.ValueObjectRequest} request */
+const methodInfo_DataService_ListLookupItems = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListLookupItemsResponse,
+  /** @param {!proto.data.ListLookupItemsRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ValueObjectList.deserializeBinary
+  proto.data.ListLookupItemsResponse.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.ListLookupItemsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ValueObjectList)}
+ * @param {function(?grpc.web.Error, ?proto.data.ListLookupItemsResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObjectList>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListLookupItemsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestLookupList =
+proto.data.DataServiceClient.prototype.listLookupItems =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestLookupList',
+      '/data.DataService/ListLookupItems',
       request,
       metadata || {},
-      methodInfo_DataService_RequestLookupList,
+      methodInfo_DataService_ListLookupItems,
       callback);
 };
 
 
 /**
- * @param {!proto.data.ValueObjectRequest} request The
+ * @param {!proto.data.ListLookupItemsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ValueObjectList>}
+ * @return {!Promise<!proto.data.ListLookupItemsResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestLookupList =
+proto.data.DataServicePromiseClient.prototype.listLookupItems =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestLookupList',
+      '/data.DataService/ListLookupItems',
       request,
       metadata || {},
-      methodInfo_DataService_RequestLookupList);
+      methodInfo_DataService_ListLookupItems);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.CalloutRequest,
- *   !proto.data.CalloutResponse>}
+ *   !proto.data.RunCalloutRequest,
+ *   !proto.data.Callout>}
  */
-const methodInfo_DataService_RequestCallout = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.CalloutResponse,
-  /** @param {!proto.data.CalloutRequest} request */
+const methodInfo_DataService_RunCallout = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Callout,
+  /** @param {!proto.data.RunCalloutRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.CalloutResponse.deserializeBinary
+  proto.data.Callout.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.CalloutRequest} request The
+ * @param {!proto.data.RunCalloutRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.CalloutResponse)}
+ * @param {function(?grpc.web.Error, ?proto.data.Callout)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.CalloutResponse>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Callout>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestCallout =
+proto.data.DataServiceClient.prototype.runCallout =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestCallout',
+      '/data.DataService/RunCallout',
       request,
       metadata || {},
-      methodInfo_DataService_RequestCallout,
+      methodInfo_DataService_RunCallout,
       callback);
 };
 
 
 /**
- * @param {!proto.data.CalloutRequest} request The
+ * @param {!proto.data.RunCalloutRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.CalloutResponse>}
+ * @return {!Promise<!proto.data.Callout>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestCallout =
+proto.data.DataServicePromiseClient.prototype.runCallout =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestCallout',
+      '/data.DataService/RunCallout',
       request,
       metadata || {},
-      methodInfo_DataService_RequestCallout);
+      methodInfo_DataService_RunCallout);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ProcessRequest,
- *   !proto.data.ProcessResponse>}
+ *   !proto.data.RunBusinessProcessRequest,
+ *   !proto.data.BusinessProcess>}
  */
-const methodInfo_DataService_RequestProcess = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ProcessResponse,
-  /** @param {!proto.data.ProcessRequest} request */
+const methodInfo_DataService_RunBusinessProcess = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.BusinessProcess,
+  /** @param {!proto.data.RunBusinessProcessRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ProcessResponse.deserializeBinary
+  proto.data.BusinessProcess.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.ProcessRequest} request The
+ * @param {!proto.data.RunBusinessProcessRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ProcessResponse)}
+ * @param {function(?grpc.web.Error, ?proto.data.BusinessProcess)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ProcessResponse>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.BusinessProcess>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestProcess =
+proto.data.DataServiceClient.prototype.runBusinessProcess =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestProcess',
+      '/data.DataService/RunBusinessProcess',
       request,
       metadata || {},
-      methodInfo_DataService_RequestProcess,
+      methodInfo_DataService_RunBusinessProcess,
       callback);
 };
 
 
 /**
- * @param {!proto.data.ProcessRequest} request The
+ * @param {!proto.data.RunBusinessProcessRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ProcessResponse>}
+ * @return {!Promise<!proto.data.BusinessProcess>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestProcess =
+proto.data.DataServicePromiseClient.prototype.runBusinessProcess =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestProcess',
+      '/data.DataService/RunBusinessProcess',
       request,
       metadata || {},
-      methodInfo_DataService_RequestProcess);
+      methodInfo_DataService_RunBusinessProcess);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.BrowserRequest,
- *   !proto.data.ValueObjectList>}
+ *   !proto.data.ListBrowserItemsRequest,
+ *   !proto.data.ListBrowserItemsResponse>}
  */
-const methodInfo_DataService_RequestBrowser = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ValueObjectList,
-  /** @param {!proto.data.BrowserRequest} request */
+const methodInfo_DataService_ListBrowserItems = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListBrowserItemsResponse,
+  /** @param {!proto.data.ListBrowserItemsRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ValueObjectList.deserializeBinary
+  proto.data.ListBrowserItemsResponse.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.BrowserRequest} request The
+ * @param {!proto.data.ListBrowserItemsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ValueObjectList)}
+ * @param {function(?grpc.web.Error, ?proto.data.ListBrowserItemsResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ValueObjectList>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListBrowserItemsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestBrowser =
+proto.data.DataServiceClient.prototype.listBrowserItems =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestBrowser',
+      '/data.DataService/ListBrowserItems',
       request,
       metadata || {},
-      methodInfo_DataService_RequestBrowser,
+      methodInfo_DataService_ListBrowserItems,
       callback);
 };
 
 
 /**
- * @param {!proto.data.BrowserRequest} request The
+ * @param {!proto.data.ListBrowserItemsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ValueObjectList>}
+ * @return {!Promise<!proto.data.ListBrowserItemsResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestBrowser =
+proto.data.DataServicePromiseClient.prototype.listBrowserItems =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestBrowser',
+      '/data.DataService/ListBrowserItems',
       request,
       metadata || {},
-      methodInfo_DataService_RequestBrowser);
+      methodInfo_DataService_ListBrowserItems);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ProcessActivityRequest,
- *   !proto.data.ProcessResponseList>}
+ *   !proto.data.ListActivitiesRequest,
+ *   !proto.data.ListActivitiesResponse>}
  */
-const methodInfo_DataService_RequestProcessActivity = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ProcessResponseList,
-  /** @param {!proto.data.ProcessActivityRequest} request */
+const methodInfo_DataService_ListActivities = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListActivitiesResponse,
+  /** @param {!proto.data.ListActivitiesRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.ProcessResponseList.deserializeBinary
+  proto.data.ListActivitiesResponse.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.ProcessActivityRequest} request The
+ * @param {!proto.data.ListActivitiesRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ProcessResponseList)}
+ * @param {function(?grpc.web.Error, ?proto.data.ListActivitiesResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ProcessResponseList>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListActivitiesResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestProcessActivity =
+proto.data.DataServiceClient.prototype.listActivities =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestProcessActivity',
+      '/data.DataService/ListActivities',
       request,
       metadata || {},
-      methodInfo_DataService_RequestProcessActivity,
+      methodInfo_DataService_ListActivities,
       callback);
 };
 
 
 /**
- * @param {!proto.data.ProcessActivityRequest} request The
+ * @param {!proto.data.ListActivitiesRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.ProcessResponseList>}
+ * @return {!Promise<!proto.data.ListActivitiesResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestProcessActivity =
+proto.data.DataServicePromiseClient.prototype.listActivities =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestProcessActivity',
+      '/data.DataService/ListActivities',
       request,
       metadata || {},
-      methodInfo_DataService_RequestProcessActivity);
+      methodInfo_DataService_ListActivities);
 };
 
 
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.RecentItemsRequest,
- *   !proto.data.RecentItemsResponse>}
+ *   !proto.data.ListRecentItemsRequest,
+ *   !proto.data.ListRecentItemsResponse>}
  */
-const methodInfo_DataService_RequestRecentItems = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.RecentItemsResponse,
-  /** @param {!proto.data.RecentItemsRequest} request */
+const methodInfo_DataService_ListRecentItems = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListRecentItemsResponse,
+  /** @param {!proto.data.ListRecentItemsRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.RecentItemsResponse.deserializeBinary
+  proto.data.ListRecentItemsResponse.deserializeBinary
 );
 
 
 /**
- * @param {!proto.data.RecentItemsRequest} request The
+ * @param {!proto.data.ListRecentItemsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.RecentItemsResponse)}
+ * @param {function(?grpc.web.Error, ?proto.data.ListRecentItemsResponse)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.RecentItemsResponse>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListRecentItemsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.requestRecentItems =
+proto.data.DataServiceClient.prototype.listRecentItems =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RequestRecentItems',
+      '/data.DataService/ListRecentItems',
       request,
       metadata || {},
-      methodInfo_DataService_RequestRecentItems,
+      methodInfo_DataService_ListRecentItems,
       callback);
 };
 
 
 /**
- * @param {!proto.data.RecentItemsRequest} request The
+ * @param {!proto.data.ListRecentItemsRequest} request The
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.RecentItemsResponse>}
+ * @return {!Promise<!proto.data.ListRecentItemsResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.requestRecentItems =
+proto.data.DataServicePromiseClient.prototype.listRecentItems =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RequestRecentItems',
+      '/data.DataService/ListRecentItems',
       request,
       metadata || {},
-      methodInfo_DataService_RequestRecentItems);
+      methodInfo_DataService_ListRecentItems);
 };
 
 

@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License                 *
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.            *
  ************************************************************************************/
-class Data {
+class BusinessData {
 
   /**
    * Constructor, No authentication required
@@ -34,21 +34,21 @@ class Data {
    * @return {Object} Object with records.
    */
   requestObject(tableName, uuid) {
-    return this.getService().requestObject(this.getRequest(tableName, uuid));
+    return this.getService().getEntity(this.getRequest(tableName, uuid));
   }
 
   /**
   * Request Object from Criteria
   */
   requestObjectFromCriteria(criteria) {
-    return this.getService().requestObject(this.getRequestFromCriteria(criteria));
+    return this.getService().getEntity(this.getRequestFromCriteria(criteria));
   }
 
   /**
   * Request Object List from Criteria
   */
   requestObjectListFromCriteria(criteria) {
-    return this.getService().requestObjectList(this.getRequestFromCriteria(criteria));
+    return this.getService().listEntities(this.getRequestFromCriteria(criteria));
   }
 
   /**
@@ -68,7 +68,7 @@ class Data {
       value.setValuetype(Value.ValueType.STRING)
     }
     criteria.addValues(value)
-    return this.getService().requestLookup(this.getRequestFromCriteria(criteria));
+    return this.getService().getLookupItem(this.getRequestFromCriteria(criteria));
   }
 
   /**
@@ -163,21 +163,21 @@ class Data {
   requestLookupListFromReference(reference) {
     var criteria = this.getCriteria(reference.tableName)
     criteria.setQuery(reference.query)
-    return this.getService().requestLookupList(this.getRequestFromCriteria(criteria));
+    return this.getService().listLookupItems(this.getRequestFromCriteria(criteria));
   }
 
   /**
   * Request Process
   */
-  requestProcess(processRequest) {
-    return this.getService().requestProcess(processRequest);
+  requestProcess(RunBusinessProcessRequest) {
+    return this.getService().runBusinessProcess(RunBusinessProcessRequest);
   }
 
   /**
   * Request Browser
   */
-  requestBrowser(browserRequest) {
-    return this.getService().requestBrowser(browserRequest);
+  requestBrowser(ListBrowserItemsRequest) {
+    return this.getService().listBrowserItems(ListBrowserItemsRequest);
   }
 
   /**
@@ -198,11 +198,11 @@ class Data {
    * @return {Object} Return request for get data
    */
   getRequest(tableName, uuid) {
-    const { ClientRequest, ValueObjectRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
-    let request = new ValueObjectRequest();
+    let request = new GetEntityRequest();
     request.setUuid(uuid);
     request.setClientrequest(clientRequest);
     request.setCriteria(this.getCriteria(tableName));
@@ -216,11 +216,11 @@ class Data {
    * @return {Object} Return request for get data
    */
   getRequestFromCriteria(criteria) {
-    const { ClientRequest, ValueObjectRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
-    let request = new ValueObjectRequest();
+    let request = new GetEntityRequest();
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
     //  return
@@ -229,11 +229,11 @@ class Data {
 
   // Get Process request from
   getProcessRequest() {
-    const { ProcessRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { RunBusinessProcessRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
-    let request = new ProcessRequest();
+    let request = new RunBusinessProcessRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;
@@ -241,11 +241,11 @@ class Data {
 
   // Get Process request from
   getProcessActivityRequest() {
-    const { ProcessActivityRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ListActivitiesRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
-    let request = new ProcessActivityRequest();
+    let request = new ListActivitiesRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;
@@ -255,18 +255,18 @@ class Data {
   * Request Process Activity List
   */
   requestProcessActivity() {
-    return this.getService().requestProcessActivity(
+    return this.getService().listActivities(
       this.getProcessActivityRequest()
     );
   }
 
   // Get Browser request from
   getBrowserRequest() {
-    const { BrowserRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ListBrowserItemsRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
-    let request = new BrowserRequest();
+    let request = new ListBrowserItemsRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;
@@ -274,11 +274,11 @@ class Data {
 
   // Get Recent Item request from
   getRecentItemRequest() {
-    const { RecentItemsRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ListRecentItemsRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
-    let request = new RecentItemsRequest();
+    let request = new ListRecentItemsRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;
@@ -288,7 +288,7 @@ class Data {
   * Request Recent Items Activity List
   */
   requestRecentItems() {
-    return this.getService().requestRecentItems(
+    return this.getService().listRecentItems(
       this.getRecentItemRequest()
     );
   }
@@ -307,4 +307,4 @@ class Data {
 
 }
 
-module.exports = Data;
+module.exports = BusinessData;
