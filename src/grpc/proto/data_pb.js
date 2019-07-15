@@ -5628,7 +5628,9 @@ proto.data.BrowserRequest.toObject = function(includeInstance, msg) {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
     criteria: (f = msg.getCriteria()) && proto.data.Criteria.toObject(includeInstance, f),
     parametersList: jspb.Message.toObjectList(msg.getParametersList(),
-    proto.data.KeyValue.toObject, includeInstance)
+    proto.data.KeyValue.toObject, includeInstance),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 6, "")
   };
 
   if (includeInstance) {
@@ -5683,6 +5685,14 @@ proto.data.BrowserRequest.deserializeBinaryFromReader = function(msg, reader) {
       var value = new proto.data.KeyValue;
       reader.readMessage(value,proto.data.KeyValue.deserializeBinaryFromReader);
       msg.addParameters(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPageToken(value);
       break;
     default:
       reader.skipField();
@@ -5742,6 +5752,20 @@ proto.data.BrowserRequest.serializeBinaryToWriter = function(message, writer) {
       4,
       f,
       proto.data.KeyValue.serializeBinaryToWriter
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
     );
   }
 };
@@ -5859,6 +5883,36 @@ proto.data.BrowserRequest.prototype.addParameters = function(opt_value, opt_inde
  */
 proto.data.BrowserRequest.prototype.clearParametersList = function() {
   this.setParametersList([]);
+};
+
+
+/**
+ * optional int32 page_size = 5;
+ * @return {number}
+ */
+proto.data.BrowserRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {number} value */
+proto.data.BrowserRequest.prototype.setPageSize = function(value) {
+  jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional string page_token = 6;
+ * @return {string}
+ */
+proto.data.BrowserRequest.prototype.getPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/** @param {string} value */
+proto.data.BrowserRequest.prototype.setPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
 };
 
 

@@ -252,4 +252,6 @@ message BrowserRequest {
 	ClientRequest clientRequest = 2;
 	Criteria criteria = 3;
 	repeated KeyValue parameters = 4;
+	int32 page_size = 5;
+	string page_token = 6;
 }
