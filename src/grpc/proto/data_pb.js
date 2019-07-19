@@ -2396,10 +2396,10 @@ proto.data.ListLookupItemsRequest.prototype.toObject = function(opt_includeInsta
  */
 proto.data.ListLookupItemsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    id: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    uuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    criteria: (f = msg.getCriteria()) && proto.data.Criteria.toObject(includeInstance, f)
+    criteria: (f = msg.getCriteria()) && proto.data.Criteria.toObject(includeInstance, f),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 6, "")
   };
 
   if (includeInstance) {
@@ -2436,14 +2436,6 @@ proto.data.ListLookupItemsRequest.deserializeBinaryFromReader = function(msg, re
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 1:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setId(value);
-      break;
-    case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUuid(value);
-      break;
     case 3:
       var value = new proto.data.ClientRequest;
       reader.readMessage(value,proto.data.ClientRequest.deserializeBinaryFromReader);
@@ -2453,6 +2445,14 @@ proto.data.ListLookupItemsRequest.deserializeBinaryFromReader = function(msg, re
       var value = new proto.data.Criteria;
       reader.readMessage(value,proto.data.Criteria.deserializeBinaryFromReader);
       msg.setCriteria(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPageToken(value);
       break;
     default:
       reader.skipField();
@@ -2483,20 +2483,6 @@ proto.data.ListLookupItemsRequest.prototype.serializeBinary = function() {
  */
 proto.data.ListLookupItemsRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getId();
-  if (f !== 0) {
-    writer.writeInt32(
-      1,
-      f
-    );
-  }
-  f = message.getUuid();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
   f = message.getClientrequest();
   if (f != null) {
     writer.writeMessage(
@@ -2513,36 +2499,20 @@ proto.data.ListLookupItemsRequest.serializeBinaryToWriter = function(message, wr
       proto.data.Criteria.serializeBinaryToWriter
     );
   }
-};
-
-
-/**
- * optional int32 id = 1;
- * @return {number}
- */
-proto.data.ListLookupItemsRequest.prototype.getId = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
-};
-
-
-/** @param {number} value */
-proto.data.ListLookupItemsRequest.prototype.setId = function(value) {
-  jspb.Message.setProto3IntField(this, 1, value);
-};
-
-
-/**
- * optional string uuid = 2;
- * @return {string}
- */
-proto.data.ListLookupItemsRequest.prototype.getUuid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.data.ListLookupItemsRequest.prototype.setUuid = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
+  f = message.getPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
 };
 
 
@@ -2609,6 +2579,36 @@ proto.data.ListLookupItemsRequest.prototype.clearCriteria = function() {
  */
 proto.data.ListLookupItemsRequest.prototype.hasCriteria = function() {
   return jspb.Message.getField(this, 4) != null;
+};
+
+
+/**
+ * optional int32 page_size = 5;
+ * @return {number}
+ */
+proto.data.ListLookupItemsRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {number} value */
+proto.data.ListLookupItemsRequest.prototype.setPageSize = function(value) {
+  jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional string page_token = 6;
+ * @return {string}
+ */
+proto.data.ListLookupItemsRequest.prototype.getPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ListLookupItemsRequest.prototype.setPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
 };
 
 
@@ -4943,7 +4943,9 @@ proto.data.ListActivitiesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
     useruuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    instanceuuid: jspb.Message.getFieldWithDefault(msg, 3, "")
+    instanceuuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -4993,6 +4995,14 @@ proto.data.ListActivitiesRequest.deserializeBinaryFromReader = function(msg, rea
       var value = /** @type {string} */ (reader.readString());
       msg.setInstanceuuid(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPageToken(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5041,6 +5051,20 @@ proto.data.ListActivitiesRequest.serializeBinaryToWriter = function(message, wri
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = message.getPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
       f
     );
   }
@@ -5110,6 +5134,36 @@ proto.data.ListActivitiesRequest.prototype.setInstanceuuid = function(value) {
 };
 
 
+/**
+ * optional int32 page_size = 4;
+ * @return {number}
+ */
+proto.data.ListActivitiesRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/** @param {number} value */
+proto.data.ListActivitiesRequest.prototype.setPageSize = function(value) {
+  jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * optional string page_token = 5;
+ * @return {string}
+ */
+proto.data.ListActivitiesRequest.prototype.getPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ListActivitiesRequest.prototype.setPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
 
 
 
@@ -5143,7 +5197,9 @@ proto.data.ListRecentItemsRequest.prototype.toObject = function(opt_includeInsta
 proto.data.ListRecentItemsRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    currentsession: jspb.Message.getBooleanFieldWithDefault(msg, 2, false)
+    currentsession: jspb.Message.getBooleanFieldWithDefault(msg, 2, false),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -5189,6 +5245,14 @@ proto.data.ListRecentItemsRequest.deserializeBinaryFromReader = function(msg, re
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setCurrentsession(value);
       break;
+    case 3:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setPageSize(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setPageToken(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5230,6 +5294,20 @@ proto.data.ListRecentItemsRequest.serializeBinaryToWriter = function(message, wr
   if (f) {
     writer.writeBool(
       2,
+      f
+    );
+  }
+  f = message.getPageSize();
+  if (f !== 0) {
+    writer.writeInt32(
+      3,
+      f
+    );
+  }
+  f = message.getPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -5284,6 +5362,36 @@ proto.data.ListRecentItemsRequest.prototype.setCurrentsession = function(value) 
 };
 
 
+/**
+ * optional int32 page_size = 3;
+ * @return {number}
+ */
+proto.data.ListRecentItemsRequest.prototype.getPageSize = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+};
+
+
+/** @param {number} value */
+proto.data.ListRecentItemsRequest.prototype.setPageSize = function(value) {
+  jspb.Message.setProto3IntField(this, 3, value);
+};
+
+
+/**
+ * optional string page_token = 4;
+ * @return {string}
+ */
+proto.data.ListRecentItemsRequest.prototype.getPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ListRecentItemsRequest.prototype.setPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
 
 
 
@@ -5318,12 +5426,14 @@ proto.data.RecentItem.toObject = function(includeInstance, msg) {
   var f, obj = {
     menuuuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     menuname: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    windowuuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    tabuuid: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    tableid: jspb.Message.getFieldWithDefault(msg, 5, 0),
-    recordid: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    displayname: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    updated: jspb.Message.getFieldWithDefault(msg, 8, 0)
+    menudescription: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    windowuuid: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    tabuuid: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    tableid: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    recordid: jspb.Message.getFieldWithDefault(msg, 7, 0),
+    displayname: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    recorduuid: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    updated: jspb.Message.getFieldWithDefault(msg, 10, 0)
   };
 
   if (includeInstance) {
@@ -5370,25 +5480,33 @@ proto.data.RecentItem.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setWindowuuid(value);
+      msg.setMenudescription(value);
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTabuuid(value);
+      msg.setWindowuuid(value);
       break;
     case 5:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTabuuid(value);
       break;
     case 6:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setRecordid(value);
+      msg.setTableid(value);
       break;
     case 7:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRecordid(value);
+      break;
+    case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setDisplayname(value);
       break;
-    case 8:
+    case 9:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setRecorduuid(value);
+      break;
+    case 10:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setUpdated(value);
       break;
@@ -5435,45 +5553,59 @@ proto.data.RecentItem.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getWindowuuid();
+  f = message.getMenudescription();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getTabuuid();
+  f = message.getWindowuuid();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
-  f = message.getTableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getTabuuid();
+  if (f.length > 0) {
+    writer.writeString(
       5,
       f
     );
   }
-  f = message.getRecordid();
+  f = message.getTableid();
   if (f !== 0) {
     writer.writeInt32(
       6,
       f
     );
   }
+  f = message.getRecordid();
+  if (f !== 0) {
+    writer.writeInt32(
+      7,
+      f
+    );
+  }
   f = message.getDisplayname();
   if (f.length > 0) {
     writer.writeString(
-      7,
+      8,
+      f
+    );
+  }
+  f = message.getRecorduuid();
+  if (f.length > 0) {
+    writer.writeString(
+      9,
       f
     );
   }
   f = message.getUpdated();
   if (f !== 0) {
     writer.writeInt64(
-      8,
+      10,
       f
     );
   }
@@ -5511,92 +5643,122 @@ proto.data.RecentItem.prototype.setMenuname = function(value) {
 
 
 /**
- * optional string windowUuid = 3;
+ * optional string menuDescription = 3;
  * @return {string}
  */
-proto.data.RecentItem.prototype.getWindowuuid = function() {
+proto.data.RecentItem.prototype.getMenudescription = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RecentItem.prototype.setWindowuuid = function(value) {
+proto.data.RecentItem.prototype.setMenudescription = function(value) {
   jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional string tabUuid = 4;
+ * optional string windowUuid = 4;
  * @return {string}
  */
-proto.data.RecentItem.prototype.getTabuuid = function() {
+proto.data.RecentItem.prototype.getWindowuuid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RecentItem.prototype.setTabuuid = function(value) {
+proto.data.RecentItem.prototype.setWindowuuid = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional int32 tableId = 5;
- * @return {number}
+ * optional string tabUuid = 5;
+ * @return {string}
  */
-proto.data.RecentItem.prototype.getTableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+proto.data.RecentItem.prototype.getTabuuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {number} value */
-proto.data.RecentItem.prototype.setTableid = function(value) {
-  jspb.Message.setProto3IntField(this, 5, value);
+/** @param {string} value */
+proto.data.RecentItem.prototype.setTabuuid = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
 /**
- * optional int32 recordId = 6;
+ * optional int32 tableId = 6;
  * @return {number}
  */
-proto.data.RecentItem.prototype.getRecordid = function() {
+proto.data.RecentItem.prototype.getTableid = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
 /** @param {number} value */
-proto.data.RecentItem.prototype.setRecordid = function(value) {
+proto.data.RecentItem.prototype.setTableid = function(value) {
   jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
 /**
- * optional string displayName = 7;
+ * optional int32 recordId = 7;
+ * @return {number}
+ */
+proto.data.RecentItem.prototype.getRecordid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/** @param {number} value */
+proto.data.RecentItem.prototype.setRecordid = function(value) {
+  jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * optional string displayName = 8;
  * @return {string}
  */
 proto.data.RecentItem.prototype.getDisplayname = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
 /** @param {string} value */
 proto.data.RecentItem.prototype.setDisplayname = function(value) {
-  jspb.Message.setProto3StringField(this, 7, value);
+  jspb.Message.setProto3StringField(this, 8, value);
 };
 
 
 /**
- * optional int64 updated = 8;
+ * optional string recordUuid = 9;
+ * @return {string}
+ */
+proto.data.RecentItem.prototype.getRecorduuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+};
+
+
+/** @param {string} value */
+proto.data.RecentItem.prototype.setRecorduuid = function(value) {
+  jspb.Message.setProto3StringField(this, 9, value);
+};
+
+
+/**
+ * optional int64 updated = 10;
  * @return {number}
  */
 proto.data.RecentItem.prototype.getUpdated = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 10, 0));
 };
 
 
 /** @param {number} value */
 proto.data.RecentItem.prototype.setUpdated = function(value) {
-  jspb.Message.setProto3IntField(this, 8, value);
+  jspb.Message.setProto3IntField(this, 10, value);
 };
 
 
@@ -5641,7 +5803,8 @@ proto.data.ListRecentItemsResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     recordcount: jspb.Message.getFieldWithDefault(msg, 1, 0),
     recentitemsList: jspb.Message.toObjectList(msg.getRecentitemsList(),
-    proto.data.RecentItem.toObject, includeInstance)
+    proto.data.RecentItem.toObject, includeInstance),
+    nextPageToken: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -5687,6 +5850,10 @@ proto.data.ListRecentItemsResponse.deserializeBinaryFromReader = function(msg, r
       reader.readMessage(value,proto.data.RecentItem.deserializeBinaryFromReader);
       msg.addRecentitems(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNextPageToken(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -5729,6 +5896,13 @@ proto.data.ListRecentItemsResponse.serializeBinaryToWriter = function(message, w
       2,
       f,
       proto.data.RecentItem.serializeBinaryToWriter
+    );
+  }
+  f = message.getNextPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
     );
   }
 };
@@ -5780,6 +5954,21 @@ proto.data.ListRecentItemsResponse.prototype.addRecentitems = function(opt_value
  */
 proto.data.ListRecentItemsResponse.prototype.clearRecentitemsList = function() {
   this.setRecentitemsList([]);
+};
+
+
+/**
+ * optional string next_page_token = 3;
+ * @return {string}
+ */
+proto.data.ListRecentItemsResponse.prototype.getNextPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ListRecentItemsResponse.prototype.setNextPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -6007,7 +6196,8 @@ proto.data.ListActivitiesResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     recordcount: jspb.Message.getFieldWithDefault(msg, 1, 0),
     responsesList: jspb.Message.toObjectList(msg.getResponsesList(),
-    proto.data.BusinessProcess.toObject, includeInstance)
+    proto.data.BusinessProcess.toObject, includeInstance),
+    nextPageToken: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -6053,6 +6243,10 @@ proto.data.ListActivitiesResponse.deserializeBinaryFromReader = function(msg, re
       reader.readMessage(value,proto.data.BusinessProcess.deserializeBinaryFromReader);
       msg.addResponses(value);
       break;
+    case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setNextPageToken(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -6095,6 +6289,13 @@ proto.data.ListActivitiesResponse.serializeBinaryToWriter = function(message, wr
       2,
       f,
       proto.data.BusinessProcess.serializeBinaryToWriter
+    );
+  }
+  f = message.getNextPageToken();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
     );
   }
 };
@@ -6146,6 +6347,21 @@ proto.data.ListActivitiesResponse.prototype.addResponses = function(opt_value, o
  */
 proto.data.ListActivitiesResponse.prototype.clearResponsesList = function() {
   this.setResponsesList([]);
+};
+
+
+/**
+ * optional string next_page_token = 3;
+ * @return {string}
+ */
+proto.data.ListActivitiesResponse.prototype.getNextPageToken = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ListActivitiesResponse.prototype.setNextPageToken = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
