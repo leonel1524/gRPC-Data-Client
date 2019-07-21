@@ -67,14 +67,14 @@ class BusinessData {
   * Request Object from Criteria
   */
   requestObjectFromCriteria(criteria) {
-    return this.getService().getEntity(this.getRequestFromCriteria(criteria));
+    return this.getService().getEntity(this.getRequestEntityFromCriteria(criteria));
   }
 
   /**
   * Request Object List from Criteria
   */
   requestObjectListFromCriteria(criteria) {
-    return this.getService().listEntities(this.getRequestFromCriteria(criteria));
+    return this.getService().listEntities(this.getRequestEntityListFromCriteria(criteria));
   }
 
   /**
@@ -94,7 +94,7 @@ class BusinessData {
       value.setValuetype(Value.ValueType.STRING)
     }
     criteria.addValues(value)
-    return this.getService().getLookupItem(this.getRequestFromCriteria(criteria));
+    return this.getService().getLookupItem(this.getListLookupItemsRequestCriteria(criteria));
   }
 
   /**
@@ -189,7 +189,7 @@ class BusinessData {
   requestLookupListFromReference(reference) {
     var criteria = this.getCriteria(reference.tableName)
     criteria.setQuery(reference.query)
-    return this.getService().listLookupItems(this.getRequestFromCriteria(criteria));
+    return this.getService().listLookupItems(this.getListLookupItemsRequestCriteria(criteria));
   }
 
   /**
@@ -241,12 +241,46 @@ class BusinessData {
    * @param {string} criteria
    * @return {Object} Return request for get data
    */
-  getRequestFromCriteria(criteria) {
+  getRequestEntityFromCriteria(criteria) {
     const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new GetEntityRequest();
+    request.setClientrequest(clientRequest);
+    request.setCriteria(criteria);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get Entity List Request
+   * @param {Criteria} criteria
+   * @return {ListEntitiesRequest} Return request for get data
+   */
+  getRequestEntityListFromCriteria(criteria) {
+    const { ClientRequest, ListEntitiesRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListEntitiesRequest();
+    request.setClientrequest(clientRequest);
+    request.setCriteria(criteria);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get List
+   * @param {string} criteria
+   * @return {Object} Return request for get data
+   */
+  getListLookupItemsRequestCriteria(criteria) {
+    const { ClientRequest, ListLookupItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListLookupItemsRequest();
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
     //  return
