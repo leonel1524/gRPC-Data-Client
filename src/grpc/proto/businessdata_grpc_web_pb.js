@@ -12,7 +12,7 @@ const grpc = {};
 grpc.web = require('grpc-web');
 
 const proto = {};
-proto.data = require('./data_pb.js');
+proto.data = require('./businessdata_pb.js');
 
 /**
  * @param {string} hostname
@@ -138,6 +138,171 @@ proto.data.DataServicePromiseClient.prototype.getEntity =
       request,
       metadata || {},
       methodInfo_DataService_GetEntity);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.CreateEntityRequest,
+ *   !proto.data.Entity>}
+ */
+const methodInfo_DataService_CreateEntity = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Entity,
+  /** @param {!proto.data.CreateEntityRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.Entity.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.CreateEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.Entity)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.DataServiceClient.prototype.createEntity =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.DataService/CreateEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_CreateEntity,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.CreateEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.Entity>}
+ *     A native promise that resolves to the response
+ */
+proto.data.DataServicePromiseClient.prototype.createEntity =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/CreateEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_CreateEntity);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.UpdateEntityRequest,
+ *   !proto.data.Entity>}
+ */
+const methodInfo_DataService_UpdateEntity = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Entity,
+  /** @param {!proto.data.UpdateEntityRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.Entity.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.UpdateEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.Entity)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.DataServiceClient.prototype.updateEntity =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.DataService/UpdateEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_UpdateEntity,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.UpdateEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.Entity>}
+ *     A native promise that resolves to the response
+ */
+proto.data.DataServicePromiseClient.prototype.updateEntity =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/UpdateEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_UpdateEntity);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.DeleteEntityRequest,
+ *   !proto.data.Empty>}
+ */
+const methodInfo_DataService_DeleteEntity = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Empty,
+  /** @param {!proto.data.DeleteEntityRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.Empty.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.DeleteEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.Empty)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Empty>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.DataServiceClient.prototype.deleteEntity =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.DataService/DeleteEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_DeleteEntity,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.DeleteEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.Empty>}
+ *     A native promise that resolves to the response
+ */
+proto.data.DataServicePromiseClient.prototype.deleteEntity =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/DeleteEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_DeleteEntity);
 };
 
 

@@ -40,7 +40,7 @@ let data = new Data(GRPC_HOST, 'Session UUID', 'es_VE');
 ### Request a simple Object based on Table and UUID
 ```javascript
 //  Request a single Object
-data.requestObject('AD_Element', '8cc49692-fb40-11e8-a479-7a0060f0aa01')
+data.getEntity('AD_Element', '8cc49692-fb40-11e8-a479-7a0060f0aa01')
 .then(valueObject => {
   console.log("Object with single UUID");
     //  Value
@@ -151,7 +151,7 @@ For recreate stub class you must have follow:
 - [gRPC](https://grpc.io/docs/tutorials/basic/web.html)
 After installed it just go to source code folder an run it:
 ```
-protoc proto/data.proto \
+protoc proto/businessdata.proto \
 --js_out=import_style=commonjs:src/grpc \
 --grpc-web_out=import_style=commonjs,mode=grpcwebtext:src/grpc
 ```

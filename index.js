@@ -28,13 +28,39 @@ class BusinessData {
   }
 
   /**
-   * Get or request a Object data from tableName and uuid
-   * @param {string} tableName Indicate table in db
-   * @param {string} uuid Universally Unique IDentifier
-   * @return {Object} Object with records.
+   * Get or request a Entity data from tableName and uuid
+   * @param {GetEntityRequest} Entity request for create
+   * @return {Entity} Entity with records.
    */
-  requestObject(tableName, uuid) {
-    return this.getService().getEntity(this.getRequest(tableName, uuid));
+  getEntity(getEntityRequest) {
+    return this.getService().getEntity(getEntityRequest);
+  }
+
+  /**
+   * delete a Entity from delete entity request
+   * @param {DeleteEntityRequest} request for delete a entity
+   * @return {Empty} empty for deleted and throw for error.
+   */
+  deleteEntity(deleteEntityRequest) {
+    return this.getService().deleteEntity(deleteEntityRequest);
+  }
+
+  /**
+  * Create a entity from CreateEntityRequest object
+  * @param {CreateEntityRequest} Entity Request for create
+  * @return {Entity} Entity created.
+  */
+  createEntity(createEntityRequest) {
+    return this.getService().createEntity(createEntityRequest);
+  }
+
+  /**
+  * Create a entity from UpdateEntityRequest object
+  * @param {UpdateEntityRequest} Entity Request for update
+  * @return {Entity} Entity updated.
+  */
+  updateEntity(updateEntityRequest) {
+    return this.getService().updateEntity(updateEntityRequest);
   }
 
   /**
@@ -58,7 +84,7 @@ class BusinessData {
     var criteria = this.getCriteria(reference.tableName)
     criteria.setQuery(reference.directQuery)
     //  Add value
-    const {Value, ValueType} = require('./src/grpc/proto/data_pb.js');
+    const {Value, ValueType} = require('./src/grpc/proto/businessdata_pb.js');
     var value = new Value();
     if(typeof(fieldValue) === 'number') {
       value.setIntvalue(fieldValue)
@@ -76,7 +102,7 @@ class BusinessData {
    * @param {mixed} value
    */
   convertValue(value) {
-    const { Value } = require('./src/grpc/proto/data_pb.js');
+    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
     var valueConverted = new Value();
 
     // evaluate type value
@@ -113,7 +139,7 @@ class BusinessData {
    * Return a KeyValue Object
    */
   convertParameter(parameter) {
-    const { KeyValue } = require('./src/grpc/proto/data_pb.js');
+    const { KeyValue } = require('./src/grpc/proto/businessdata_pb.js');
     var keyValue = new KeyValue();
     keyValue.setKey(parameter.columnName);
     var convertedValue = this.convertValue(parameter.value)
@@ -146,7 +172,7 @@ class BusinessData {
    * Return a list of KeyValue Object
    */
   convertSelection(record) {
-    const { Selection } = require('./src/grpc/proto/data_pb.js');
+    const { Selection } = require('./src/grpc/proto/businessdata_pb.js');
     var selection = new Selection();
     // set selection id from record
     selection.setSelectionid(record.selectionId);
@@ -186,7 +212,7 @@ class BusinessData {
    */
   getService() {
     const grpc_promise = require('grpc-promise');
-    const {DataServicePromiseClient} = require('./src/grpc/proto/data_grpc_web_pb.js');
+    const {DataServicePromiseClient} = require('./src/grpc/proto/businessdata_grpc_web_pb.js');
     var requestService = new DataServicePromiseClient(this.host);
     grpc_promise.promisifyAll(requestService);
     //  Return request for get data
@@ -197,8 +223,8 @@ class BusinessData {
    * Get Client Request
    * @return {Object} Return request for get data
    */
-  getRequest(tableName, uuid) {
-    const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/data_pb.js');
+  getEntityRequest(tableName, uuid) {
+    const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -216,7 +242,7 @@ class BusinessData {
    * @return {Object} Return request for get data
    */
   getRequestFromCriteria(criteria) {
-    const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -229,7 +255,7 @@ class BusinessData {
 
   // Get Process request from
   getProcessRequest() {
-    const { RunBusinessProcessRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { RunBusinessProcessRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -241,7 +267,7 @@ class BusinessData {
 
   // Get Process request from
   getProcessActivityRequest() {
-    const { ListActivitiesRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ListActivitiesRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -262,7 +288,7 @@ class BusinessData {
 
   // Get Browser request from
   getBrowserRequest() {
-    const { ListBrowserItemsRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ListBrowserItemsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -272,9 +298,45 @@ class BusinessData {
     return request;
   }
 
+  // Get Create entity request
+  getCreateEntityRequest() {
+    const { CreateEntityRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new CreateEntityRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
+  // Get Update entity request
+  getUpdateEntityRequest() {
+    const { UpdateEntityRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new UpdateEntityRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
+  // Get Delete entity request
+  getDeleteEntityRequest() {
+    const { DeleteEntityRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new DeleteEntityRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
   // Get Recent Item request from
   getRecentItemRequest() {
-    const { ListRecentItemsRequest, ClientRequest } = require('./src/grpc/proto/data_pb.js');
+    const { ListRecentItemsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
@@ -298,7 +360,7 @@ class BusinessData {
    * @return {String} criteria
    */
   getCriteria(tableName) {
-    const {Criteria} = require('./src/grpc/proto/data_pb.js');
+    const {Criteria} = require('./src/grpc/proto/businessdata_pb.js');
     let criteria = new Criteria();
     criteria.setTablename(tableName);
     //  Return criteria
