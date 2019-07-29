@@ -905,7 +905,7 @@ proto.data.GetEntityRequest.prototype.toObject = function(opt_includeInstance) {
 proto.data.GetEntityRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     uuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    tableid: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tablename: jspb.Message.getFieldWithDefault(msg, 2, ""),
     recordid: jspb.Message.getFieldWithDefault(msg, 3, 0),
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
     criteria: (f = msg.getCriteria()) && proto.data.Criteria.toObject(includeInstance, f)
@@ -950,8 +950,8 @@ proto.data.GetEntityRequest.deserializeBinaryFromReader = function(msg, reader) 
       msg.setUuid(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTablename(value);
       break;
     case 3:
       var value = /** @type {number} */ (reader.readInt32());
@@ -1003,9 +1003,9 @@ proto.data.GetEntityRequest.serializeBinaryToWriter = function(message, writer) 
       f
     );
   }
-  f = message.getTableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getTablename();
+  if (f.length > 0) {
+    writer.writeString(
       2,
       f
     );
@@ -1052,17 +1052,17 @@ proto.data.GetEntityRequest.prototype.setUuid = function(value) {
 
 
 /**
- * optional int32 tableId = 2;
- * @return {number}
+ * optional string tableName = 2;
+ * @return {string}
  */
-proto.data.GetEntityRequest.prototype.getTableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+proto.data.GetEntityRequest.prototype.getTablename = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {number} value */
-proto.data.GetEntityRequest.prototype.setTableid = function(value) {
-  jspb.Message.setProto3IntField(this, 2, value);
+/** @param {string} value */
+proto.data.GetEntityRequest.prototype.setTablename = function(value) {
+  jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -1187,7 +1187,7 @@ proto.data.CreateEntityRequest.prototype.toObject = function(opt_includeInstance
 proto.data.CreateEntityRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    tableid: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    tablename: jspb.Message.getFieldWithDefault(msg, 2, ""),
     attributesList: jspb.Message.toObjectList(msg.getAttributesList(),
     proto.data.KeyValue.toObject, includeInstance)
   };
@@ -1232,8 +1232,8 @@ proto.data.CreateEntityRequest.deserializeBinaryFromReader = function(msg, reade
       msg.setClientrequest(value);
       break;
     case 2:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTablename(value);
       break;
     case 3:
       var value = new proto.data.KeyValue;
@@ -1277,9 +1277,9 @@ proto.data.CreateEntityRequest.serializeBinaryToWriter = function(message, write
       proto.data.ClientRequest.serializeBinaryToWriter
     );
   }
-  f = message.getTableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getTablename();
+  if (f.length > 0) {
+    writer.writeString(
       2,
       f
     );
@@ -1329,17 +1329,17 @@ proto.data.CreateEntityRequest.prototype.hasClientrequest = function() {
 
 
 /**
- * optional int32 tableId = 2;
- * @return {number}
+ * optional string tableName = 2;
+ * @return {string}
  */
-proto.data.CreateEntityRequest.prototype.getTableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
+proto.data.CreateEntityRequest.prototype.getTablename = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
-/** @param {number} value */
-proto.data.CreateEntityRequest.prototype.setTableid = function(value) {
-  jspb.Message.setProto3IntField(this, 2, value);
+/** @param {string} value */
+proto.data.CreateEntityRequest.prototype.setTablename = function(value) {
+  jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
@@ -1518,8 +1518,8 @@ proto.data.UpdateEntityRequest.prototype.toObject = function(opt_includeInstance
 proto.data.UpdateEntityRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    uuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    tableid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    tablename: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    uuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
     recordid: jspb.Message.getFieldWithDefault(msg, 4, 0),
     attributesList: jspb.Message.toObjectList(msg.getAttributesList(),
     proto.data.KeyValue.toObject, includeInstance)
@@ -1566,11 +1566,11 @@ proto.data.UpdateEntityRequest.deserializeBinaryFromReader = function(msg, reade
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUuid(value);
+      msg.setTablename(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUuid(value);
       break;
     case 4:
       var value = /** @type {number} */ (reader.readInt32());
@@ -1618,16 +1618,16 @@ proto.data.UpdateEntityRequest.serializeBinaryToWriter = function(message, write
       proto.data.ClientRequest.serializeBinaryToWriter
     );
   }
-  f = message.getUuid();
+  f = message.getTablename();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getTableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getUuid();
+  if (f.length > 0) {
+    writer.writeString(
       3,
       f
     );
@@ -1684,32 +1684,32 @@ proto.data.UpdateEntityRequest.prototype.hasClientrequest = function() {
 
 
 /**
- * optional string uuid = 2;
+ * optional string tableName = 2;
  * @return {string}
  */
-proto.data.UpdateEntityRequest.prototype.getUuid = function() {
+proto.data.UpdateEntityRequest.prototype.getTablename = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.data.UpdateEntityRequest.prototype.setUuid = function(value) {
+proto.data.UpdateEntityRequest.prototype.setTablename = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional int32 tableId = 3;
- * @return {number}
+ * optional string uuid = 3;
+ * @return {string}
  */
-proto.data.UpdateEntityRequest.prototype.getTableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.data.UpdateEntityRequest.prototype.getUuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {number} value */
-proto.data.UpdateEntityRequest.prototype.setTableid = function(value) {
-  jspb.Message.setProto3IntField(this, 3, value);
+/** @param {string} value */
+proto.data.UpdateEntityRequest.prototype.setUuid = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
@@ -1795,8 +1795,8 @@ proto.data.DeleteEntityRequest.prototype.toObject = function(opt_includeInstance
 proto.data.DeleteEntityRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    uuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    tableid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    tablename: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    uuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
     recordid: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
@@ -1841,11 +1841,11 @@ proto.data.DeleteEntityRequest.deserializeBinaryFromReader = function(msg, reade
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUuid(value);
+      msg.setTablename(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUuid(value);
       break;
     case 4:
       var value = /** @type {number} */ (reader.readInt32());
@@ -1888,16 +1888,16 @@ proto.data.DeleteEntityRequest.serializeBinaryToWriter = function(message, write
       proto.data.ClientRequest.serializeBinaryToWriter
     );
   }
-  f = message.getUuid();
+  f = message.getTablename();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getTableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getUuid();
+  if (f.length > 0) {
+    writer.writeString(
       3,
       f
     );
@@ -1946,32 +1946,32 @@ proto.data.DeleteEntityRequest.prototype.hasClientrequest = function() {
 
 
 /**
- * optional string uuid = 2;
+ * optional string tableName = 2;
  * @return {string}
  */
-proto.data.DeleteEntityRequest.prototype.getUuid = function() {
+proto.data.DeleteEntityRequest.prototype.getTablename = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.data.DeleteEntityRequest.prototype.setUuid = function(value) {
+proto.data.DeleteEntityRequest.prototype.setTablename = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional int32 tableId = 3;
- * @return {number}
+ * optional string uuid = 3;
+ * @return {string}
  */
-proto.data.DeleteEntityRequest.prototype.getTableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.data.DeleteEntityRequest.prototype.getUuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {number} value */
-proto.data.DeleteEntityRequest.prototype.setTableid = function(value) {
-  jspb.Message.setProto3IntField(this, 3, value);
+/** @param {string} value */
+proto.data.DeleteEntityRequest.prototype.setUuid = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
