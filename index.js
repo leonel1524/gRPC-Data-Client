@@ -380,6 +380,18 @@ class BusinessData {
     return request;
   }
 
+  // Get references request from
+  getReferencesRequest() {
+    const { ListReferencesRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListReferencesRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
   /**
   * Request Recent Items Activity List
   */

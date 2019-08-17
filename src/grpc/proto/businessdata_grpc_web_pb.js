@@ -746,5 +746,60 @@ proto.data.DataServicePromiseClient.prototype.listRecentItems =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListReferencesRequest,
+ *   !proto.data.ListReferencesResponse>}
+ */
+const methodInfo_DataService_ListReferences = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListReferencesResponse,
+  /** @param {!proto.data.ListReferencesRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListReferencesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListReferencesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListReferencesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListReferencesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.DataServiceClient.prototype.listReferences =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.DataService/ListReferences',
+      request,
+      metadata || {},
+      methodInfo_DataService_ListReferences,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListReferencesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListReferencesResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.DataServicePromiseClient.prototype.listReferences =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/ListReferences',
+      request,
+      metadata || {},
+      methodInfo_DataService_ListReferences);
+};
+
+
 module.exports = proto.data;
 
