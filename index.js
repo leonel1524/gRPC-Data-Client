@@ -78,8 +78,8 @@ class BusinessData {
   /**
   * Request Object List from Criteria
   */
-  requestObjectListFromCriteria(criteria) {
-    return this.getService().listEntities(this.getRequestEntityListFromCriteria(criteria));
+ requestObjectListFromCriteria(criteria, pageToken = false) {
+    return this.getService().listEntities(this.getRequestEntityListFromCriteria(criteria, pageToken));
   }
 
   /**
@@ -89,7 +89,7 @@ class BusinessData {
     var criteria = this.getCriteria(reference.tableName)
     criteria.setQuery(reference.directQuery)
     //  Add value
-    const {Value, ValueType} = require('./src/grpc/proto/businessdata_pb.js');
+    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
     var value = new Value();
     if(typeof(fieldValue) === 'number') {
       value.setIntvalue(fieldValue)
@@ -135,13 +135,13 @@ class BusinessData {
 
   /**
    * Convert a parameter defined by columnName and value to Value Object
-   *
+   * @param {string} parameter.columnName
+   * @param {mixed}  parameter.value
    * parameter {
    *   columnName,
    *   value
    * }
-   *
-   * Return a KeyValue Object
+   * @returns KeyValue Object
    */
   convertParameter(parameter) {
     const { KeyValue } = require('./src/grpc/proto/businessdata_pb.js');
@@ -213,11 +213,11 @@ class BusinessData {
 
   /**
    * Load gRPC Connection
-   * @return {Object} requestService Return request for get data
+   * @return {object} requestService Return request for get data
    */
   getService() {
     const grpc_promise = require('grpc-promise');
-    const {DataServicePromiseClient} = require('./src/grpc/proto/businessdata_grpc_web_pb.js');
+    const { DataServicePromiseClient } = require('./src/grpc/proto/businessdata_grpc_web_pb.js');
     var requestService = new DataServicePromiseClient(this.host);
     grpc_promise.promisifyAll(requestService);
     //  Return request for get data
@@ -226,7 +226,9 @@ class BusinessData {
 
   /**
    * Get Client Request
-   * @return {Object} Return request for get data
+   * @param {string} tableName, Table name from request
+   * @param {string} uuid, Universally Unique IDentifier from record
+   * @return {object} Return request for get data
    */
   getEntityRequest(tableName, uuid) {
     const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
@@ -244,7 +246,7 @@ class BusinessData {
   /**
    * Get Client Request
    * @param {string} criteria
-   * @return {Object} Return request for get data
+   * @return {object} request for get data
    */
   getRequestEntityFromCriteria(criteria) {
     const { ClientRequest, GetEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
@@ -261,9 +263,10 @@ class BusinessData {
   /**
    * Get Entity List Request
    * @param {Criteria} criteria
+   * @param {string}  pageToken, Token from request next page list
    * @return {ListEntitiesRequest} Return request for get data
    */
-  getRequestEntityListFromCriteria(criteria) {
+  getRequestEntityListFromCriteria(criteria, pageToken) {
     const { ClientRequest, ListEntitiesRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
@@ -271,6 +274,10 @@ class BusinessData {
     let request = new ListEntitiesRequest();
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
+
+    if (pageToken) {
+      request.setPageToken(pageToken);
+    }
     //  return
     return request;
   }
@@ -278,7 +285,7 @@ class BusinessData {
   /**
    * Get List
    * @param {string} criteria
-   * @return {Object} Return request for get data
+   * @return {object} Return request for get data
    */
   getListLookupItemsRequestCriteria(criteria) {
     const { ClientRequest, ListLookupItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
@@ -408,10 +415,10 @@ class BusinessData {
 
   /**
    * Get Criteria from Table Name
-   * @return {String} criteria
+   * @return {string} criteria
    */
   getCriteria(tableName) {
-    const {Criteria} = require('./src/grpc/proto/businessdata_pb.js');
+    const { Criteria } = require('./src/grpc/proto/businessdata_pb.js');
     let criteria = new Criteria();
     criteria.setTablename(tableName);
     //  Return criteria
