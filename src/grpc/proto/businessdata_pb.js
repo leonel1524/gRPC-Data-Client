@@ -5586,8 +5586,8 @@ proto.data.RunBusinessProcessRequest.prototype.toObject = function(opt_includeIn
 proto.data.RunBusinessProcessRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    uuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    tableid: jspb.Message.getFieldWithDefault(msg, 3, 0),
+    tablename: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    uuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
     recordid: jspb.Message.getFieldWithDefault(msg, 4, 0),
     tableselectedid: jspb.Message.getFieldWithDefault(msg, 5, 0),
     reportexporttype: jspb.Message.getFieldWithDefault(msg, 6, ""),
@@ -5638,11 +5638,11 @@ proto.data.RunBusinessProcessRequest.deserializeBinaryFromReader = function(msg,
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUuid(value);
+      msg.setTablename(value);
       break;
     case 3:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUuid(value);
       break;
     case 4:
       var value = /** @type {number} */ (reader.readInt32());
@@ -5703,16 +5703,16 @@ proto.data.RunBusinessProcessRequest.serializeBinaryToWriter = function(message,
       proto.data.ClientRequest.serializeBinaryToWriter
     );
   }
-  f = message.getUuid();
+  f = message.getTablename();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getTableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getUuid();
+  if (f.length > 0) {
+    writer.writeString(
       3,
       f
     );
@@ -5791,32 +5791,32 @@ proto.data.RunBusinessProcessRequest.prototype.hasClientrequest = function() {
 
 
 /**
- * optional string uuid = 2;
+ * optional string tableName = 2;
  * @return {string}
  */
-proto.data.RunBusinessProcessRequest.prototype.getUuid = function() {
+proto.data.RunBusinessProcessRequest.prototype.getTablename = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RunBusinessProcessRequest.prototype.setUuid = function(value) {
+proto.data.RunBusinessProcessRequest.prototype.setTablename = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional int32 tableId = 3;
- * @return {number}
+ * optional string uuid = 3;
+ * @return {string}
  */
-proto.data.RunBusinessProcessRequest.prototype.getTableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+proto.data.RunBusinessProcessRequest.prototype.getUuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {number} value */
-proto.data.RunBusinessProcessRequest.prototype.setTableid = function(value) {
-  jspb.Message.setProto3IntField(this, 3, value);
+/** @param {string} value */
+proto.data.RunBusinessProcessRequest.prototype.setUuid = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
