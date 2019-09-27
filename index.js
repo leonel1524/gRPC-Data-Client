@@ -72,7 +72,7 @@ class BusinessData {
 
   //  List all references from window
   listReferencesRequest(request) {
-    return this.getService().listReferencesRequest(request);
+    return this.getService().listReferences(request);
   }
 
   /**
