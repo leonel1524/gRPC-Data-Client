@@ -177,8 +177,8 @@ class BusinessData {
    * Return a list of KeyValue Object
    */
   convertSelection(record) {
-    const { Selection } = require('./src/grpc/proto/businessdata_pb.js');
-    var selection = new Selection();
+    const { KeyValueSelection } = require('./src/grpc/proto/businessdata_pb.js');
+    var selection = new KeyValueSelection();
     // set selection id from record
     selection.setSelectionid(record.selectionId);
     //  Convert values to selection
