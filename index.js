@@ -113,8 +113,13 @@ class BusinessData {
     // evaluate type value
     if(typeof(value) === 'number') {
       if (Number.isInteger(value)) {
-        valueConverted.setIntvalue(value);
-        valueConverted.setValuetype(Value.ValueType.INTEGER);
+        if(String(value).length > 11) {
+          valueConverted.setLongvalue(value);
+          valueConverted.setValuetype(Value.ValueType.LONG);
+        } else {
+          valueConverted.setIntvalue(value);
+          valueConverted.setValuetype(Value.ValueType.INTEGER);
+        }
       } else {
         valueConverted.setDoublevalue(value);
         valueConverted.setValuetype(Value.ValueType.DOUBLE);
