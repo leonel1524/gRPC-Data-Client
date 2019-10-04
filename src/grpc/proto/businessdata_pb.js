@@ -4493,7 +4493,7 @@ proto.data.ListEntitiesResponse.prototype.setNextPageToken = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.data.Criteria.repeatedFields_ = [5,6,7];
+proto.data.Criteria.repeatedFields_ = [6,7,8];
 
 
 
@@ -4530,13 +4530,14 @@ proto.data.Criteria.toObject = function(includeInstance, msg) {
     query: jspb.Message.getFieldWithDefault(msg, 2, ""),
     whereclause: jspb.Message.getFieldWithDefault(msg, 3, ""),
     orderbyclause: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    referenceuuid: jspb.Message.getFieldWithDefault(msg, 5, ""),
     conditionsList: jspb.Message.toObjectList(msg.getConditionsList(),
     proto.data.Condition.toObject, includeInstance),
     valuesList: jspb.Message.toObjectList(msg.getValuesList(),
     proto.data.Value.toObject, includeInstance),
     orderbycolumnList: jspb.Message.toObjectList(msg.getOrderbycolumnList(),
     proto.data.OrderByProperty.toObject, includeInstance),
-    limit: jspb.Message.getFieldWithDefault(msg, 8, 0)
+    limit: jspb.Message.getFieldWithDefault(msg, 9, 0)
   };
 
   if (includeInstance) {
@@ -4590,21 +4591,25 @@ proto.data.Criteria.deserializeBinaryFromReader = function(msg, reader) {
       msg.setOrderbyclause(value);
       break;
     case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setReferenceuuid(value);
+      break;
+    case 6:
       var value = new proto.data.Condition;
       reader.readMessage(value,proto.data.Condition.deserializeBinaryFromReader);
       msg.addConditions(value);
       break;
-    case 6:
+    case 7:
       var value = new proto.data.Value;
       reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
       msg.addValues(value);
       break;
-    case 7:
+    case 8:
       var value = new proto.data.OrderByProperty;
       reader.readMessage(value,proto.data.OrderByProperty.deserializeBinaryFromReader);
       msg.addOrderbycolumn(value);
       break;
-    case 8:
+    case 9:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setLimit(value);
       break;
@@ -4665,10 +4670,17 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getReferenceuuid();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
   f = message.getConditionsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      5,
+      6,
       f,
       proto.data.Condition.serializeBinaryToWriter
     );
@@ -4676,7 +4688,7 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
   f = message.getValuesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      6,
+      7,
       f,
       proto.data.Value.serializeBinaryToWriter
     );
@@ -4684,7 +4696,7 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
   f = message.getOrderbycolumnList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      7,
+      8,
       f,
       proto.data.OrderByProperty.serializeBinaryToWriter
     );
@@ -4692,7 +4704,7 @@ proto.data.Criteria.serializeBinaryToWriter = function(message, writer) {
   f = message.getLimit();
   if (f !== 0) {
     writer.writeInt64(
-      8,
+      9,
       f
     );
   }
@@ -4760,18 +4772,33 @@ proto.data.Criteria.prototype.setOrderbyclause = function(value) {
 
 
 /**
- * repeated Condition conditions = 5;
+ * optional string referenceUuid = 5;
+ * @return {string}
+ */
+proto.data.Criteria.prototype.getReferenceuuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/** @param {string} value */
+proto.data.Criteria.prototype.setReferenceuuid = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * repeated Condition conditions = 6;
  * @return {!Array<!proto.data.Condition>}
  */
 proto.data.Criteria.prototype.getConditionsList = function() {
   return /** @type{!Array<!proto.data.Condition>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.Condition, 5));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.Condition, 6));
 };
 
 
 /** @param {!Array<!proto.data.Condition>} value */
 proto.data.Criteria.prototype.setConditionsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 5, value);
+  jspb.Message.setRepeatedWrapperField(this, 6, value);
 };
 
 
@@ -4781,7 +4808,7 @@ proto.data.Criteria.prototype.setConditionsList = function(value) {
  * @return {!proto.data.Condition}
  */
 proto.data.Criteria.prototype.addConditions = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.data.Condition, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.Condition, opt_index);
 };
 
 
@@ -4794,18 +4821,18 @@ proto.data.Criteria.prototype.clearConditionsList = function() {
 
 
 /**
- * repeated Value values = 6;
+ * repeated Value values = 7;
  * @return {!Array<!proto.data.Value>}
  */
 proto.data.Criteria.prototype.getValuesList = function() {
   return /** @type{!Array<!proto.data.Value>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.Value, 6));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.Value, 7));
 };
 
 
 /** @param {!Array<!proto.data.Value>} value */
 proto.data.Criteria.prototype.setValuesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 6, value);
+  jspb.Message.setRepeatedWrapperField(this, 7, value);
 };
 
 
@@ -4815,7 +4842,7 @@ proto.data.Criteria.prototype.setValuesList = function(value) {
  * @return {!proto.data.Value}
  */
 proto.data.Criteria.prototype.addValues = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 6, opt_value, proto.data.Value, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.data.Value, opt_index);
 };
 
 
@@ -4828,18 +4855,18 @@ proto.data.Criteria.prototype.clearValuesList = function() {
 
 
 /**
- * repeated OrderByProperty orderByColumn = 7;
+ * repeated OrderByProperty orderByColumn = 8;
  * @return {!Array<!proto.data.OrderByProperty>}
  */
 proto.data.Criteria.prototype.getOrderbycolumnList = function() {
   return /** @type{!Array<!proto.data.OrderByProperty>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.OrderByProperty, 7));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.OrderByProperty, 8));
 };
 
 
 /** @param {!Array<!proto.data.OrderByProperty>} value */
 proto.data.Criteria.prototype.setOrderbycolumnList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 7, value);
+  jspb.Message.setRepeatedWrapperField(this, 8, value);
 };
 
 
@@ -4849,7 +4876,7 @@ proto.data.Criteria.prototype.setOrderbycolumnList = function(value) {
  * @return {!proto.data.OrderByProperty}
  */
 proto.data.Criteria.prototype.addOrderbycolumn = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.data.OrderByProperty, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 8, opt_value, proto.data.OrderByProperty, opt_index);
 };
 
 
@@ -4862,17 +4889,17 @@ proto.data.Criteria.prototype.clearOrderbycolumnList = function() {
 
 
 /**
- * optional int64 limit = 8;
+ * optional int64 limit = 9;
  * @return {number}
  */
 proto.data.Criteria.prototype.getLimit = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 8, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
 };
 
 
 /** @param {number} value */
 proto.data.Criteria.prototype.setLimit = function(value) {
-  jspb.Message.setProto3IntField(this, 8, value);
+  jspb.Message.setProto3IntField(this, 9, value);
 };
 
 
@@ -5044,7 +5071,7 @@ proto.data.OrderByProperty.prototype.setOrdertype = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.data.Condition.repeatedFields_ = [3];
+proto.data.Condition.repeatedFields_ = [4];
 
 
 
@@ -5077,11 +5104,12 @@ proto.data.Condition.prototype.toObject = function(opt_includeInstance) {
  */
 proto.data.Condition.toObject = function(includeInstance, msg) {
   var f, obj = {
+    columnname: jspb.Message.getFieldWithDefault(msg, 1, ""),
     value: (f = msg.getValue()) && proto.data.Value.toObject(includeInstance, f),
     valueto: (f = msg.getValueto()) && proto.data.Value.toObject(includeInstance, f),
     valuesList: jspb.Message.toObjectList(msg.getValuesList(),
     proto.data.Value.toObject, includeInstance),
-    operator: jspb.Message.getFieldWithDefault(msg, 4, 0)
+    operator: jspb.Message.getFieldWithDefault(msg, 5, 0)
   };
 
   if (includeInstance) {
@@ -5119,21 +5147,25 @@ proto.data.Condition.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = new proto.data.Value;
-      reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
-      msg.setValue(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setColumnname(value);
       break;
     case 2:
       var value = new proto.data.Value;
       reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
-      msg.setValueto(value);
+      msg.setValue(value);
       break;
     case 3:
       var value = new proto.data.Value;
       reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
-      msg.addValues(value);
+      msg.setValueto(value);
       break;
     case 4:
+      var value = new proto.data.Value;
+      reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
+      msg.addValues(value);
+      break;
+    case 5:
       var value = /** @type {!proto.data.Condition.Operator} */ (reader.readEnum());
       msg.setOperator(value);
       break;
@@ -5166,15 +5198,14 @@ proto.data.Condition.prototype.serializeBinary = function() {
  */
 proto.data.Condition.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getValue();
-  if (f != null) {
-    writer.writeMessage(
+  f = message.getColumnname();
+  if (f.length > 0) {
+    writer.writeString(
       1,
-      f,
-      proto.data.Value.serializeBinaryToWriter
+      f
     );
   }
-  f = message.getValueto();
+  f = message.getValue();
   if (f != null) {
     writer.writeMessage(
       2,
@@ -5182,10 +5213,18 @@ proto.data.Condition.serializeBinaryToWriter = function(message, writer) {
       proto.data.Value.serializeBinaryToWriter
     );
   }
+  f = message.getValueto();
+  if (f != null) {
+    writer.writeMessage(
+      3,
+      f,
+      proto.data.Value.serializeBinaryToWriter
+    );
+  }
   f = message.getValuesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      3,
+      4,
       f,
       proto.data.Value.serializeBinaryToWriter
     );
@@ -5193,7 +5232,7 @@ proto.data.Condition.serializeBinaryToWriter = function(message, writer) {
   f = message.getOperator();
   if (f !== 0.0) {
     writer.writeEnum(
-      4,
+      5,
       f
     );
   }
@@ -5220,18 +5259,33 @@ proto.data.Condition.Operator = {
 };
 
 /**
- * optional Value value = 1;
+ * optional string columnName = 1;
+ * @return {string}
+ */
+proto.data.Condition.prototype.getColumnname = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+};
+
+
+/** @param {string} value */
+proto.data.Condition.prototype.setColumnname = function(value) {
+  jspb.Message.setProto3StringField(this, 1, value);
+};
+
+
+/**
+ * optional Value value = 2;
  * @return {?proto.data.Value}
  */
 proto.data.Condition.prototype.getValue = function() {
   return /** @type{?proto.data.Value} */ (
-    jspb.Message.getWrapperField(this, proto.data.Value, 1));
+    jspb.Message.getWrapperField(this, proto.data.Value, 2));
 };
 
 
 /** @param {?proto.data.Value|undefined} value */
 proto.data.Condition.prototype.setValue = function(value) {
-  jspb.Message.setWrapperField(this, 1, value);
+  jspb.Message.setWrapperField(this, 2, value);
 };
 
 
@@ -5248,23 +5302,23 @@ proto.data.Condition.prototype.clearValue = function() {
  * @return {boolean}
  */
 proto.data.Condition.prototype.hasValue = function() {
-  return jspb.Message.getField(this, 1) != null;
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
 /**
- * optional Value valueTo = 2;
+ * optional Value valueTo = 3;
  * @return {?proto.data.Value}
  */
 proto.data.Condition.prototype.getValueto = function() {
   return /** @type{?proto.data.Value} */ (
-    jspb.Message.getWrapperField(this, proto.data.Value, 2));
+    jspb.Message.getWrapperField(this, proto.data.Value, 3));
 };
 
 
 /** @param {?proto.data.Value|undefined} value */
 proto.data.Condition.prototype.setValueto = function(value) {
-  jspb.Message.setWrapperField(this, 2, value);
+  jspb.Message.setWrapperField(this, 3, value);
 };
 
 
@@ -5281,23 +5335,23 @@ proto.data.Condition.prototype.clearValueto = function() {
  * @return {boolean}
  */
 proto.data.Condition.prototype.hasValueto = function() {
-  return jspb.Message.getField(this, 2) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
 /**
- * repeated Value values = 3;
+ * repeated Value values = 4;
  * @return {!Array<!proto.data.Value>}
  */
 proto.data.Condition.prototype.getValuesList = function() {
   return /** @type{!Array<!proto.data.Value>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.Value, 3));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.Value, 4));
 };
 
 
 /** @param {!Array<!proto.data.Value>} value */
 proto.data.Condition.prototype.setValuesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 3, value);
+  jspb.Message.setRepeatedWrapperField(this, 4, value);
 };
 
 
@@ -5307,7 +5361,7 @@ proto.data.Condition.prototype.setValuesList = function(value) {
  * @return {!proto.data.Value}
  */
 proto.data.Condition.prototype.addValues = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 3, opt_value, proto.data.Value, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.data.Value, opt_index);
 };
 
 
@@ -5320,17 +5374,17 @@ proto.data.Condition.prototype.clearValuesList = function() {
 
 
 /**
- * optional Operator operator = 4;
+ * optional Operator operator = 5;
  * @return {!proto.data.Condition.Operator}
  */
 proto.data.Condition.prototype.getOperator = function() {
-  return /** @type {!proto.data.Condition.Operator} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {!proto.data.Condition.Operator} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
 };
 
 
 /** @param {!proto.data.Condition.Operator} value */
 proto.data.Condition.prototype.setOperator = function(value) {
-  jspb.Message.setProto3EnumField(this, 4, value);
+  jspb.Message.setProto3EnumField(this, 5, value);
 };
 
 
@@ -9162,11 +9216,12 @@ proto.data.RecordReferenceInfo.prototype.toObject = function(opt_includeInstance
  */
 proto.data.RecordReferenceInfo.toObject = function(includeInstance, msg) {
   var f, obj = {
-    windowuuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    displayname: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    tablename: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    whereclause: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    recordcount: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    uuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    windowuuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    displayname: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    tablename: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    whereclause: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    recordcount: jspb.Message.getFieldWithDefault(msg, 6, 0)
   };
 
   if (includeInstance) {
@@ -9205,21 +9260,25 @@ proto.data.RecordReferenceInfo.deserializeBinaryFromReader = function(msg, reade
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setWindowuuid(value);
+      msg.setUuid(value);
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setDisplayname(value);
+      msg.setWindowuuid(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTablename(value);
+      msg.setDisplayname(value);
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setWhereclause(value);
+      msg.setTablename(value);
       break;
     case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWhereclause(value);
+      break;
+    case 6:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setRecordcount(value);
       break;
@@ -9252,38 +9311,45 @@ proto.data.RecordReferenceInfo.prototype.serializeBinary = function() {
  */
 proto.data.RecordReferenceInfo.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getWindowuuid();
+  f = message.getUuid();
   if (f.length > 0) {
     writer.writeString(
       1,
       f
     );
   }
-  f = message.getDisplayname();
+  f = message.getWindowuuid();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getTablename();
+  f = message.getDisplayname();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getWhereclause();
+  f = message.getTablename();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
+  f = message.getWhereclause();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
   f = message.getRecordcount();
   if (f !== 0) {
     writer.writeInt64(
-      5,
+      6,
       f
     );
   }
@@ -9291,77 +9357,92 @@ proto.data.RecordReferenceInfo.serializeBinaryToWriter = function(message, write
 
 
 /**
- * optional string windowUuid = 1;
+ * optional string uuid = 1;
  * @return {string}
  */
-proto.data.RecordReferenceInfo.prototype.getWindowuuid = function() {
+proto.data.RecordReferenceInfo.prototype.getUuid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RecordReferenceInfo.prototype.setWindowuuid = function(value) {
+proto.data.RecordReferenceInfo.prototype.setUuid = function(value) {
   jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional string displayName = 2;
+ * optional string windowUuid = 2;
  * @return {string}
  */
-proto.data.RecordReferenceInfo.prototype.getDisplayname = function() {
+proto.data.RecordReferenceInfo.prototype.getWindowuuid = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RecordReferenceInfo.prototype.setDisplayname = function(value) {
+proto.data.RecordReferenceInfo.prototype.setWindowuuid = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional string tableName = 3;
+ * optional string displayName = 3;
  * @return {string}
  */
-proto.data.RecordReferenceInfo.prototype.getTablename = function() {
+proto.data.RecordReferenceInfo.prototype.getDisplayname = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RecordReferenceInfo.prototype.setTablename = function(value) {
+proto.data.RecordReferenceInfo.prototype.setDisplayname = function(value) {
   jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional string whereClause = 4;
+ * optional string tableName = 4;
  * @return {string}
  */
-proto.data.RecordReferenceInfo.prototype.getWhereclause = function() {
+proto.data.RecordReferenceInfo.prototype.getTablename = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RecordReferenceInfo.prototype.setWhereclause = function(value) {
+proto.data.RecordReferenceInfo.prototype.setTablename = function(value) {
   jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
 /**
- * optional int64 recordCount = 5;
+ * optional string whereClause = 5;
+ * @return {string}
+ */
+proto.data.RecordReferenceInfo.prototype.getWhereclause = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/** @param {string} value */
+proto.data.RecordReferenceInfo.prototype.setWhereclause = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional int64 recordCount = 6;
  * @return {number}
  */
 proto.data.RecordReferenceInfo.prototype.getRecordcount = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
 /** @param {number} value */
 proto.data.RecordReferenceInfo.prototype.setRecordcount = function(value) {
-  jspb.Message.setProto3IntField(this, 5, value);
+  jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
