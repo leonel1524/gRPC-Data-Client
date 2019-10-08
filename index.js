@@ -205,15 +205,22 @@ class BusinessData {
   /**
   * Request Process
   */
-  requestProcess(RunBusinessProcessRequest) {
-    return this.getService().runBusinessProcess(RunBusinessProcessRequest);
+  requestProcess(runBusinessProcessRequest) {
+    return this.getService().runBusinessProcess(runBusinessProcessRequest);
   }
 
   /**
   * Request Browser
   */
-  requestBrowser(ListBrowserItemsRequest) {
-    return this.getService().listBrowserItems(ListBrowserItemsRequest);
+  requestBrowser(listBrowserItemsRequest) {
+    return this.getService().listBrowserItems(listBrowserItemsRequest);
+  }
+
+  /**
+  * Rollback last Entity operation
+  */
+  rollbackEntityRequest(rollbackEntityRequest) {
+    return this.getService().rollbackEntity(rollbackEntityRequest);
   }
 
   /**
@@ -323,6 +330,18 @@ class BusinessData {
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ListActivitiesRequest();
+    request.setClientrequest(clientRequest);
+    //  return
+    return request;
+  }
+
+  // Get Rollback Entity Request
+  getRollbackEntityRequest() {
+    const { RollbackEntityRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new RollbackEntityRequest();
     request.setClientrequest(clientRequest);
     //  return
     return request;

@@ -309,6 +309,61 @@ proto.data.DataServicePromiseClient.prototype.deleteEntity =
 /**
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.RollbackEntityRequest,
+ *   !proto.data.Entity>}
+ */
+const methodInfo_DataService_RollbackEntity = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Entity,
+  /** @param {!proto.data.RollbackEntityRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.Entity.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.RollbackEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.Entity)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.DataServiceClient.prototype.rollbackEntity =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.DataService/RollbackEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_RollbackEntity,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.RollbackEntityRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.Entity>}
+ *     A native promise that resolves to the response
+ */
+proto.data.DataServicePromiseClient.prototype.rollbackEntity =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.DataService/RollbackEntity',
+      request,
+      metadata || {},
+      methodInfo_DataService_RollbackEntity);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
  *   !proto.data.ListEntitiesRequest,
  *   !proto.data.ListEntitiesResponse>}
  */
