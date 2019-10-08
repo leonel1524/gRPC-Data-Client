@@ -139,6 +139,19 @@ class BusinessData {
   }
 
   /**
+   * Get all values type or get key value type from value
+   * @param {integer} keyFind
+   */
+  getValueTypes(keyFind) {
+    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(Value.ValueType).find(key => Value.ValueType[key] === keyFind);
+    } else {
+      return Value.ValueType;
+    }
+  }
+
+  /**
    * Convert a parameter defined by columnName and value to Value Object
    * @param {string} parameter.columnName
    * @param {mixed}  parameter.value
@@ -152,10 +165,64 @@ class BusinessData {
     const { KeyValue } = require('./src/grpc/proto/businessdata_pb.js');
     var keyValue = new KeyValue();
     keyValue.setKey(parameter.columnName);
-    var convertedValue = this.convertValue(parameter.value)
+    var convertedValue = this.convertValue(parameter.value);
     keyValue.setValue(convertedValue);
     //  Return converted value
     return keyValue;
+  }
+
+  /**
+   * Convert a parameter defined by columnName and value to Value Object
+   * TODO: Add support to operator with parameter
+   * @param {string} conditionParameters.columnName
+   * @param {mixed}  conditionParameters.value
+   * @param {mixed}  conditionParameters.valueTo
+   * @param {array}  conditionParameters.values
+   * @returns Object
+   */
+  convertCondition(conditionParameters) {
+    const { Condition } = require('./src/grpc/proto/businessdata_pb.js');
+    var conditionInstance = new Condition();
+
+    conditionInstance.setColumnname(conditionParameters.columnName);
+
+    // set value and value to
+    if (conditionParameters.hasOwnProperty('value')) {
+      conditionInstance.setValue(this.convertValue(conditionParameters.value));
+    }
+    if (conditionParameters.hasOwnProperty('valueTo')) {
+      conditionInstance.setValueto(this.convertValue(conditionParameters.valueTo));
+    }
+
+    // set operator
+    if (typeof conditionParameters.value === 'string') {
+      conditionInstance.setOperator(Condition.Operator.LIKE); // 2
+    } else {
+      conditionInstance.setOperator(Condition.Operator.EQUAL); // 0
+    }
+
+    if (conditionParameters.values && conditionParameters.values.length) {
+      conditionInstance.setOperator(Condition.Operator.IN); // 11
+      conditionParameters.values.forEach(itemValue => {
+        conditionInstance.addValues(this.convertValue(itemValue));
+      });
+    }
+
+    //  Return converted condition
+    return conditionInstance;
+  }
+
+  /**
+   * Get all operator or get key value type from value
+   * @param {integer} keyFind
+   */
+  getOperators(keyFind) {
+    const { Condition } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(Condition.Operator).find(key => Condition.Operator[key] === keyFind);
+    } else {
+      return Condition.Operator;
+    }
   }
 
   /**
