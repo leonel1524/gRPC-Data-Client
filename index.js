@@ -415,6 +415,19 @@ class BusinessData {
   }
 
   /**
+   * Get all event type or get key value type from value
+   * @param {integer} keyFind
+   */
+  getEventType(keyFind) {
+    const { RollbackEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(RollbackEntityRequest.EventType).find(key => RollbackEntityRequest.EventType[key] === keyFind);
+    } else {
+      return RollbackEntityRequest.EventType;
+    }
+  }
+
+  /**
   * Request Process Activity List
   */
   requestProcessActivity() {
