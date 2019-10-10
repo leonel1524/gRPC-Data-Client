@@ -7746,7 +7746,7 @@ proto.data.BusinessProcess.toObject = function(includeInstance, msg) {
     instanceuuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     iserror: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
     summary: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    resulttableid: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    resulttablename: jspb.Message.getFieldWithDefault(msg, 5, ""),
     isprocessing: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
     logsList: jspb.Message.toObjectList(msg.getLogsList(),
     proto.data.ProcessInfoLog.toObject, includeInstance),
@@ -7805,8 +7805,8 @@ proto.data.BusinessProcess.deserializeBinaryFromReader = function(msg, reader) {
       msg.setSummary(value);
       break;
     case 5:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setResulttableid(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setResulttablename(value);
       break;
     case 6:
       var value = /** @type {boolean} */ (reader.readBool());
@@ -7885,9 +7885,9 @@ proto.data.BusinessProcess.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getResulttableid();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = message.getResulttablename();
+  if (f.length > 0) {
+    writer.writeString(
       5,
       f
     );
@@ -7983,17 +7983,17 @@ proto.data.BusinessProcess.prototype.setSummary = function(value) {
 
 
 /**
- * optional int32 resultTableId = 5;
- * @return {number}
+ * optional string resultTableName = 5;
+ * @return {string}
  */
-proto.data.BusinessProcess.prototype.getResulttableid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+proto.data.BusinessProcess.prototype.getResulttablename = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
-/** @param {number} value */
-proto.data.BusinessProcess.prototype.setResulttableid = function(value) {
-  jspb.Message.setProto3IntField(this, 5, value);
+/** @param {string} value */
+proto.data.BusinessProcess.prototype.setResulttablename = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
