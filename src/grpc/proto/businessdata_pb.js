@@ -7709,7 +7709,7 @@ proto.data.ListActivitiesResponse.prototype.setNextPageToken = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.data.BusinessProcess.repeatedFields_ = [7];
+proto.data.BusinessProcess.repeatedFields_ = [8];
 
 
 
@@ -7748,6 +7748,7 @@ proto.data.BusinessProcess.toObject = function(includeInstance, msg) {
     summary: jspb.Message.getFieldWithDefault(msg, 4, ""),
     resulttablename: jspb.Message.getFieldWithDefault(msg, 5, ""),
     isprocessing: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
+    lastrun: jspb.Message.getFieldWithDefault(msg, 7, 0),
     logsList: jspb.Message.toObjectList(msg.getLogsList(),
     proto.data.ProcessInfoLog.toObject, includeInstance),
     parametersMap: (f = msg.getParametersMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : [],
@@ -7813,17 +7814,21 @@ proto.data.BusinessProcess.deserializeBinaryFromReader = function(msg, reader) {
       msg.setIsprocessing(value);
       break;
     case 7:
+      var value = /** @type {number} */ (reader.readInt64());
+      msg.setLastrun(value);
+      break;
+    case 8:
       var value = new proto.data.ProcessInfoLog;
       reader.readMessage(value,proto.data.ProcessInfoLog.deserializeBinaryFromReader);
       msg.addLogs(value);
       break;
-    case 8:
+    case 9:
       var value = msg.getParametersMap();
       reader.readMessage(value, function(message, reader) {
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
          });
       break;
-    case 9:
+    case 10:
       var value = new proto.data.ProcessOutput;
       reader.readMessage(value,proto.data.ProcessOutput.deserializeBinaryFromReader);
       msg.setOutput(value);
@@ -7899,22 +7904,29 @@ proto.data.BusinessProcess.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getLastrun();
+  if (f !== 0) {
+    writer.writeInt64(
+      7,
+      f
+    );
+  }
   f = message.getLogsList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      7,
+      8,
       f,
       proto.data.ProcessInfoLog.serializeBinaryToWriter
     );
   }
   f = message.getParametersMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(8, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
+    f.serializeBinary(9, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
   }
   f = message.getOutput();
   if (f != null) {
     writer.writeMessage(
-      9,
+      10,
       f,
       proto.data.ProcessOutput.serializeBinaryToWriter
     );
@@ -8013,18 +8025,33 @@ proto.data.BusinessProcess.prototype.setIsprocessing = function(value) {
 
 
 /**
- * repeated ProcessInfoLog logs = 7;
+ * optional int64 lastRun = 7;
+ * @return {number}
+ */
+proto.data.BusinessProcess.prototype.getLastrun = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 7, 0));
+};
+
+
+/** @param {number} value */
+proto.data.BusinessProcess.prototype.setLastrun = function(value) {
+  jspb.Message.setProto3IntField(this, 7, value);
+};
+
+
+/**
+ * repeated ProcessInfoLog logs = 8;
  * @return {!Array<!proto.data.ProcessInfoLog>}
  */
 proto.data.BusinessProcess.prototype.getLogsList = function() {
   return /** @type{!Array<!proto.data.ProcessInfoLog>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.ProcessInfoLog, 7));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.ProcessInfoLog, 8));
 };
 
 
 /** @param {!Array<!proto.data.ProcessInfoLog>} value */
 proto.data.BusinessProcess.prototype.setLogsList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 7, value);
+  jspb.Message.setRepeatedWrapperField(this, 8, value);
 };
 
 
@@ -8034,7 +8061,7 @@ proto.data.BusinessProcess.prototype.setLogsList = function(value) {
  * @return {!proto.data.ProcessInfoLog}
  */
 proto.data.BusinessProcess.prototype.addLogs = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.data.ProcessInfoLog, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 8, opt_value, proto.data.ProcessInfoLog, opt_index);
 };
 
 
@@ -8047,14 +8074,14 @@ proto.data.BusinessProcess.prototype.clearLogsList = function() {
 
 
 /**
- * map<string, Value> parameters = 8;
+ * map<string, Value> parameters = 9;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
  * @return {!jspb.Map<string,!proto.data.Value>}
  */
 proto.data.BusinessProcess.prototype.getParametersMap = function(opt_noLazyCreate) {
   return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
-      jspb.Message.getMapField(this, 8, opt_noLazyCreate,
+      jspb.Message.getMapField(this, 9, opt_noLazyCreate,
       proto.data.Value));
 };
 
@@ -8068,18 +8095,18 @@ proto.data.BusinessProcess.prototype.clearParametersMap = function() {
 
 
 /**
- * optional ProcessOutput output = 9;
+ * optional ProcessOutput output = 10;
  * @return {?proto.data.ProcessOutput}
  */
 proto.data.BusinessProcess.prototype.getOutput = function() {
   return /** @type{?proto.data.ProcessOutput} */ (
-    jspb.Message.getWrapperField(this, proto.data.ProcessOutput, 9));
+    jspb.Message.getWrapperField(this, proto.data.ProcessOutput, 10));
 };
 
 
 /** @param {?proto.data.ProcessOutput|undefined} value */
 proto.data.BusinessProcess.prototype.setOutput = function(value) {
-  jspb.Message.setWrapperField(this, 9, value);
+  jspb.Message.setWrapperField(this, 10, value);
 };
 
 
@@ -8096,7 +8123,7 @@ proto.data.BusinessProcess.prototype.clearOutput = function() {
  * @return {boolean}
  */
 proto.data.BusinessProcess.prototype.hasOutput = function() {
-  return jspb.Message.getField(this, 9) != null;
+  return jspb.Message.getField(this, 10) != null;
 };
 
 
