@@ -6954,7 +6954,8 @@ proto.data.RecentItem.toObject = function(includeInstance, msg) {
     recordid: jspb.Message.getFieldWithDefault(msg, 7, 0),
     displayname: jspb.Message.getFieldWithDefault(msg, 8, ""),
     recorduuid: jspb.Message.getFieldWithDefault(msg, 9, ""),
-    updated: jspb.Message.getFieldWithDefault(msg, 10, 0)
+    updated: jspb.Message.getFieldWithDefault(msg, 10, 0),
+    action: jspb.Message.getFieldWithDefault(msg, 11, "")
   };
 
   if (includeInstance) {
@@ -7030,6 +7031,10 @@ proto.data.RecentItem.deserializeBinaryFromReader = function(msg, reader) {
     case 10:
       var value = /** @type {number} */ (reader.readInt64());
       msg.setUpdated(value);
+      break;
+    case 11:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setAction(value);
       break;
     default:
       reader.skipField();
@@ -7127,6 +7132,13 @@ proto.data.RecentItem.serializeBinaryToWriter = function(message, writer) {
   if (f !== 0) {
     writer.writeInt64(
       10,
+      f
+    );
+  }
+  f = message.getAction();
+  if (f.length > 0) {
+    writer.writeString(
+      11,
       f
     );
   }
@@ -7280,6 +7292,21 @@ proto.data.RecentItem.prototype.getUpdated = function() {
 /** @param {number} value */
 proto.data.RecentItem.prototype.setUpdated = function(value) {
   jspb.Message.setProto3IntField(this, 10, value);
+};
+
+
+/**
+ * optional string action = 11;
+ * @return {string}
+ */
+proto.data.RecentItem.prototype.getAction = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+};
+
+
+/** @param {string} value */
+proto.data.RecentItem.prototype.setAction = function(value) {
+  jspb.Message.setProto3StringField(this, 11, value);
 };
 
 
