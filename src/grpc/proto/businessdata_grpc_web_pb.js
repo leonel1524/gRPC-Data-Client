@@ -22,7 +22,7 @@ proto.data = require('./businessdata_pb.js');
  * @struct
  * @final
  */
-proto.data.DataServiceClient =
+proto.data.BusinessDataServiceClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
   options['format'] = 'text';
@@ -58,7 +58,7 @@ proto.data.DataServiceClient =
  * @struct
  * @final
  */
-proto.data.DataServicePromiseClient =
+proto.data.BusinessDataServicePromiseClient =
     function(hostname, credentials, options) {
   if (!options) options = {};
   options['format'] = 'text';
@@ -92,7 +92,7 @@ proto.data.DataServicePromiseClient =
  *   !proto.data.GetEntityRequest,
  *   !proto.data.Entity>}
  */
-const methodInfo_DataService_GetEntity = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_GetEntity = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.Entity,
   /** @param {!proto.data.GetEntityRequest} request */
   function(request) {
@@ -112,13 +112,13 @@ const methodInfo_DataService_GetEntity = new grpc.web.AbstractClientBase.MethodI
  * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.getEntity =
+proto.data.BusinessDataServiceClient.prototype.getEntity =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/GetEntity',
+      '/data.BusinessDataService/GetEntity',
       request,
       metadata || {},
-      methodInfo_DataService_GetEntity,
+      methodInfo_BusinessDataService_GetEntity,
       callback);
 };
 
@@ -131,13 +131,13 @@ proto.data.DataServiceClient.prototype.getEntity =
  * @return {!Promise<!proto.data.Entity>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.getEntity =
+proto.data.BusinessDataServicePromiseClient.prototype.getEntity =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/GetEntity',
+      '/data.BusinessDataService/GetEntity',
       request,
       metadata || {},
-      methodInfo_DataService_GetEntity);
+      methodInfo_BusinessDataService_GetEntity);
 };
 
 
@@ -147,7 +147,7 @@ proto.data.DataServicePromiseClient.prototype.getEntity =
  *   !proto.data.CreateEntityRequest,
  *   !proto.data.Entity>}
  */
-const methodInfo_DataService_CreateEntity = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_CreateEntity = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.Entity,
   /** @param {!proto.data.CreateEntityRequest} request */
   function(request) {
@@ -167,13 +167,13 @@ const methodInfo_DataService_CreateEntity = new grpc.web.AbstractClientBase.Meth
  * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.createEntity =
+proto.data.BusinessDataServiceClient.prototype.createEntity =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/CreateEntity',
+      '/data.BusinessDataService/CreateEntity',
       request,
       metadata || {},
-      methodInfo_DataService_CreateEntity,
+      methodInfo_BusinessDataService_CreateEntity,
       callback);
 };
 
@@ -186,13 +186,13 @@ proto.data.DataServiceClient.prototype.createEntity =
  * @return {!Promise<!proto.data.Entity>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.createEntity =
+proto.data.BusinessDataServicePromiseClient.prototype.createEntity =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/CreateEntity',
+      '/data.BusinessDataService/CreateEntity',
       request,
       metadata || {},
-      methodInfo_DataService_CreateEntity);
+      methodInfo_BusinessDataService_CreateEntity);
 };
 
 
@@ -202,7 +202,7 @@ proto.data.DataServicePromiseClient.prototype.createEntity =
  *   !proto.data.UpdateEntityRequest,
  *   !proto.data.Entity>}
  */
-const methodInfo_DataService_UpdateEntity = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_UpdateEntity = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.Entity,
   /** @param {!proto.data.UpdateEntityRequest} request */
   function(request) {
@@ -222,13 +222,13 @@ const methodInfo_DataService_UpdateEntity = new grpc.web.AbstractClientBase.Meth
  * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.updateEntity =
+proto.data.BusinessDataServiceClient.prototype.updateEntity =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/UpdateEntity',
+      '/data.BusinessDataService/UpdateEntity',
       request,
       metadata || {},
-      methodInfo_DataService_UpdateEntity,
+      methodInfo_BusinessDataService_UpdateEntity,
       callback);
 };
 
@@ -241,13 +241,13 @@ proto.data.DataServiceClient.prototype.updateEntity =
  * @return {!Promise<!proto.data.Entity>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.updateEntity =
+proto.data.BusinessDataServicePromiseClient.prototype.updateEntity =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/UpdateEntity',
+      '/data.BusinessDataService/UpdateEntity',
       request,
       metadata || {},
-      methodInfo_DataService_UpdateEntity);
+      methodInfo_BusinessDataService_UpdateEntity);
 };
 
 
@@ -257,7 +257,7 @@ proto.data.DataServicePromiseClient.prototype.updateEntity =
  *   !proto.data.DeleteEntityRequest,
  *   !proto.data.Empty>}
  */
-const methodInfo_DataService_DeleteEntity = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_DeleteEntity = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.Empty,
   /** @param {!proto.data.DeleteEntityRequest} request */
   function(request) {
@@ -277,13 +277,13 @@ const methodInfo_DataService_DeleteEntity = new grpc.web.AbstractClientBase.Meth
  * @return {!grpc.web.ClientReadableStream<!proto.data.Empty>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.deleteEntity =
+proto.data.BusinessDataServiceClient.prototype.deleteEntity =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/DeleteEntity',
+      '/data.BusinessDataService/DeleteEntity',
       request,
       metadata || {},
-      methodInfo_DataService_DeleteEntity,
+      methodInfo_BusinessDataService_DeleteEntity,
       callback);
 };
 
@@ -296,13 +296,13 @@ proto.data.DataServiceClient.prototype.deleteEntity =
  * @return {!Promise<!proto.data.Empty>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.deleteEntity =
+proto.data.BusinessDataServicePromiseClient.prototype.deleteEntity =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/DeleteEntity',
+      '/data.BusinessDataService/DeleteEntity',
       request,
       metadata || {},
-      methodInfo_DataService_DeleteEntity);
+      methodInfo_BusinessDataService_DeleteEntity);
 };
 
 
@@ -312,7 +312,7 @@ proto.data.DataServicePromiseClient.prototype.deleteEntity =
  *   !proto.data.RollbackEntityRequest,
  *   !proto.data.Entity>}
  */
-const methodInfo_DataService_RollbackEntity = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_RollbackEntity = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.Entity,
   /** @param {!proto.data.RollbackEntityRequest} request */
   function(request) {
@@ -332,13 +332,13 @@ const methodInfo_DataService_RollbackEntity = new grpc.web.AbstractClientBase.Me
  * @return {!grpc.web.ClientReadableStream<!proto.data.Entity>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.rollbackEntity =
+proto.data.BusinessDataServiceClient.prototype.rollbackEntity =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RollbackEntity',
+      '/data.BusinessDataService/RollbackEntity',
       request,
       metadata || {},
-      methodInfo_DataService_RollbackEntity,
+      methodInfo_BusinessDataService_RollbackEntity,
       callback);
 };
 
@@ -351,13 +351,13 @@ proto.data.DataServiceClient.prototype.rollbackEntity =
  * @return {!Promise<!proto.data.Entity>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.rollbackEntity =
+proto.data.BusinessDataServicePromiseClient.prototype.rollbackEntity =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RollbackEntity',
+      '/data.BusinessDataService/RollbackEntity',
       request,
       metadata || {},
-      methodInfo_DataService_RollbackEntity);
+      methodInfo_BusinessDataService_RollbackEntity);
 };
 
 
@@ -367,7 +367,7 @@ proto.data.DataServicePromiseClient.prototype.rollbackEntity =
  *   !proto.data.ListEntitiesRequest,
  *   !proto.data.ListEntitiesResponse>}
  */
-const methodInfo_DataService_ListEntities = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_ListEntities = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ListEntitiesResponse,
   /** @param {!proto.data.ListEntitiesRequest} request */
   function(request) {
@@ -387,13 +387,13 @@ const methodInfo_DataService_ListEntities = new grpc.web.AbstractClientBase.Meth
  * @return {!grpc.web.ClientReadableStream<!proto.data.ListEntitiesResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.listEntities =
+proto.data.BusinessDataServiceClient.prototype.listEntities =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/ListEntities',
+      '/data.BusinessDataService/ListEntities',
       request,
       metadata || {},
-      methodInfo_DataService_ListEntities,
+      methodInfo_BusinessDataService_ListEntities,
       callback);
 };
 
@@ -406,13 +406,13 @@ proto.data.DataServiceClient.prototype.listEntities =
  * @return {!Promise<!proto.data.ListEntitiesResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.listEntities =
+proto.data.BusinessDataServicePromiseClient.prototype.listEntities =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/ListEntities',
+      '/data.BusinessDataService/ListEntities',
       request,
       metadata || {},
-      methodInfo_DataService_ListEntities);
+      methodInfo_BusinessDataService_ListEntities);
 };
 
 
@@ -422,7 +422,7 @@ proto.data.DataServicePromiseClient.prototype.listEntities =
  *   !proto.data.GetLookupItemRequest,
  *   !proto.data.LookupItem>}
  */
-const methodInfo_DataService_GetLookupItem = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_GetLookupItem = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.LookupItem,
   /** @param {!proto.data.GetLookupItemRequest} request */
   function(request) {
@@ -442,13 +442,13 @@ const methodInfo_DataService_GetLookupItem = new grpc.web.AbstractClientBase.Met
  * @return {!grpc.web.ClientReadableStream<!proto.data.LookupItem>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.getLookupItem =
+proto.data.BusinessDataServiceClient.prototype.getLookupItem =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/GetLookupItem',
+      '/data.BusinessDataService/GetLookupItem',
       request,
       metadata || {},
-      methodInfo_DataService_GetLookupItem,
+      methodInfo_BusinessDataService_GetLookupItem,
       callback);
 };
 
@@ -461,13 +461,13 @@ proto.data.DataServiceClient.prototype.getLookupItem =
  * @return {!Promise<!proto.data.LookupItem>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.getLookupItem =
+proto.data.BusinessDataServicePromiseClient.prototype.getLookupItem =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/GetLookupItem',
+      '/data.BusinessDataService/GetLookupItem',
       request,
       metadata || {},
-      methodInfo_DataService_GetLookupItem);
+      methodInfo_BusinessDataService_GetLookupItem);
 };
 
 
@@ -477,7 +477,7 @@ proto.data.DataServicePromiseClient.prototype.getLookupItem =
  *   !proto.data.ListLookupItemsRequest,
  *   !proto.data.ListLookupItemsResponse>}
  */
-const methodInfo_DataService_ListLookupItems = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_ListLookupItems = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ListLookupItemsResponse,
   /** @param {!proto.data.ListLookupItemsRequest} request */
   function(request) {
@@ -497,13 +497,13 @@ const methodInfo_DataService_ListLookupItems = new grpc.web.AbstractClientBase.M
  * @return {!grpc.web.ClientReadableStream<!proto.data.ListLookupItemsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.listLookupItems =
+proto.data.BusinessDataServiceClient.prototype.listLookupItems =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/ListLookupItems',
+      '/data.BusinessDataService/ListLookupItems',
       request,
       metadata || {},
-      methodInfo_DataService_ListLookupItems,
+      methodInfo_BusinessDataService_ListLookupItems,
       callback);
 };
 
@@ -516,13 +516,13 @@ proto.data.DataServiceClient.prototype.listLookupItems =
  * @return {!Promise<!proto.data.ListLookupItemsResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.listLookupItems =
+proto.data.BusinessDataServicePromiseClient.prototype.listLookupItems =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/ListLookupItems',
+      '/data.BusinessDataService/ListLookupItems',
       request,
       metadata || {},
-      methodInfo_DataService_ListLookupItems);
+      methodInfo_BusinessDataService_ListLookupItems);
 };
 
 
@@ -532,7 +532,7 @@ proto.data.DataServicePromiseClient.prototype.listLookupItems =
  *   !proto.data.RunCalloutRequest,
  *   !proto.data.Callout>}
  */
-const methodInfo_DataService_RunCallout = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_RunCallout = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.Callout,
   /** @param {!proto.data.RunCalloutRequest} request */
   function(request) {
@@ -552,13 +552,13 @@ const methodInfo_DataService_RunCallout = new grpc.web.AbstractClientBase.Method
  * @return {!grpc.web.ClientReadableStream<!proto.data.Callout>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.runCallout =
+proto.data.BusinessDataServiceClient.prototype.runCallout =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RunCallout',
+      '/data.BusinessDataService/RunCallout',
       request,
       metadata || {},
-      methodInfo_DataService_RunCallout,
+      methodInfo_BusinessDataService_RunCallout,
       callback);
 };
 
@@ -571,13 +571,13 @@ proto.data.DataServiceClient.prototype.runCallout =
  * @return {!Promise<!proto.data.Callout>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.runCallout =
+proto.data.BusinessDataServicePromiseClient.prototype.runCallout =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RunCallout',
+      '/data.BusinessDataService/RunCallout',
       request,
       metadata || {},
-      methodInfo_DataService_RunCallout);
+      methodInfo_BusinessDataService_RunCallout);
 };
 
 
@@ -587,7 +587,7 @@ proto.data.DataServicePromiseClient.prototype.runCallout =
  *   !proto.data.RunBusinessProcessRequest,
  *   !proto.data.BusinessProcess>}
  */
-const methodInfo_DataService_RunBusinessProcess = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_RunBusinessProcess = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.BusinessProcess,
   /** @param {!proto.data.RunBusinessProcessRequest} request */
   function(request) {
@@ -607,13 +607,13 @@ const methodInfo_DataService_RunBusinessProcess = new grpc.web.AbstractClientBas
  * @return {!grpc.web.ClientReadableStream<!proto.data.BusinessProcess>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.runBusinessProcess =
+proto.data.BusinessDataServiceClient.prototype.runBusinessProcess =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/RunBusinessProcess',
+      '/data.BusinessDataService/RunBusinessProcess',
       request,
       metadata || {},
-      methodInfo_DataService_RunBusinessProcess,
+      methodInfo_BusinessDataService_RunBusinessProcess,
       callback);
 };
 
@@ -626,13 +626,13 @@ proto.data.DataServiceClient.prototype.runBusinessProcess =
  * @return {!Promise<!proto.data.BusinessProcess>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.runBusinessProcess =
+proto.data.BusinessDataServicePromiseClient.prototype.runBusinessProcess =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/RunBusinessProcess',
+      '/data.BusinessDataService/RunBusinessProcess',
       request,
       metadata || {},
-      methodInfo_DataService_RunBusinessProcess);
+      methodInfo_BusinessDataService_RunBusinessProcess);
 };
 
 
@@ -642,7 +642,7 @@ proto.data.DataServicePromiseClient.prototype.runBusinessProcess =
  *   !proto.data.ListBrowserItemsRequest,
  *   !proto.data.ListBrowserItemsResponse>}
  */
-const methodInfo_DataService_ListBrowserItems = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_ListBrowserItems = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ListBrowserItemsResponse,
   /** @param {!proto.data.ListBrowserItemsRequest} request */
   function(request) {
@@ -662,13 +662,13 @@ const methodInfo_DataService_ListBrowserItems = new grpc.web.AbstractClientBase.
  * @return {!grpc.web.ClientReadableStream<!proto.data.ListBrowserItemsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.listBrowserItems =
+proto.data.BusinessDataServiceClient.prototype.listBrowserItems =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/ListBrowserItems',
+      '/data.BusinessDataService/ListBrowserItems',
       request,
       metadata || {},
-      methodInfo_DataService_ListBrowserItems,
+      methodInfo_BusinessDataService_ListBrowserItems,
       callback);
 };
 
@@ -681,13 +681,13 @@ proto.data.DataServiceClient.prototype.listBrowserItems =
  * @return {!Promise<!proto.data.ListBrowserItemsResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.listBrowserItems =
+proto.data.BusinessDataServicePromiseClient.prototype.listBrowserItems =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/ListBrowserItems',
+      '/data.BusinessDataService/ListBrowserItems',
       request,
       metadata || {},
-      methodInfo_DataService_ListBrowserItems);
+      methodInfo_BusinessDataService_ListBrowserItems);
 };
 
 
@@ -697,7 +697,7 @@ proto.data.DataServicePromiseClient.prototype.listBrowserItems =
  *   !proto.data.ListActivitiesRequest,
  *   !proto.data.ListActivitiesResponse>}
  */
-const methodInfo_DataService_ListActivities = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_ListActivities = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ListActivitiesResponse,
   /** @param {!proto.data.ListActivitiesRequest} request */
   function(request) {
@@ -717,13 +717,13 @@ const methodInfo_DataService_ListActivities = new grpc.web.AbstractClientBase.Me
  * @return {!grpc.web.ClientReadableStream<!proto.data.ListActivitiesResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.listActivities =
+proto.data.BusinessDataServiceClient.prototype.listActivities =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/ListActivities',
+      '/data.BusinessDataService/ListActivities',
       request,
       metadata || {},
-      methodInfo_DataService_ListActivities,
+      methodInfo_BusinessDataService_ListActivities,
       callback);
 };
 
@@ -736,13 +736,13 @@ proto.data.DataServiceClient.prototype.listActivities =
  * @return {!Promise<!proto.data.ListActivitiesResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.listActivities =
+proto.data.BusinessDataServicePromiseClient.prototype.listActivities =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/ListActivities',
+      '/data.BusinessDataService/ListActivities',
       request,
       metadata || {},
-      methodInfo_DataService_ListActivities);
+      methodInfo_BusinessDataService_ListActivities);
 };
 
 
@@ -752,7 +752,7 @@ proto.data.DataServicePromiseClient.prototype.listActivities =
  *   !proto.data.ListRecentItemsRequest,
  *   !proto.data.ListRecentItemsResponse>}
  */
-const methodInfo_DataService_ListRecentItems = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_ListRecentItems = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ListRecentItemsResponse,
   /** @param {!proto.data.ListRecentItemsRequest} request */
   function(request) {
@@ -772,13 +772,13 @@ const methodInfo_DataService_ListRecentItems = new grpc.web.AbstractClientBase.M
  * @return {!grpc.web.ClientReadableStream<!proto.data.ListRecentItemsResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.listRecentItems =
+proto.data.BusinessDataServiceClient.prototype.listRecentItems =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/ListRecentItems',
+      '/data.BusinessDataService/ListRecentItems',
       request,
       metadata || {},
-      methodInfo_DataService_ListRecentItems,
+      methodInfo_BusinessDataService_ListRecentItems,
       callback);
 };
 
@@ -791,13 +791,13 @@ proto.data.DataServiceClient.prototype.listRecentItems =
  * @return {!Promise<!proto.data.ListRecentItemsResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.listRecentItems =
+proto.data.BusinessDataServicePromiseClient.prototype.listRecentItems =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/ListRecentItems',
+      '/data.BusinessDataService/ListRecentItems',
       request,
       metadata || {},
-      methodInfo_DataService_ListRecentItems);
+      methodInfo_BusinessDataService_ListRecentItems);
 };
 
 
@@ -807,7 +807,7 @@ proto.data.DataServicePromiseClient.prototype.listRecentItems =
  *   !proto.data.ListReferencesRequest,
  *   !proto.data.ListReferencesResponse>}
  */
-const methodInfo_DataService_ListReferences = new grpc.web.AbstractClientBase.MethodInfo(
+const methodInfo_BusinessDataService_ListReferences = new grpc.web.AbstractClientBase.MethodInfo(
   proto.data.ListReferencesResponse,
   /** @param {!proto.data.ListReferencesRequest} request */
   function(request) {
@@ -827,13 +827,13 @@ const methodInfo_DataService_ListReferences = new grpc.web.AbstractClientBase.Me
  * @return {!grpc.web.ClientReadableStream<!proto.data.ListReferencesResponse>|undefined}
  *     The XHR Node Readable Stream
  */
-proto.data.DataServiceClient.prototype.listReferences =
+proto.data.BusinessDataServiceClient.prototype.listReferences =
     function(request, metadata, callback) {
   return this.client_.rpcCall(this.hostname_ +
-      '/data.DataService/ListReferences',
+      '/data.BusinessDataService/ListReferences',
       request,
       metadata || {},
-      methodInfo_DataService_ListReferences,
+      methodInfo_BusinessDataService_ListReferences,
       callback);
 };
 
@@ -846,13 +846,13 @@ proto.data.DataServiceClient.prototype.listReferences =
  * @return {!Promise<!proto.data.ListReferencesResponse>}
  *     A native promise that resolves to the response
  */
-proto.data.DataServicePromiseClient.prototype.listReferences =
+proto.data.BusinessDataServicePromiseClient.prototype.listReferences =
     function(request, metadata) {
   return this.client_.unaryCall(this.hostname_ +
-      '/data.DataService/ListReferences',
+      '/data.BusinessDataService/ListReferences',
       request,
       metadata || {},
-      methodInfo_DataService_ListReferences);
+      methodInfo_BusinessDataService_ListReferences);
 };
 
 
