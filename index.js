@@ -28,6 +28,19 @@ class BusinessData {
   }
 
   /**
+   * Load gRPC Connection
+   * @return {object} requestService Return request for get data
+   */
+  getService() {
+    const grpc_promise = require('grpc-promise');
+    const { BusinessDataServicePromiseClient } = require('./src/grpc/proto/businessdata_grpc_web_pb.js');
+    var requestService = new BusinessDataServicePromiseClient(this.host);
+    grpc_promise.promisifyAll(requestService);
+    //  Return request for get data
+    return requestService;
+  }
+
+  /**
    * Get or request a Entity data from tableName and uuid
    * @param {GetEntityRequest} Entity request for create
    * @return {Entity} Entity with records.
@@ -288,19 +301,6 @@ class BusinessData {
   */
   rollbackEntityRequest(rollbackEntityRequest) {
     return this.getService().rollbackEntity(rollbackEntityRequest);
-  }
-
-  /**
-   * Load gRPC Connection
-   * @return {object} requestService Return request for get data
-   */
-  getService() {
-    const grpc_promise = require('grpc-promise');
-    const { DataServicePromiseClient } = require('./src/grpc/proto/businessdata_grpc_web_pb.js');
-    var requestService = new DataServicePromiseClient(this.host);
-    grpc_promise.promisifyAll(requestService);
-    //  Return request for get data
-    return requestService;
   }
 
   /**
