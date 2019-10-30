@@ -503,7 +503,7 @@ if (goog.DEBUG && !COMPILED) {
  * @constructor
  */
 proto.data.RunCalloutRequest = function(opt_data) {
-  jspb.Message.initialize(this, opt_data, 0, -1, null, null);
+  jspb.Message.initialize(this, opt_data, 0, -1, proto.data.RunCalloutRequest.repeatedFields_, null);
 };
 goog.inherits(proto.data.RunCalloutRequest, jspb.Message);
 if (goog.DEBUG && !COMPILED) {
@@ -5649,6 +5649,13 @@ proto.data.Condition.prototype.setOperator = function(value) {
 
 
 
+/**
+ * List of repeated fields within this message type.
+ * @private {!Array<number>}
+ * @const
+ */
+proto.data.RunCalloutRequest.repeatedFields_ = [8];
+
 
 
 if (jspb.Message.GENERATE_TO_OBJECT) {
@@ -5681,8 +5688,14 @@ proto.data.RunCalloutRequest.prototype.toObject = function(opt_includeInstance) 
 proto.data.RunCalloutRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
-    callout: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    entity: (f = msg.getEntity()) && proto.data.Entity.toObject(includeInstance, f)
+    tablename: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    windowuuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    tabuuid: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    callout: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    columnname: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    value: (f = msg.getValue()) && proto.data.Value.toObject(includeInstance, f),
+    attributesList: jspb.Message.toObjectList(msg.getAttributesList(),
+    proto.data.KeyValue.toObject, includeInstance)
   };
 
   if (includeInstance) {
@@ -5726,12 +5739,33 @@ proto.data.RunCalloutRequest.deserializeBinaryFromReader = function(msg, reader)
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setCallout(value);
+      msg.setTablename(value);
       break;
     case 3:
-      var value = new proto.data.Entity;
-      reader.readMessage(value,proto.data.Entity.deserializeBinaryFromReader);
-      msg.setEntity(value);
+      var value = /** @type {string} */ (reader.readString());
+      msg.setWindowuuid(value);
+      break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTabuuid(value);
+      break;
+    case 5:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setCallout(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setColumnname(value);
+      break;
+    case 7:
+      var value = new proto.data.Value;
+      reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
+      msg.setValue(value);
+      break;
+    case 8:
+      var value = new proto.data.KeyValue;
+      reader.readMessage(value,proto.data.KeyValue.deserializeBinaryFromReader);
+      msg.addAttributes(value);
       break;
     default:
       reader.skipField();
@@ -5770,19 +5804,55 @@ proto.data.RunCalloutRequest.serializeBinaryToWriter = function(message, writer)
       proto.data.ClientRequest.serializeBinaryToWriter
     );
   }
-  f = message.getCallout();
+  f = message.getTablename();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getEntity();
+  f = message.getWindowuuid();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
+  f = message.getTabuuid();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getCallout();
+  if (f.length > 0) {
+    writer.writeString(
+      5,
+      f
+    );
+  }
+  f = message.getColumnname();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getValue();
   if (f != null) {
     writer.writeMessage(
-      3,
+      7,
       f,
-      proto.data.Entity.serializeBinaryToWriter
+      proto.data.Value.serializeBinaryToWriter
+    );
+  }
+  f = message.getAttributesList();
+  if (f.length > 0) {
+    writer.writeRepeatedMessage(
+      8,
+      f,
+      proto.data.KeyValue.serializeBinaryToWriter
     );
   }
 };
@@ -5822,41 +5892,101 @@ proto.data.RunCalloutRequest.prototype.hasClientrequest = function() {
 
 
 /**
- * optional string callout = 2;
+ * optional string tableName = 2;
  * @return {string}
  */
-proto.data.RunCalloutRequest.prototype.getCallout = function() {
+proto.data.RunCalloutRequest.prototype.getTablename = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
 
 /** @param {string} value */
-proto.data.RunCalloutRequest.prototype.setCallout = function(value) {
+proto.data.RunCalloutRequest.prototype.setTablename = function(value) {
   jspb.Message.setProto3StringField(this, 2, value);
 };
 
 
 /**
- * optional Entity Entity = 3;
- * @return {?proto.data.Entity}
+ * optional string windowUuid = 3;
+ * @return {string}
  */
-proto.data.RunCalloutRequest.prototype.getEntity = function() {
-  return /** @type{?proto.data.Entity} */ (
-    jspb.Message.getWrapperField(this, proto.data.Entity, 3));
+proto.data.RunCalloutRequest.prototype.getWindowuuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
-/** @param {?proto.data.Entity|undefined} value */
-proto.data.RunCalloutRequest.prototype.setEntity = function(value) {
-  jspb.Message.setWrapperField(this, 3, value);
+/** @param {string} value */
+proto.data.RunCalloutRequest.prototype.setWindowuuid = function(value) {
+  jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional string tabUuid = 4;
+ * @return {string}
+ */
+proto.data.RunCalloutRequest.prototype.getTabuuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.data.RunCalloutRequest.prototype.setTabuuid = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional string callout = 5;
+ * @return {string}
+ */
+proto.data.RunCalloutRequest.prototype.getCallout = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+};
+
+
+/** @param {string} value */
+proto.data.RunCalloutRequest.prototype.setCallout = function(value) {
+  jspb.Message.setProto3StringField(this, 5, value);
+};
+
+
+/**
+ * optional string columnName = 6;
+ * @return {string}
+ */
+proto.data.RunCalloutRequest.prototype.getColumnname = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/** @param {string} value */
+proto.data.RunCalloutRequest.prototype.setColumnname = function(value) {
+  jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional Value value = 7;
+ * @return {?proto.data.Value}
+ */
+proto.data.RunCalloutRequest.prototype.getValue = function() {
+  return /** @type{?proto.data.Value} */ (
+    jspb.Message.getWrapperField(this, proto.data.Value, 7));
+};
+
+
+/** @param {?proto.data.Value|undefined} value */
+proto.data.RunCalloutRequest.prototype.setValue = function(value) {
+  jspb.Message.setWrapperField(this, 7, value);
 };
 
 
 /**
  * Clears the message field making it undefined.
  */
-proto.data.RunCalloutRequest.prototype.clearEntity = function() {
-  this.setEntity(undefined);
+proto.data.RunCalloutRequest.prototype.clearValue = function() {
+  this.setValue(undefined);
 };
 
 
@@ -5864,8 +5994,42 @@ proto.data.RunCalloutRequest.prototype.clearEntity = function() {
  * Returns whether this field is set.
  * @return {boolean}
  */
-proto.data.RunCalloutRequest.prototype.hasEntity = function() {
-  return jspb.Message.getField(this, 3) != null;
+proto.data.RunCalloutRequest.prototype.hasValue = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * repeated KeyValue attributes = 8;
+ * @return {!Array<!proto.data.KeyValue>}
+ */
+proto.data.RunCalloutRequest.prototype.getAttributesList = function() {
+  return /** @type{!Array<!proto.data.KeyValue>} */ (
+    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 8));
+};
+
+
+/** @param {!Array<!proto.data.KeyValue>} value */
+proto.data.RunCalloutRequest.prototype.setAttributesList = function(value) {
+  jspb.Message.setRepeatedWrapperField(this, 8, value);
+};
+
+
+/**
+ * @param {!proto.data.KeyValue=} opt_value
+ * @param {number=} opt_index
+ * @return {!proto.data.KeyValue}
+ */
+proto.data.RunCalloutRequest.prototype.addAttributes = function(opt_value, opt_index) {
+  return jspb.Message.addToRepeatedWrapperField(this, 8, opt_value, proto.data.KeyValue, opt_index);
+};
+
+
+/**
+ * Clears the list making it empty but non-null.
+ */
+proto.data.RunCalloutRequest.prototype.clearAttributesList = function() {
+  this.setAttributesList([]);
 };
 
 
@@ -5902,7 +6066,7 @@ proto.data.Callout.prototype.toObject = function(opt_includeInstance) {
 proto.data.Callout.toObject = function(includeInstance, msg) {
   var f, obj = {
     result: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    values: (f = msg.getValues()) && proto.data.Entity.toObject(includeInstance, f)
+    valuesMap: (f = msg.getValuesMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : []
   };
 
   if (includeInstance) {
@@ -5944,9 +6108,10 @@ proto.data.Callout.deserializeBinaryFromReader = function(msg, reader) {
       msg.setResult(value);
       break;
     case 2:
-      var value = new proto.data.Entity;
-      reader.readMessage(value,proto.data.Entity.deserializeBinaryFromReader);
-      msg.setValues(value);
+      var value = msg.getValuesMap();
+      reader.readMessage(value, function(message, reader) {
+        jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
+         });
       break;
     default:
       reader.skipField();
@@ -5984,13 +6149,9 @@ proto.data.Callout.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getValues();
-  if (f != null) {
-    writer.writeMessage(
-      2,
-      f,
-      proto.data.Entity.serializeBinaryToWriter
-    );
+  f = message.getValuesMap(true);
+  if (f && f.getLength() > 0) {
+    f.serializeBinary(2, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
   }
 };
 
@@ -6011,35 +6172,23 @@ proto.data.Callout.prototype.setResult = function(value) {
 
 
 /**
- * optional Entity values = 2;
- * @return {?proto.data.Entity}
+ * map<string, Value> values = 2;
+ * @param {boolean=} opt_noLazyCreate Do not create the map if
+ * empty, instead returning `undefined`
+ * @return {!jspb.Map<string,!proto.data.Value>}
  */
-proto.data.Callout.prototype.getValues = function() {
-  return /** @type{?proto.data.Entity} */ (
-    jspb.Message.getWrapperField(this, proto.data.Entity, 2));
-};
-
-
-/** @param {?proto.data.Entity|undefined} value */
-proto.data.Callout.prototype.setValues = function(value) {
-  jspb.Message.setWrapperField(this, 2, value);
-};
-
-
-/**
- * Clears the message field making it undefined.
- */
-proto.data.Callout.prototype.clearValues = function() {
-  this.setValues(undefined);
+proto.data.Callout.prototype.getValuesMap = function(opt_noLazyCreate) {
+  return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
+      jspb.Message.getMapField(this, 2, opt_noLazyCreate,
+      proto.data.Value));
 };
 
 
 /**
- * Returns whether this field is set.
- * @return {boolean}
+ * Clears values from the map. The map will be non-null.
  */
-proto.data.Callout.prototype.hasValues = function() {
-  return jspb.Message.getField(this, 2) != null;
+proto.data.Callout.prototype.clearValuesMap = function() {
+  this.getValuesMap().clear();
 };
 
 
