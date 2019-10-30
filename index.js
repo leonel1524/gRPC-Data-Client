@@ -529,6 +529,36 @@ class BusinessData {
     return criteria;
   }
 
+  /**
+   * Run callout request
+   * @param {string} calloutParameters.callout
+   * @param {array}  calloutParameters.attributesList
+   * @param {string} calloutParameters.tableName
+   */
+  runCalloutRequest(calloutParameters) {
+    const { ClientRequest, RunCalloutRequest, Entity } = require('./src/grpc/proto/businessdata_pb.js');
+    const { callout, attributesList = [], tableName } = calloutParameters;
+
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+
+    let entityInstance = new Entity();
+    entityInstance.setTablename(tableName);
+    if (attributesList.length) {
+      attributesList.forEach(attribute => {
+        const convertedAttribute = this.convertParameter(attribute);
+        entityInstance.addValues(convertedAttribute);
+      })
+    }
+
+    let calloutRequestInstance = new RunCalloutRequest();
+    calloutRequestInstance.setClientrequest(clientRequest);
+    calloutRequestInstance.setCallout(callout);
+    calloutRequestInstance.setEntity(entityInstance);
+    return this.getService().runCallout(calloutRequestInstance);
+  }
+
 }
 
 module.exports = BusinessData;
