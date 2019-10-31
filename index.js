@@ -531,31 +531,40 @@ class BusinessData {
 
   /**
    * Run callout request
+   * @param {string} calloutParameters.windowUuid
+   * @param {string} calloutParameters.tabUuid
+   * @param {string} calloutParameters.tableName
+   * @param {string} calloutParameters.columnName
+   * @param {mixed}  calloutParameters.value
    * @param {string} calloutParameters.callout
    * @param {array}  calloutParameters.attributesList
-   * @param {string} calloutParameters.tableName
    */
   runCalloutRequest(calloutParameters) {
-    const { ClientRequest, RunCalloutRequest, Entity } = require('./src/grpc/proto/businessdata_pb.js');
-    const { callout, attributesList = [], tableName } = calloutParameters;
+    const { ClientRequest, RunCalloutRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const { windowUuid, tabUuid, tableName, columnName, value, callout, attributesList = [] } = calloutParameters;
 
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
 
-    let entityInstance = new Entity();
-    entityInstance.setTablename(tableName);
+    let calloutRequestInstance = new RunCalloutRequest();
+    calloutRequestInstance.setClientrequest(clientRequest);
+    calloutRequestInstance.setWindowuuid(windowUuid);
+    calloutRequestInstance.setTabuuid(tabUuid);
+    calloutRequestInstance.setTablename(tableName);
+    calloutRequestInstance.setColumnname(columnName);
+    calloutRequestInstance.setValue(
+      this.convertValue(value)
+    );
+    calloutRequestInstance.setCallout(callout);
+
     if (attributesList.length) {
       attributesList.forEach(attribute => {
         const convertedAttribute = this.convertParameter(attribute);
-        entityInstance.addValues(convertedAttribute);
-      })
+        calloutRequestInstance.addAttributes(convertedAttribute);
+      });
     }
 
-    let calloutRequestInstance = new RunCalloutRequest();
-    calloutRequestInstance.setClientrequest(clientRequest);
-    calloutRequestInstance.setCallout(callout);
-    calloutRequestInstance.setEntity(entityInstance);
     return this.getService().runCallout(calloutRequestInstance);
   }
 
