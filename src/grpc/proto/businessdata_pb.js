@@ -5654,7 +5654,7 @@ proto.data.Condition.prototype.setOperator = function(value) {
  * @private {!Array<number>}
  * @const
  */
-proto.data.RunCalloutRequest.repeatedFields_ = [8];
+proto.data.RunCalloutRequest.repeatedFields_ = [10];
 
 
 
@@ -5693,7 +5693,9 @@ proto.data.RunCalloutRequest.toObject = function(includeInstance, msg) {
     tabuuid: jspb.Message.getFieldWithDefault(msg, 4, ""),
     callout: jspb.Message.getFieldWithDefault(msg, 5, ""),
     columnname: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    oldvalue: (f = msg.getOldvalue()) && proto.data.Value.toObject(includeInstance, f),
     value: (f = msg.getValue()) && proto.data.Value.toObject(includeInstance, f),
+    windowno: jspb.Message.getFieldWithDefault(msg, 9, 0),
     attributesList: jspb.Message.toObjectList(msg.getAttributesList(),
     proto.data.KeyValue.toObject, includeInstance)
   };
@@ -5760,9 +5762,18 @@ proto.data.RunCalloutRequest.deserializeBinaryFromReader = function(msg, reader)
     case 7:
       var value = new proto.data.Value;
       reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
-      msg.setValue(value);
+      msg.setOldvalue(value);
       break;
     case 8:
+      var value = new proto.data.Value;
+      reader.readMessage(value,proto.data.Value.deserializeBinaryFromReader);
+      msg.setValue(value);
+      break;
+    case 9:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setWindowno(value);
+      break;
+    case 10:
       var value = new proto.data.KeyValue;
       reader.readMessage(value,proto.data.KeyValue.deserializeBinaryFromReader);
       msg.addAttributes(value);
@@ -5839,7 +5850,7 @@ proto.data.RunCalloutRequest.serializeBinaryToWriter = function(message, writer)
       f
     );
   }
-  f = message.getValue();
+  f = message.getOldvalue();
   if (f != null) {
     writer.writeMessage(
       7,
@@ -5847,10 +5858,25 @@ proto.data.RunCalloutRequest.serializeBinaryToWriter = function(message, writer)
       proto.data.Value.serializeBinaryToWriter
     );
   }
+  f = message.getValue();
+  if (f != null) {
+    writer.writeMessage(
+      8,
+      f,
+      proto.data.Value.serializeBinaryToWriter
+    );
+  }
+  f = message.getWindowno();
+  if (f !== 0) {
+    writer.writeInt32(
+      9,
+      f
+    );
+  }
   f = message.getAttributesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      8,
+      10,
       f,
       proto.data.KeyValue.serializeBinaryToWriter
     );
@@ -5967,18 +5993,51 @@ proto.data.RunCalloutRequest.prototype.setColumnname = function(value) {
 
 
 /**
- * optional Value value = 7;
+ * optional Value oldValue = 7;
  * @return {?proto.data.Value}
  */
-proto.data.RunCalloutRequest.prototype.getValue = function() {
+proto.data.RunCalloutRequest.prototype.getOldvalue = function() {
   return /** @type{?proto.data.Value} */ (
     jspb.Message.getWrapperField(this, proto.data.Value, 7));
 };
 
 
 /** @param {?proto.data.Value|undefined} value */
-proto.data.RunCalloutRequest.prototype.setValue = function(value) {
+proto.data.RunCalloutRequest.prototype.setOldvalue = function(value) {
   jspb.Message.setWrapperField(this, 7, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
+ */
+proto.data.RunCalloutRequest.prototype.clearOldvalue = function() {
+  this.setOldvalue(undefined);
+};
+
+
+/**
+ * Returns whether this field is set.
+ * @return {boolean}
+ */
+proto.data.RunCalloutRequest.prototype.hasOldvalue = function() {
+  return jspb.Message.getField(this, 7) != null;
+};
+
+
+/**
+ * optional Value value = 8;
+ * @return {?proto.data.Value}
+ */
+proto.data.RunCalloutRequest.prototype.getValue = function() {
+  return /** @type{?proto.data.Value} */ (
+    jspb.Message.getWrapperField(this, proto.data.Value, 8));
+};
+
+
+/** @param {?proto.data.Value|undefined} value */
+proto.data.RunCalloutRequest.prototype.setValue = function(value) {
+  jspb.Message.setWrapperField(this, 8, value);
 };
 
 
@@ -5995,23 +6054,38 @@ proto.data.RunCalloutRequest.prototype.clearValue = function() {
  * @return {boolean}
  */
 proto.data.RunCalloutRequest.prototype.hasValue = function() {
-  return jspb.Message.getField(this, 7) != null;
+  return jspb.Message.getField(this, 8) != null;
 };
 
 
 /**
- * repeated KeyValue attributes = 8;
+ * optional int32 windowNo = 9;
+ * @return {number}
+ */
+proto.data.RunCalloutRequest.prototype.getWindowno = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 9, 0));
+};
+
+
+/** @param {number} value */
+proto.data.RunCalloutRequest.prototype.setWindowno = function(value) {
+  jspb.Message.setProto3IntField(this, 9, value);
+};
+
+
+/**
+ * repeated KeyValue attributes = 10;
  * @return {!Array<!proto.data.KeyValue>}
  */
 proto.data.RunCalloutRequest.prototype.getAttributesList = function() {
   return /** @type{!Array<!proto.data.KeyValue>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 8));
+    jspb.Message.getRepeatedWrapperField(this, proto.data.KeyValue, 10));
 };
 
 
 /** @param {!Array<!proto.data.KeyValue>} value */
 proto.data.RunCalloutRequest.prototype.setAttributesList = function(value) {
-  jspb.Message.setRepeatedWrapperField(this, 8, value);
+  jspb.Message.setRepeatedWrapperField(this, 10, value);
 };
 
 
@@ -6021,7 +6095,7 @@ proto.data.RunCalloutRequest.prototype.setAttributesList = function(value) {
  * @return {!proto.data.KeyValue}
  */
 proto.data.RunCalloutRequest.prototype.addAttributes = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 8, opt_value, proto.data.KeyValue, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 10, opt_value, proto.data.KeyValue, opt_index);
 };
 
 
