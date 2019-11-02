@@ -541,7 +541,7 @@ class BusinessData {
    */
   runCalloutRequest(calloutParameters) {
     const { ClientRequest, RunCalloutRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const { windowUuid, tabUuid, tableName, columnName, value, callout, attributesList = [] } = calloutParameters;
+    const { windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, callout, attributesList = [] } = calloutParameters;
 
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
@@ -550,11 +550,15 @@ class BusinessData {
     let calloutRequestInstance = new RunCalloutRequest();
     calloutRequestInstance.setClientrequest(clientRequest);
     calloutRequestInstance.setWindowuuid(windowUuid);
+    calloutRequestInstance.setWindowno(windowNo);
     calloutRequestInstance.setTabuuid(tabUuid);
     calloutRequestInstance.setTablename(tableName);
     calloutRequestInstance.setColumnname(columnName);
     calloutRequestInstance.setValue(
       this.convertValue(value)
+    );
+    calloutRequestInstance.setOldvalue(
+      this.convertValue(oldValue)
     );
     calloutRequestInstance.setCallout(callout);
 
