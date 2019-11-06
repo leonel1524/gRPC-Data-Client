@@ -119,12 +119,14 @@ class BusinessData {
    * Return value converted, compatible with grpc
    * @param {mixed} value
    */
-  convertValue(value) {
+  convertValueToGRPC(value) {
     const { Value } = require('./src/grpc/proto/businessdata_pb.js');
     var valueConverted = new Value();
 
     // evaluate type value
-    if(typeof(value) === 'number') {
+    if (value === undefined || value === null) {
+      valueConverted.setValuetype(Value.ValueType.NULL);
+    } else if(typeof(value) === 'number') {
       if (Number.isInteger(value)) {
         if(String(value).length > 11) {
           valueConverted.setLongvalue(value);
@@ -165,6 +167,53 @@ class BusinessData {
   }
 
   /**
+   * convert the value obtained from gRPC according to the type of value
+   * @param {object} valueToConvert
+   * @returns {mixed}
+   */
+  convertValueFromGRPC(valueToConvert) {
+    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
+
+    if (valueToConvert === undefined || valueToConvert === null) {
+      return undefined;
+    }
+
+    var returnValue;
+    switch (valueToConvert.getValuetype()) {
+      // data type Null or undefined
+      default:
+      case Value.ValueType.NULL:
+        returnValue = undefined;
+        break;
+      // data type Number (integer)
+      case Value.ValueType.INTEGER:
+        returnValue = valueToConvert.getIntvalue();
+        break;
+      // data type Number (integer)
+      case Value.ValueType.LONG:
+        returnValue = valueToConvert.getLongvalue();
+        break;
+      // data type Number (float)
+      case Value.ValueType.DOUBLE:
+        returnValue = valueToConvert.getDoublevalue();
+        break;
+      // data type Boolean
+      case Value.ValueType.BOOLEAN:
+        returnValue = valueToConvert.getBooleanvalue();
+        break;
+      // data type String
+      case Value.ValueType.STRING:
+        returnValue = valueToConvert.getStringvalue();
+        break;
+      // data type Date
+      case Value.ValueType.DATE:
+        returnValue = new Date(valueToConvert.getLongvalue());
+        break;
+    }
+    return returnValue;
+  }
+
+  /**
    * Convert a parameter defined by columnName and value to Value Object
    * @param {string} parameter.columnName
    * @param {mixed}  parameter.value
@@ -178,8 +227,12 @@ class BusinessData {
     const { KeyValue } = require('./src/grpc/proto/businessdata_pb.js');
     var keyValue = new KeyValue();
     keyValue.setKey(parameter.columnName);
-    var convertedValue = this.convertValue(parameter.value);
-    keyValue.setValue(convertedValue);
+
+    keyValue.setValue(
+      this.convertValueToGRPC(
+        parameter.value
+      )
+    );
     //  Return converted value
     return keyValue;
   }
@@ -201,10 +254,18 @@ class BusinessData {
 
     // set value and value to
     if (conditionParameters.hasOwnProperty('value')) {
-      conditionInstance.setValue(this.convertValue(conditionParameters.value));
+      conditionInstance.setValue(
+        this.convertValueToGRPC(
+          conditionParameters.value
+        )
+      );
     }
     if (conditionParameters.hasOwnProperty('valueTo')) {
-      conditionInstance.setValueto(this.convertValue(conditionParameters.valueTo));
+      conditionInstance.setValueto(
+        this.convertValueToGRPC(
+          conditionParameters.valueTo
+        )
+      );
     }
 
     // set operator
@@ -217,7 +278,11 @@ class BusinessData {
     if (conditionParameters.values && conditionParameters.values.length) {
       conditionInstance.setOperator(Condition.Operator.IN); // 11
       conditionParameters.values.forEach(itemValue => {
-        conditionInstance.addValues(this.convertValue(itemValue));
+        conditionInstance.addValues(
+          this.convertValueToGRPC(
+            itemValue
+          )
+        );
       });
     }
 
@@ -555,10 +620,14 @@ class BusinessData {
     calloutRequestInstance.setTablename(tableName);
     calloutRequestInstance.setColumnname(columnName);
     calloutRequestInstance.setValue(
-      this.convertValue(value)
+      this.convertValueToGRPC(
+        value
+      )
     );
     calloutRequestInstance.setOldvalue(
-      this.convertValue(oldValue)
+      this.convertValueToGRPC(
+        oldValue
+      )
     );
     calloutRequestInstance.setCallout(callout);
 
