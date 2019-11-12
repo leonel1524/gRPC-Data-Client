@@ -83,6 +83,13 @@ class BusinessData {
     return this.getService().getEntity(this.getRequestEntityFromCriteria(criteria));
   }
 
+  /**
+  * Request Object from Criteria
+  */
+  getDefaultValue(criteria) {
+    return this.getService().getDefaultValue(this.getDefaultValueRequestFromCriteria(criteria));
+  }
+
   //  List all references from window
   listReferencesRequest(request) {
     return this.getService().listReferences(request);
@@ -405,6 +412,23 @@ class BusinessData {
   }
 
   /**
+   * Get Client Request
+   * @param {string} criteria
+   * @return {object} request for get data
+   */
+  getDefaultValueRequestFromCriteria(criteria) {
+    const { ClientRequest, GetDefaultValueRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new GetDefaultValueRequest();
+    request.setClientrequest(clientRequest);
+    request.setCriteria(criteria);
+    //  return
+    return request;
+  }
+
+  /**
    * Get Entity List Request
    * @param {Criteria} criteria
    * @param {string}  pageToken, Token from request next page list
@@ -589,7 +613,9 @@ class BusinessData {
   getCriteria(tableName) {
     const { Criteria } = require('./src/grpc/proto/businessdata_pb.js');
     let criteria = new Criteria();
-    criteria.setTablename(tableName);
+    if(tableName) {
+      criteria.setTablename(tableName);
+    }
     //  Return criteria
     return criteria;
   }

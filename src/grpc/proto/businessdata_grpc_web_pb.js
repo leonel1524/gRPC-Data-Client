@@ -856,5 +856,60 @@ proto.data.BusinessDataServicePromiseClient.prototype.listReferences =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.GetDefaultValueRequest,
+ *   !proto.data.Value>}
+ */
+const methodInfo_BusinessDataService_GetDefaultValue = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.Value,
+  /** @param {!proto.data.GetDefaultValueRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.Value.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.GetDefaultValueRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.Value)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.Value>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.getDefaultValue =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/GetDefaultValue',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_GetDefaultValue,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.GetDefaultValueRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.Value>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.getDefaultValue =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/GetDefaultValue',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_GetDefaultValue);
+};
+
+
 module.exports = proto.data;
 
