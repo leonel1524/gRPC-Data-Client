@@ -84,10 +84,38 @@ class BusinessData {
   }
 
   /**
-  * Request Object from Criteria
+  * Request Object from query
   */
-  getDefaultValue(criteria) {
-    return this.getService().getDefaultValue(this.getDefaultValueRequestFromCriteria(criteria));
+  getDefaultValue(query}) {
+    return this.getService().getDefaultValue(this.getDefaultValueRequestFromQuery(query));
+  }
+
+  /**
+  * Request context info value
+  */
+  getContextInfoValue({uuid, query}) {
+    return this.getService().getContextInfoValue(this.getContextInfoValueRequest({uuid:uuid, query:query}));
+  }
+
+  /**
+  * Get Private Access
+  */
+  getPrivateAccess({tableName, recordId, userUuid}) {
+    return this.getService().getContextInfoValue(this.getPrivateAccess({tableName:tableName, recordId:recordId, userUuid:userUuid})));
+  }
+
+  /**
+  * Lock Private Access
+  */
+  lockPrivateAccess({tableName, recordId, userUuid}) {
+    return this.getService().getContextInfoValue(this.lockPrivateAccess({tableName:tableName, recordId:recordId, userUuid:userUuid}));
+  }
+
+  /**
+  * Unlock Private Access
+  */
+  unlockPrivateAccess({tableName, recordId, userUuid}) {
+    return this.getService().getContextInfoValue(this.unlockPrivateAccess({tableName:tableName, recordId:recordId, userUuid:userUuid}));
   }
 
   //  List all references from window
@@ -413,17 +441,96 @@ class BusinessData {
 
   /**
    * Get Client Request
-   * @param {string} criteria
+   * @param {string} query
    * @return {object} request for get data
    */
-  getDefaultValueRequestFromCriteria(criteria) {
+  getDefaultValueRequestFromQuery(query) {
     const { ClientRequest, GetDefaultValueRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new GetDefaultValueRequest();
     request.setClientrequest(clientRequest);
-    request.setCriteria(criteria);
+    request.setQuery(query);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get Client Request
+   * @param {string} uuid
+   * @param {string} query
+   * @return {object} request for get data
+   */
+  getContextInfoValueRequest({uuid, query}) {
+    const { ClientRequest, GetContextInfoValueRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new GetContextInfoValueRequest();
+    request.setClientrequest(clientRequest);
+    request.setQuery(query);
+    request.setUuid(uuid);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get Client Request
+   * @param {string} uuid
+   * @param {string} query
+   * @return {object} request for get data
+   */
+  getPrivateAccessRequest({tableName, recordId, userUuid}) {
+    const { ClientRequest, GetPrivateAccessRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new GetPrivateAccessRequest();
+    request.setClientrequest(clientRequest);
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
+    request.setUseruuid(userUuid);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get Client Request
+   * @param {string} uuid
+   * @param {string} query
+   * @return {object} request for get data
+   */
+  getLockPrivateAccessRequest({tableName, recordId, userUuid}) {
+    const { ClientRequest, LockPrivateAccessRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new LockPrivateAccessRequest();
+    request.setClientrequest(clientRequest);
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
+    request.setUseruuid(userUuid);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get Client Request
+   * @param {string} uuid
+   * @param {string} query
+   * @return {object} request for get data
+   */
+  getUnlockPrivateAccessRequest({tableName, recordId, userUuid}) {
+    const { ClientRequest, UnlockPrivateAccessRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new UnlockPrivateAccessRequest();
+    request.setClientrequest(clientRequest);
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
+    request.setUseruuid(userUuid);
     //  return
     return request;
   }

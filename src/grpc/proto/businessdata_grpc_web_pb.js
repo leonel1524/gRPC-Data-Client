@@ -911,5 +911,225 @@ proto.data.BusinessDataServicePromiseClient.prototype.getDefaultValue =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.GetContextInfoValueRequest,
+ *   !proto.data.ContextInfoValue>}
+ */
+const methodInfo_BusinessDataService_GetContextInfoValue = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ContextInfoValue,
+  /** @param {!proto.data.GetContextInfoValueRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ContextInfoValue.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.GetContextInfoValueRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ContextInfoValue)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ContextInfoValue>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.getContextInfoValue =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/GetContextInfoValue',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_GetContextInfoValue,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.GetContextInfoValueRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ContextInfoValue>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.getContextInfoValue =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/GetContextInfoValue',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_GetContextInfoValue);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.GetPrivateAccessRequest,
+ *   !proto.data.PrivateAccess>}
+ */
+const methodInfo_BusinessDataService_GetPrivateAccess = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.PrivateAccess,
+  /** @param {!proto.data.GetPrivateAccessRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.PrivateAccess.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.GetPrivateAccessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.PrivateAccess)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.PrivateAccess>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.getPrivateAccess =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/GetPrivateAccess',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_GetPrivateAccess,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.GetPrivateAccessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.PrivateAccess>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.getPrivateAccess =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/GetPrivateAccess',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_GetPrivateAccess);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.LockPrivateAccessRequest,
+ *   !proto.data.PrivateAccess>}
+ */
+const methodInfo_BusinessDataService_LockPrivateAccess = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.PrivateAccess,
+  /** @param {!proto.data.LockPrivateAccessRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.PrivateAccess.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.LockPrivateAccessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.PrivateAccess)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.PrivateAccess>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.lockPrivateAccess =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/LockPrivateAccess',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_LockPrivateAccess,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.LockPrivateAccessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.PrivateAccess>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.lockPrivateAccess =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/LockPrivateAccess',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_LockPrivateAccess);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.UnlockPrivateAccessRequest,
+ *   !proto.data.PrivateAccess>}
+ */
+const methodInfo_BusinessDataService_UnlockPrivateAccess = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.PrivateAccess,
+  /** @param {!proto.data.UnlockPrivateAccessRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.PrivateAccess.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.UnlockPrivateAccessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.PrivateAccess)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.PrivateAccess>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.unlockPrivateAccess =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/UnlockPrivateAccess',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_UnlockPrivateAccess,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.UnlockPrivateAccessRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.PrivateAccess>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.unlockPrivateAccess =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/UnlockPrivateAccess',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_UnlockPrivateAccess);
+};
+
+
 module.exports = proto.data;
 
