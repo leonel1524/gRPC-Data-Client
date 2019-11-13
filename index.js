@@ -86,36 +86,61 @@ class BusinessData {
   /**
   * Request Object from query
   */
-  getDefaultValue(query}) {
-    return this.getService().getDefaultValue(this.getDefaultValueRequestFromQuery(query));
+  getDefaultValue({ query }) {
+    return this.getService().getDefaultValue(
+      this.getDefaultValueRequestFromQuery(query)
+    );
   }
 
   /**
   * Request context info value
   */
-  getContextInfoValue({uuid, query}) {
-    return this.getService().getContextInfoValue(this.getContextInfoValueRequest({uuid:uuid, query:query}));
+  getContextInfoValue({ uuid, query }) {
+    return this.getService().getContextInfoValue(
+      this.getContextInfoValueRequest({
+        uuid: uuid,
+        query: query
+      })
+    );
   }
 
   /**
   * Get Private Access
   */
-  getPrivateAccess({tableName, recordId, userUuid}) {
-    return this.getService().getContextInfoValue(this.getPrivateAccess({tableName:tableName, recordId:recordId, userUuid:userUuid})));
+  getPrivateAccess({ tableName, recordId, userUuid }) {
+    return this.getService().getContextInfoValue(
+      this.getPrivateAccess({
+        tableName: tableName,
+        recordId: recordId,
+        userUuid: userUuid
+      })
+    );
   }
 
   /**
   * Lock Private Access
   */
-  lockPrivateAccess({tableName, recordId, userUuid}) {
-    return this.getService().getContextInfoValue(this.lockPrivateAccess({tableName:tableName, recordId:recordId, userUuid:userUuid}));
+  lockPrivateAccess({ tableName, recordId, userUuid }) {
+    return this.getService().getContextInfoValue(
+      this.lockPrivateAccess({
+        tableName: tableName,
+        recordId: recordId,
+        userUuid: userUuid
+      })
+    );
   }
 
   /**
   * Unlock Private Access
   */
-  unlockPrivateAccess({tableName, recordId, userUuid}) {
-    return this.getService().getContextInfoValue(this.unlockPrivateAccess({tableName:tableName, recordId:recordId, userUuid:userUuid}));
+  unlockPrivateAccess({ tableName, recordId, userUuid }) {
+    return this.getService().getContextInfoValue(
+      this.unlockPrivateAccess({
+        tableName:tableName,
+        recordId: recordId,
+        userUuid: userUuid
+      })
+    );
   }
 
   //  List all references from window
@@ -462,7 +487,7 @@ class BusinessData {
    * @param {string} query
    * @return {object} request for get data
    */
-  getContextInfoValueRequest({uuid, query}) {
+  getContextInfoValueRequest({ uuid, query }) {
     const { ClientRequest, GetContextInfoValueRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
@@ -481,7 +506,7 @@ class BusinessData {
    * @param {string} query
    * @return {object} request for get data
    */
-  getPrivateAccessRequest({tableName, recordId, userUuid}) {
+  getPrivateAccessRequest({ tableName, recordId, userUuid }) {
     const { ClientRequest, GetPrivateAccessRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
@@ -501,7 +526,7 @@ class BusinessData {
    * @param {string} query
    * @return {object} request for get data
    */
-  getLockPrivateAccessRequest({tableName, recordId, userUuid}) {
+  getLockPrivateAccessRequest({ tableName, recordId, userUuid }) {
     const { ClientRequest, LockPrivateAccessRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
@@ -521,7 +546,7 @@ class BusinessData {
    * @param {string} query
    * @return {object} request for get data
    */
-  getUnlockPrivateAccessRequest({tableName, recordId, userUuid}) {
+  getUnlockPrivateAccessRequest({ tableName, recordId, userUuid }) {
     const { ClientRequest, UnlockPrivateAccessRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
