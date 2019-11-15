@@ -108,8 +108,8 @@ class BusinessData {
   * Get Private Access
   */
   getPrivateAccess({ tableName, recordId, userUuid }) {
-    return this.getService().getContextInfoValue(
-      this.getPrivateAccess({
+    return this.getService().getPrivateAccess(
+      this.getPrivateAccessRequest({
         tableName: tableName,
         recordId: recordId,
         userUuid: userUuid
@@ -121,8 +121,8 @@ class BusinessData {
   * Lock Private Access
   */
   lockPrivateAccess({ tableName, recordId, userUuid }) {
-    return this.getService().getContextInfoValue(
-      this.lockPrivateAccess({
+    return this.getService().lockPrivateAccess(
+      this.getLockPrivateAccessRequest({
         tableName: tableName,
         recordId: recordId,
         userUuid: userUuid
@@ -134,8 +134,8 @@ class BusinessData {
   * Unlock Private Access
   */
   unlockPrivateAccess({ tableName, recordId, userUuid }) {
-    return this.getService().getContextInfoValue(
-      this.unlockPrivateAccess({
+    return this.getService().unlockPrivateAccess(
+      this.getUnlockPrivateAccessRequest({
         tableName:tableName,
         recordId: recordId,
         userUuid: userUuid
