@@ -826,7 +826,7 @@ class BusinessData {
         tableName: tableName,
         reportViewUuid: reportViewUuid,
         processUuid: processUuid
-      }})
+      })
     );
   }
 
@@ -838,7 +838,7 @@ class BusinessData {
       this.getReportViewsRequest({
         tableName: tableName,
         processUuid: processUuid
-      }})
+      })
     );
   }
 
