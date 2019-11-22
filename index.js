@@ -731,7 +731,7 @@ class BusinessData {
   }
 
   // Get Print format request from
-  getPrintFormatsRequest({tableName, reportViewUuid, processUuid}}) {
+  getPrintFormatsRequest({tableName, reportViewUuid, processUuid}) {
     const { ListPrintFormatsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
     let clientRequest = new ClientRequest();
     clientRequest.setSessionuuid(this.sessionUuid);
@@ -741,6 +741,33 @@ class BusinessData {
     request.setTablename(tableName);
     request.setReportviewuuid(reportViewUuid);
     request.setProcessuuid(processUuid);
+    //  return
+    return request;
+  }
+
+  // Get Report View request from
+  getReportViewsRequest({tableName, processUuid}) {
+    const { ListReportViewsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListReportViewsRequest();
+    request.setClientrequest(clientRequest);
+    request.setTablename(tableName);
+    request.setProcessuuid(processUuid);
+    //  return
+    return request;
+  }
+
+  // Get Drill Tables request from
+  getDrillTablesRequest(tableName) {
+    const { ListDrillTablesRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListDrillTablesRequest();
+    request.setClientrequest(clientRequest);
+    request.setTablename(tableName);
     //  return
     return request;
   }
@@ -791,15 +818,36 @@ class BusinessData {
   }
 
   /**
-  * Request Favorites List
+  * Request Print Formats List
   */
-  requestPrintFormats({tableName, reportViewUuid, processUuid}}) {
+  requestPrintFormats({tableName, reportViewUuid, processUuid}) {
     return this.getService().listPrintFormats(
       this.getPrintFormatsRequest({
         tableName: tableName,
         reportViewUuid: reportViewUuid,
         processUuid: processUuid
       }})
+    );
+  }
+
+  /**
+  * Request Report Views List
+  */
+  requestReportViews({tableName, processUuid}) {
+    return this.getService().listReportViewsRequest(
+      this.getReportViewsRequest({
+        tableName: tableName,
+        processUuid: processUuid
+      }})
+    );
+  }
+
+  /**
+  * Request Favorites List
+  */
+  requestDrillTables(tableName) {
+    return this.getService().listDrillTablesRequest(
+      this.getDrillTablesRequest(tableName)
     );
   }
 

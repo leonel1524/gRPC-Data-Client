@@ -1296,5 +1296,115 @@ proto.data.BusinessDataServicePromiseClient.prototype.listPrintFormats =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListReportViewsRequest,
+ *   !proto.data.ListReportViewsResponse>}
+ */
+const methodInfo_BusinessDataService_ListReportViews = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListReportViewsResponse,
+  /** @param {!proto.data.ListReportViewsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListReportViewsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListReportViewsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListReportViewsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListReportViewsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listReportViews =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListReportViews',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListReportViews,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListReportViewsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListReportViewsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listReportViews =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListReportViews',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListReportViews);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListDrillTablesRequest,
+ *   !proto.data.ListDrillTablesResponse>}
+ */
+const methodInfo_BusinessDataService_ListDrillTables = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListDrillTablesResponse,
+  /** @param {!proto.data.ListDrillTablesRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListDrillTablesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListDrillTablesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListDrillTablesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListDrillTablesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listDrillTables =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListDrillTables',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDrillTables,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListDrillTablesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListDrillTablesResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listDrillTables =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListDrillTables',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDrillTables);
+};
+
+
 module.exports = proto.data;
 
