@@ -717,6 +717,33 @@ class BusinessData {
     return request;
   }
 
+  // Get Favorites request from
+  getFavoritesRequest(userUuid) {
+    const { ListFavoritesRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListFavoritesRequest();
+    request.setClientrequest(clientRequest);
+    request.setUseruuid(userUuid);
+    //  return
+    return request;
+  }
+
+  // Get Recent Item request from
+  getPendingDocumentsRequest(userUuid, roleUuid) {
+    const { ListPendingDocumentsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListPendingDocumentsRequest();
+    request.setClientrequest(clientRequest);
+    request.setUseruuid(userUuid);
+    request.setRoleuuid(roleUuid);
+    //  return
+    return request;
+  }
+
   // Get references request from
   getReferencesRequest() {
     const { ListReferencesRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
@@ -735,6 +762,24 @@ class BusinessData {
   requestRecentItems() {
     return this.getService().listRecentItems(
       this.getRecentItemRequest()
+    );
+  }
+
+  /**
+  * Request Favorites List
+  */
+  requestFavorites(userUuid) {
+    return this.getService().listFavorites(
+      this.getFavoritesRequest(userUuid)
+    );
+  }
+
+  /**
+  * Request Recent Items Activity List
+  */
+  requestPendingDocuments(userUuid, roleUuid) {
+    return this.getService().listPendingDocuments(
+      this.getPendingDocumentsRequest(userUuid, roleUuid)
     );
   }
 

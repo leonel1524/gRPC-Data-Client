@@ -1131,5 +1131,115 @@ proto.data.BusinessDataServicePromiseClient.prototype.unlockPrivateAccess =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListFavoritesRequest,
+ *   !proto.data.ListFavoritesResponse>}
+ */
+const methodInfo_BusinessDataService_ListFavorites = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListFavoritesResponse,
+  /** @param {!proto.data.ListFavoritesRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListFavoritesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListFavoritesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListFavoritesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListFavoritesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listFavorites =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListFavorites',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListFavorites,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListFavoritesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListFavoritesResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listFavorites =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListFavorites',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListFavorites);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListPendingDocumentsRequest,
+ *   !proto.data.ListPendingDocumentsResponse>}
+ */
+const methodInfo_BusinessDataService_ListPendingDocuments = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListPendingDocumentsResponse,
+  /** @param {!proto.data.ListPendingDocumentsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListPendingDocumentsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListPendingDocumentsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListPendingDocumentsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListPendingDocumentsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listPendingDocuments =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListPendingDocuments',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListPendingDocuments,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListPendingDocumentsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListPendingDocumentsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listPendingDocuments =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListPendingDocuments',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListPendingDocuments);
+};
+
+
 module.exports = proto.data;
 
