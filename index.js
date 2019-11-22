@@ -730,6 +730,21 @@ class BusinessData {
     return request;
   }
 
+  // Get Print format request from
+  getPrintFormatsRequest({tableName, reportViewUuid, processUuid}}) {
+    const { ListPrintFormatsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListPrintFormatsRequest();
+    request.setClientrequest(clientRequest);
+    request.setTablename(tableName);
+    request.setReportviewuuid(reportViewUuid);
+    request.setProcessuuid(processUuid);
+    //  return
+    return request;
+  }
+
   // Get Recent Item request from
   getPendingDocumentsRequest(userUuid, roleUuid) {
     const { ListPendingDocumentsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
@@ -765,12 +780,26 @@ class BusinessData {
     );
   }
 
+
   /**
   * Request Favorites List
   */
   requestFavorites(userUuid) {
     return this.getService().listFavorites(
       this.getFavoritesRequest(userUuid)
+    );
+  }
+
+  /**
+  * Request Favorites List
+  */
+  requestPrintFormats({tableName, reportViewUuid, processUuid}}) {
+    return this.getService().listPrintFormats(
+      this.getPrintFormatsRequest({
+        tableName: tableName,
+        reportViewUuid: reportViewUuid,
+        processUuid: processUuid
+      }})
     );
   }
 

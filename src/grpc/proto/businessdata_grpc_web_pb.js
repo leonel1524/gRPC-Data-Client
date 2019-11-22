@@ -1241,5 +1241,60 @@ proto.data.BusinessDataServicePromiseClient.prototype.listPendingDocuments =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListPrintFormatsRequest,
+ *   !proto.data.ListPrintFormatsResponse>}
+ */
+const methodInfo_BusinessDataService_ListPrintFormats = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListPrintFormatsResponse,
+  /** @param {!proto.data.ListPrintFormatsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListPrintFormatsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListPrintFormatsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListPrintFormatsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListPrintFormatsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listPrintFormats =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListPrintFormats',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListPrintFormats,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListPrintFormatsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListPrintFormatsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listPrintFormats =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListPrintFormats',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListPrintFormats);
+};
+
+
 module.exports = proto.data;
 
