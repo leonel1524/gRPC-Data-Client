@@ -151,8 +151,29 @@ class BusinessData {
   /**
   * Request Object List from Criteria
   */
- requestObjectListFromCriteria(criteria, pageToken = false) {
+  requestObjectListFromCriteria(criteria, pageToken = false) {
     return this.getService().listEntities(this.getRequestEntityListFromCriteria(criteria, pageToken));
+  }
+
+  /**
+  * Get Report Output from criteria
+  */
+  getReportOutput({
+      criteria,
+      printFormatUuid,
+      reportViewUuid,
+      isSummary,
+      reportName,
+      reportType
+      }) {
+    return this.getService().getReportOutputRequest(this.getReportOutputRequest({
+        criteria: criteria,
+        printFormatUuid : printFormatUuid,
+        reportViewUuid : reportViewUuid,
+        isSummary : isSummary,
+        reportName : reportName,
+        reportType: reportType
+        }));
   }
 
   /**
@@ -595,6 +616,39 @@ class BusinessData {
     let request = new ListLookupItemsRequest();
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get List
+   * @param {string} criteria
+   * @return {object} Return request for get data
+   */
+  getReportOutputRequest({
+      criteria,
+      printFormatUuid,
+      reportViewUuid,
+      isSummary,
+      reportName,
+      reportType
+      }) {
+    const { ClientRequest, GetReportOutputRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new GetReportOutputRequest();
+    request.setClientrequest(clientRequest);
+    request.setPrintformatuuid(printFormatUuid);
+    request.setIssummary(isSummary);
+    request.setReporttype(reportType);
+    request.setCriteria(criteria);
+    if(reportViewUuid) {
+      request.setReportviewuuid(reportViewUuid);
+    }
+    if(reportName) {
+      request.setReportname(reportName);
+    }
     //  return
     return request;
   }
