@@ -888,7 +888,7 @@ class BusinessData {
   * Request Report Views List
   */
   requestReportViews({tableName, processUuid}) {
-    return this.getService().listReportViewsRequest(
+    return this.getService().listReportViews(
       this.getReportViewsRequest({
         tableName: tableName,
         processUuid: processUuid
@@ -900,7 +900,7 @@ class BusinessData {
   * Request Favorites List
   */
   requestDrillTables(tableName) {
-    return this.getService().listDrillTablesRequest(
+    return this.getService().listDrillTables(
       this.getDrillTablesRequest(tableName)
     );
   }
