@@ -352,6 +352,8 @@ class BusinessData {
     // set operator
     if (typeof conditionParameters.value === 'string') {
       conditionInstance.setOperator(Condition.Operator.LIKE); // 2
+    } else if (conditionParameters.hasOwnProperty('valueTo')) {
+      conditionInstance.setOperator(Condition.Operator.BETWEEN) // 8
     } else {
       conditionInstance.setOperator(Condition.Operator.EQUAL); // 0
     }
