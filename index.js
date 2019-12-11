@@ -166,7 +166,7 @@ class BusinessData {
       reportName,
       reportType
       }) {
-    return this.getService().getReportOutputRequest(this.getReportOutputRequest({
+    return this.getService().getReportOutput(this.getReportOutputRequest({
         criteria: criteria,
         printFormatUuid : printFormatUuid,
         reportViewUuid : reportViewUuid,
