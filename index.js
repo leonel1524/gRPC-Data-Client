@@ -193,7 +193,7 @@ class BusinessData {
       value.setValuetype(Value.ValueType.STRING)
     }
     criteria.addValues(value)
-    return this.getService().getLookupItem(this.getListLookupItemsRequestCriteria(criteria));
+    return this.getService().getLookupItem(this.getLookupItemsRequestCriteria(criteria));
   }
 
   /**
@@ -616,6 +616,23 @@ class BusinessData {
     clientRequest.setSessionuuid(this.sessionUuid);
     clientRequest.setLanguage(this.language);
     let request = new ListLookupItemsRequest();
+    request.setClientrequest(clientRequest);
+    request.setCriteria(criteria);
+    //  return
+    return request;
+  }
+
+  /**
+   * Get List
+   * @param {string} criteria
+   * @return {object} Return request for get data
+   */
+  getLookupItemsRequestCriteria(criteria) {
+    const { ClientRequest, GetLookupItemRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new GetLookupItemRequest();
     request.setClientrequest(clientRequest);
     request.setCriteria(criteria);
     //  return
