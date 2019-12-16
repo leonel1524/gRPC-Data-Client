@@ -1461,5 +1461,60 @@ proto.data.BusinessDataServicePromiseClient.prototype.getReportOutput =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListDashboardsRequest,
+ *   !proto.data.ListDashboardsResponse>}
+ */
+const methodInfo_BusinessDataService_ListDashboards = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListDashboardsResponse,
+  /** @param {!proto.data.ListDashboardsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListDashboardsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListDashboardsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListDashboardsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListDashboardsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listDashboards =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListDashboards',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDashboards,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListDashboardsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListDashboardsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listDashboards =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListDashboards',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDashboards);
+};
+
+
 module.exports = proto.data;
 

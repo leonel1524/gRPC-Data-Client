@@ -803,6 +803,19 @@ class BusinessData {
     return request;
   }
 
+  // Get Dashboard request from
+  getDashboardsRequest(roleUuid) {
+    const { ListDashboardsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    let request = new ListDashboardsRequest();
+    request.setClientrequest(clientRequest);
+    request.setUseruuid(roleUuid);
+    //  return
+    return request;
+  }
+
   // Get Print format request from
   getPrintFormatsRequest({tableName, reportViewUuid, processUuid}) {
     const { ListPrintFormatsRequest, ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
@@ -887,6 +900,15 @@ class BusinessData {
   requestFavorites(userUuid) {
     return this.getService().listFavorites(
       this.getFavoritesRequest(userUuid)
+    );
+  }
+
+  /**
+  * Request Dashboards List
+  */
+  requestDashboards(roleUuid) {
+    return this.getService().listDashboards(
+      this.getDashboardsRequest(roleUuid)
     );
   }
 
