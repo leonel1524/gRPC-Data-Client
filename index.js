@@ -470,6 +470,15 @@ class BusinessData {
     return request;
   }
 
+  //  Get Client Request
+  getClientRequest() {
+    const { ClientRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let clientRequest = new ClientRequest();
+    clientRequest.setSessionuuid(this.sessionUuid);
+    clientRequest.setLanguage(this.language);
+    return clientRequest;
+  }
+
   /**
    * Get Client Request
    * @param {string} criteria
@@ -910,6 +919,33 @@ class BusinessData {
     return this.getService().listDashboards(
       this.getDashboardsRequest(roleUuid)
     );
+  }
+
+  // Get languages flagged as System Language or Base Language
+  requestLanguages() {
+    const { ListLanguagesRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let request = new ListLanguagesRequest();
+    request.setClientrequest(this.getClientRequest());
+    return this.getService().listLanguages(request);
+  }
+
+  // Get languages flagged as System Language or Base Language
+  requestTranslations({ tableName, recordUuid, recordId, language }) {
+    const { ListTranslationsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    let request = new ListTranslationsRequest();
+    request.setClientrequest(this.getClientRequest());
+    //  Set values
+    request.setTablename(tableName);
+    if(recordUuid) {
+      request.setRecorduuid(recordUuid);
+    }
+    if(recordId) {
+      request.setRecordid(recordId);
+    }
+    if(language) {
+      request.setLanguage(language);
+    }
+    return this.getService().listTranslations(request);
   }
 
   /**

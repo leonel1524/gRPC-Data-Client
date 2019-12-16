@@ -1516,5 +1516,115 @@ proto.data.BusinessDataServicePromiseClient.prototype.listDashboards =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListLanguagesRequest,
+ *   !proto.data.ListLanguagesResponse>}
+ */
+const methodInfo_BusinessDataService_ListLanguages = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListLanguagesResponse,
+  /** @param {!proto.data.ListLanguagesRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListLanguagesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListLanguagesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListLanguagesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListLanguagesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listLanguages =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListLanguages',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListLanguages,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListLanguagesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListLanguagesResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listLanguages =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListLanguages',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListLanguages);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListTranslationsRequest,
+ *   !proto.data.ListTranslationsResponse>}
+ */
+const methodInfo_BusinessDataService_ListTranslations = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListTranslationsResponse,
+  /** @param {!proto.data.ListTranslationsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListTranslationsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListTranslationsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListTranslationsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListTranslationsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listTranslations =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListTranslations',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListTranslations,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListTranslationsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListTranslationsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listTranslations =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListTranslations',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListTranslations);
+};
+
+
 module.exports = proto.data;
 
