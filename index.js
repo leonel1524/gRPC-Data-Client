@@ -49,32 +49,6 @@ class BusinessData {
   }
 
   /**
-   * Checks if value is empty. Deep-checks arrays and objects
-   * Note: isEmpty([]) == true, isEmpty({}) == true, isEmpty([{0:false},"",0]) == true, isEmpty({0:1}) == false
-   * @param   {boolean|array|object|number|string} value
-   * @returns {boolean}
-   */
-  isEmptyValue(value) {
-    if (value === undefined || value == null) {
-      return true
-    } else if (value === -1 || value === '-1') {
-      return true
-    } else if (typeof value === 'string') {
-      return Boolean(!value.trim().length)
-    } else if (typeof value === 'function' || typeof value === 'number' || typeof value === 'boolean' || Object.prototype.toString.call(value) === '[object Date]') {
-      return false
-    } else if (Object.prototype.toString.call(value) === '[object Map]' && value.size === 0) {
-      return true
-    } else if (Array.isArray(value)) {
-      return Boolean(!value.length)
-    } else if (typeof value === 'object') {
-      return Boolean(!Object.keys(value).length)
-    }
-
-    return true
-  }
-
-  /**
    * convert the value obtained from gRPC according to the type of value
    * @param {object} valueToConvert
    * @returns {mixed}
@@ -634,42 +608,20 @@ class BusinessData {
    * @param {string}  reportName
    * @param {string}  reportType
    */
-  getReportOutput({ parametersList = [], tableName, printFormatUuid, reportViewUuid, isSummary, reportName, reportType, isConvert = true }) {
+  getReportOutput({ criteria, printFormatUuid, reportViewUuid, isSummary, reportName, reportType, isConvert = true }) {
     const { GetReportOutputRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const reportOutputInstance = new GetReportOutputRequest();
     reportOutputInstance.setClientrequest(this.getClientRequest());
     reportOutputInstance.setPrintformatuuid(printFormatUuid);
     reportOutputInstance.setIssummary(isSummary);
     reportOutputInstance.setReporttype(reportType);
+    reportOutputInstance.setCriteria(criteria);
     if (reportViewUuid) {
       reportOutputInstance.setReportviewuuid(reportViewUuid);
     }
     if (reportName) {
       reportOutputInstance.setReportname(reportName);
     }
-
-    const criteriaForReport = this.convertCriteriaToGRPC({ tableName });
-    if (parametersList && parametersList.length) {
-      parametersList.forEach(parameterItem => {
-        let valueTo;
-        let isAddCodition = true;
-        if (parameterItem.isRange) {
-          valueTo = parametersList.find(param => param.columnName === `${parameterItem.columnName}_To`).value;
-          if (!this.isEmptyValue(valueTo)) {
-            parameterItem.valueTo = valueTo;
-          } else {
-            isAddCodition = false;
-          }
-        }
-
-        if (isAddCodition) {
-          const convertedCondition = this.convertCondition(parameterItem);
-          criteriaForReport.addConditions(convertedCondition);
-        }
-      });
-    }
-    reportOutputInstance.setCriteria(criteriaForReport);
-
     return this.getService().getReportOutput(reportOutputInstance)
       .then(reportOutputResponse => {
         if (isConvert) {
@@ -1305,7 +1257,7 @@ class BusinessData {
         if (isConvert) {
           return {
             recordCount: printFormatResponse.getRecordcount(),
-            printFormatsList: printFormatResponse.getPrintformatsList().map(printFormatItem => {
+            reportViewsList: printFormatResponse.getPrintformatsList().map(printFormatItem => {
               return {
                 uuid: printFormatItem.getUuid(),
                 name: printFormatItem.getName(),
