@@ -151,7 +151,7 @@ message PrivateAccess {
 	string userUuid = 4;
 }
 
-//  Empty message
+//  Rollback Entity Request
 message RollbackEntityRequest {
 	ClientRequest clientRequest = 1;
 	string tableName = 2;
