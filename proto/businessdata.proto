@@ -151,7 +151,7 @@ message PrivateAccess {
 	string userUuid = 4;
 }
 
-//  Rollback Entity Request
+//  Empty message
 message RollbackEntityRequest {
 	ClientRequest clientRequest = 1;
 	string tableName = 2;
@@ -488,7 +488,8 @@ message ListTranslationsRequest {
 // Translations Item
 message Translation {
 	string language = 1;
-	map<string, Value> values = 4;
+	string translationUuid = 2;
+	map<string, Value> values = 3;
 }
 
 //	Translations List

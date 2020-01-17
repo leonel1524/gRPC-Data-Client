@@ -12102,6 +12102,7 @@ proto.data.Translation.prototype.toObject = function(opt_includeInstance) {
 proto.data.Translation.toObject = function(includeInstance, msg) {
   var f, obj = {
     language: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    translationuuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     valuesMap: (f = msg.getValuesMap()) ? f.toObject(includeInstance, proto.data.Value.toObject) : []
   };
 
@@ -12143,7 +12144,11 @@ proto.data.Translation.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setLanguage(value);
       break;
-    case 4:
+    case 2:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTranslationuuid(value);
+      break;
+    case 3:
       var value = msg.getValuesMap();
       reader.readMessage(value, function(message, reader) {
         jspb.Map.deserializeBinary(message, reader, jspb.BinaryReader.prototype.readString, jspb.BinaryReader.prototype.readMessage, proto.data.Value.deserializeBinaryFromReader, "");
@@ -12185,9 +12190,16 @@ proto.data.Translation.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getTranslationuuid();
+  if (f.length > 0) {
+    writer.writeString(
+      2,
+      f
+    );
+  }
   f = message.getValuesMap(true);
   if (f && f.getLength() > 0) {
-    f.serializeBinary(4, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
+    f.serializeBinary(3, writer, jspb.BinaryWriter.prototype.writeString, jspb.BinaryWriter.prototype.writeMessage, proto.data.Value.serializeBinaryToWriter);
   }
 };
 
@@ -12208,14 +12220,29 @@ proto.data.Translation.prototype.setLanguage = function(value) {
 
 
 /**
- * map<string, Value> values = 4;
+ * optional string translationUuid = 2;
+ * @return {string}
+ */
+proto.data.Translation.prototype.getTranslationuuid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+};
+
+
+/** @param {string} value */
+proto.data.Translation.prototype.setTranslationuuid = function(value) {
+  jspb.Message.setProto3StringField(this, 2, value);
+};
+
+
+/**
+ * map<string, Value> values = 3;
  * @param {boolean=} opt_noLazyCreate Do not create the map if
  * empty, instead returning `undefined`
  * @return {!jspb.Map<string,!proto.data.Value>}
  */
 proto.data.Translation.prototype.getValuesMap = function(opt_noLazyCreate) {
   return /** @type {!jspb.Map<string,!proto.data.Value>} */ (
-      jspb.Message.getMapField(this, 4, opt_noLazyCreate,
+      jspb.Message.getMapField(this, 3, opt_noLazyCreate,
       proto.data.Value));
 };
 
