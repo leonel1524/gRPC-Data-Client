@@ -663,7 +663,7 @@ class BusinessData {
         }
 
         if (isAddCodition) {
-          const convertedCondition = this.convertCondition(parameterItem);
+          const convertedCondition = this.convertConditionToGRPC(parameterItem);
           criteriaForReport.addConditions(convertedCondition);
         }
       });
