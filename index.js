@@ -34,7 +34,7 @@ class BusinessData {
   getService() {
     const grpc_promise = require('grpc-promise');
     const { BusinessDataServicePromiseClient } = require('./src/grpc/proto/businessdata_grpc_web_pb.js');
-    var requestService = new BusinessDataServicePromiseClient(this.host);
+    const requestService = new BusinessDataServicePromiseClient(this.host);
     grpc_promise.promisifyAll(requestService);
     //  Return request for get data
     return requestService;
@@ -763,9 +763,9 @@ class BusinessData {
     // evaluate type value
     if (value === undefined || value === null) {
       valueConverted.setValuetype(Value.ValueType.NULL);
-    } else if(typeof(value) === 'number') {
+    } else if (typeof(value) === 'number') {
       if (Number.isInteger(value)) {
-        if(String(value).length > 11) {
+        if (String(value).length > 11) {
           valueConverted.setLongvalue(value);
           valueConverted.setValuetype(Value.ValueType.LONG);
         } else {
@@ -776,10 +776,10 @@ class BusinessData {
         valueConverted.setDoublevalue(value);
         valueConverted.setValuetype(Value.ValueType.DOUBLE);
       }
-    } else if(typeof(value) === 'boolean') {
+    } else if (typeof(value) === 'boolean') {
       valueConverted.setBooleanvalue(value);
       valueConverted.setValuetype(Value.ValueType.BOOLEAN);
-    } else if(Object.prototype.toString.call(value) === '[object Date]') {
+    } else if (Object.prototype.toString.call(value) === '[object Date]') {
       valueConverted.setLongvalue(value.getTime());
       valueConverted.setValuetype(Value.ValueType.DATE);
     } else {
@@ -1262,22 +1262,23 @@ class BusinessData {
     request.setClientrequest(this.getClientRequest());
     //  Set values
     request.setTablename(tableName);
-    if(recordUuid) {
+    if (recordUuid) {
       request.setRecorduuid(recordUuid);
     }
-    if(recordId) {
+    if (recordId) {
       request.setRecordid(recordId);
     }
-    if(language) {
+    if (language) {
       request.setLanguage(language);
     }
     return this.getService().listTranslations(request)
       .then(translationResponse => {
         return {
           recordCount: translationResponse.getRecordcount(),
-          languagesList: translationResponse.getTranslationsList().map(translationItem => {
+          translationsList: translationResponse.getTranslationsList().map(translationItem => {
             return {
               language: translationItem.getLanguage(),
+              translationUuid: translationItem.getTranslationuuid(),
               values: this.convertValuesMap({
                 mapToConvert: translationItem.getValuesMap(),
                 returnType: 'object'
