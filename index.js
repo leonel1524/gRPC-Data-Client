@@ -294,7 +294,7 @@ class BusinessData {
    * @param {string} nextPageToken
    * @returns {ListEntitiesResponse}
    */
-  requestEntitiesList({ tableName, query, whereClause, conditionsList = [], orderByClause, nextPageToken, isConvert = true, formatToConvert = 'object' }) {
+  requestEntitiesList({ tableName, query, whereClause, conditionsList = [], orderByClause, pageToken, pageSize, isConvert = true, formatToConvert = 'object' }) {
     const { ListEntitiesRequest } = require('./src/grpc/proto/businessdata_pb.js');
 
     const request = new ListEntitiesRequest();
@@ -302,10 +302,8 @@ class BusinessData {
 
     const criteriaForList = this.convertCriteriaToGRPC({ tableName, query, whereClause, conditionsList, orderByClause });
     request.setCriteria(criteriaForList);
-
-    if (nextPageToken) {
-      request.setPageToken(nextPageToken);
-    }
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
 
     return this.getService().listEntities(request)
       .then(entitiesListResponse => {
@@ -592,7 +590,7 @@ class BusinessData {
    * @param {string}  recordUuid
    * @param {number}  recordId
    */
-  listReferencesRequest({ windowUuid, tableName, recordId, recordUuid, isConvert = true }) {
+  requestListReferences({ windowUuid, tableName, recordId, recordUuid, pageToken, pageSize, isConvert = true }) {
     const { ListReferencesRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestReference = new ListReferencesRequest();
     requestReference.setClientrequest(this.getClientRequest());
@@ -603,6 +601,8 @@ class BusinessData {
     if (recordId !== undefined && recordId !== null) {
       requestReference.setRecordid(recordId);
     }
+    requestReference.setPageToken(pageToken);
+    requestReference.setPageSize(pageSize);
 
     return this.getService().listReferences(requestReference)
       .then(referenceResponse => {
@@ -729,14 +729,14 @@ class BusinessData {
    * @param {string} query
    * @param {string} nextPageToken
    */
-  requestLookupListFromReference({ tableName, query, nextPageToken, pageSize }) {
+  requestListLookupFromReference({ tableName, query, pageToken, pageSize }) {
     const { ListLookupItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const criteriaForLookup = this.convertCriteriaToGRPC({ tableName, query });
 
     const requestLookup = new ListLookupItemsRequest();
     requestLookup.setClientrequest(this.getClientRequest());
     requestLookup.setCriteria(criteriaForLookup);
-    requestLookup.setPageToken(nextPageToken);
+    requestLookup.setPageToken(pageToken);
     requestLookup.setPageSize(pageSize);
 
     return this.getService().listLookupItems(requestLookup)
@@ -967,33 +967,33 @@ class BusinessData {
     return this.getService().runBusinessProcess(processRequest)
       .then(runProcessResponse => {
         if (isConvert) {
-          return this.convertBusinessProcess(runProcessResponse);
+          return this.convertProcessLog(runProcessResponse);
         }
         return runProcessResponse;
       });
   }
 
-  convertBusinessProcess(businessProcessToConvert) {
-    if (businessProcessToConvert) {
+  convertProcessLog(processLogToConvert) {
+    if (processLogToConvert) {
       return {
-        uuid: businessProcessToConvert.getUuid(),
-        instanceUuid: businessProcessToConvert.getInstanceuuid(),
-        isError: businessProcessToConvert.getIserror(),
-        summary: businessProcessToConvert.getSummary(),
-        resultTableName: businessProcessToConvert.getResulttablename(),
-        isProcessing: businessProcessToConvert.getIsprocessing(),
-        lastRun: businessProcessToConvert.getLastrun(),
-        logsList: businessProcessToConvert.getLogsList().map(log => {
+        uuid: processLogToConvert.getUuid(),
+        instanceUuid: processLogToConvert.getInstanceuuid(),
+        isError: processLogToConvert.getIserror(),
+        summary: processLogToConvert.getSummary(),
+        resultTableName: processLogToConvert.getResulttablename(),
+        isProcessing: processLogToConvert.getIsprocessing(),
+        lastRun: processLogToConvert.getLastrun(),
+        logsList: processLogToConvert.getLogsList().map(log => {
           return {
             recordId: log.getRecordid(),
             log: log.getLog()
           };
         }),
         parametersList: this.convertValuesMap({
-          mapToConvert: businessProcessToConvert.getParametersMap(),
+          mapToConvert: processLogToConvert.getParametersMap(),
           returnType: 'object'
         }),
-        output: this.convertReportOutput(businessProcessToConvert.getOutput())
+        output: this.convertReportOutput(processLogToConvert.getOutput())
       };
     }
     return {
@@ -1060,18 +1060,18 @@ class BusinessData {
    * @param {string} query
    * @param {string} whereClause
    * @param {string} orderByClause
-   * @param {string} nextPageToken
+   * @param {string} pageToken
    */
-  requestBrowserSearch({ uuid, parametersList = [], query, whereClause, orderByClause, nextPageToken, isConvert = true, formatToConvert = 'object' }) {
+  requestListBrowserSearch({ uuid, parametersList = [], query, whereClause, orderByClause, pageToken, pageSize, isConvert = true, formatToConvert = 'object' }) {
     const { ListBrowserItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const browserRequest = new ListBrowserItemsRequest();
     browserRequest.setClientrequest(this.getClientRequest());
 
     //  Fill Request browser
     browserRequest.setUuid(uuid);
-    if (nextPageToken) {
-      browserRequest.setPageToken(nextPageToken);
-    }
+    browserRequest.setPageToken(pageToken);
+    browserRequest.setPageSize(pageSize);
+
     // isQueryCriteria fields parameters list
     if (parametersList && parametersList.length) {
       parametersList.forEach(parameterItem => {
@@ -1105,35 +1105,39 @@ class BusinessData {
   }
 
   /**
-   * Request Process Activity List
+   * Request Processes Logs List
    */
-  requestProcessActivity(isConvert = true) {
-    const { ListActivitiesRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const request = new ListActivitiesRequest();
+  requestListProcessesLogs({ pageToken, pageSize, isConvert = true }) {
+    const { ListProcessLogsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListProcessLogsRequest();
     request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
     //  return
-    return this.getService().listActivities(request)
-      .then(listActivitiesResponse => {
+    return this.getService().listProcessLogs(request)
+      .then(processLogsResponse => {
         if (isConvert) {
           return {
-            recordCount: listActivitiesResponse.getRecordcount(),
-            responsesList: listActivitiesResponse.getResponsesList().map(processItem => {
-              return this.convertBusinessProcess(processItem);
+            recordCount: processLogsResponse.getRecordcount(),
+            processLogsList: processLogsResponse.getProcesslogsList().map(processItem => {
+              return this.convertProcessLog(processItem);
             }),
-            nextPageToken: listActivitiesResponse.getNextPageToken()
+            nextPageToken: processLogsResponse.getNextPageToken()
           };
         }
-        return listActivitiesResponse;
+        return processLogsResponse;
       });
   }
 
   /**
    * Request Recent Items Activity List
    */
-  requestRecentItems(isConvert = true) {
+  requestListRecentItems({ pageToken, pageSize, isConvert = true }) {
     const { ListRecentItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const request = new ListRecentItemsRequest();
     request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
     return this.getService().listRecentItems(request)
       .then(recentItemsResponse => {
         if (isConvert) {
@@ -1166,11 +1170,13 @@ class BusinessData {
    * Request Favorites List
    * @param {string} userUuid
    */
-  requestFavorites(userUuid, isConvert = true) {
+  requestListFavorites({ userUuid, pageToken, pageSize, isConvert = true }) {
     const { ListFavoritesRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListFavoritesRequest();
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setUseruuid(userUuid);
+    requestInstance.setPageToken(pageToken);
+    requestInstance.setPageSize(pageSize);
 
     return this.getService().listFavorites(requestInstance)
       .then(favoritesResponse => {
@@ -1197,11 +1203,14 @@ class BusinessData {
    * Request Dashboards List
    * @param {string} roleUuid
    */
-  requestDashboards(roleUuid) {
+  requestListDashboards({ roleUuid, pageToken, pageSize }) {
     const { ListDashboardsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const request = new ListDashboardsRequest();
     request.setClientrequest(this.getClientRequest());
     request.setRoleuuid(roleUuid);
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
     return this.getService().listDashboards(request)
       .then(dashboardResponse => {
         return {
@@ -1229,10 +1238,14 @@ class BusinessData {
   /**
    * Get languages flagged as System Language or Base Language
    */
-  requestLanguages() {
+  requestListLanguages({ pageToken, pageSize }) {
     const { ListLanguagesRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    let request = new ListLanguagesRequest();
+    const request = new ListLanguagesRequest();
+
     request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
     return this.getService().listLanguages(request)
       .then(languageResponse => {
         return {
@@ -1256,21 +1269,26 @@ class BusinessData {
   }
 
   // Get languages flagged as System Language or Base Language
-  requestTranslations({ tableName, recordUuid, recordId, language }) {
+  requestTranslations({
+    tableName,
+    recordUuid,
+    recordId,
+    language,
+    pageToken,
+    pageSize
+  }) {
     const { ListTranslationsRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    let request = new ListTranslationsRequest();
+    const request = new ListTranslationsRequest();
+
     request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
     //  Set values
     request.setTablename(tableName);
-    if (recordUuid) {
-      request.setRecorduuid(recordUuid);
-    }
-    if (recordId) {
-      request.setRecordid(recordId);
-    }
-    if (language) {
-      request.setLanguage(language);
-    }
+    request.setRecorduuid(recordUuid);
+    request.setRecordid(recordId);
+    request.setLanguage(language);
+
     return this.getService().listTranslations(request)
       .then(translationResponse => {
         return {
@@ -1296,13 +1314,15 @@ class BusinessData {
    * @param {string} reportViewUuid
    * @param {string} processUuid
    */
-  requestPrintFormats({ tableName, reportViewUuid, processUuid, isConvert = true }) {
+  requestListPrintFormats({ tableName, reportViewUuid, processUuid, pageToken, pageSize, isConvert = true }) {
     const { ListPrintFormatsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListPrintFormatsRequest();
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setTablename(tableName);
     requestInstance.setReportviewuuid(reportViewUuid);
     requestInstance.setProcessuuid(processUuid);
+    requestInstance.setPageToken(pageToken);
+    requestInstance.setPageSize(pageSize);
 
     return this.getService().listPrintFormats(requestInstance)
       .then(printFormatResponse => {
@@ -1332,12 +1352,14 @@ class BusinessData {
    * @param {string}  processUuid
    * @param {boolean} isConvert, default value is true
    */
-  requestReportViews({ tableName, processUuid, isConvert = true }) {
+  requestListReportViews({ tableName, processUuid, pageToken, pageSize, isConvert = true }) {
     const { ListReportViewsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListReportViewsRequest();
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setTablename(tableName);
     requestInstance.setProcessuuid(processUuid);
+    requestInstance.setPageToken(pageToken);
+    requestInstance.setPageSize(pageSize);
 
     return this.getService().listReportViews(requestInstance)
       .then(reportViewsResponse => {
@@ -1363,11 +1385,13 @@ class BusinessData {
    * Request Favorites List
    * @param {string} tableName
    */
-  requestDrillTables(tableName) {
+  requestListDrillTables({ tableName, pageToken, pageSize }) {
     const { ListDrillTablesRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListDrillTablesRequest();
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setTablename(tableName);
+    requestInstance.setPageToken(pageToken);
+    requestInstance.setPageSize(pageSize);
 
     return this.getService().listDrillTables(requestInstance)
       .then(drillTableResponse => {
@@ -1389,12 +1413,14 @@ class BusinessData {
    * @param {string} userUuid
    * @param {string} roleUuid
    */
-  requestPendingDocuments({ userUuid, roleUuid, isConvert = true }) {
+  requestListPendingDocuments({ userUuid, roleUuid, pageToken, pageSize, isConvert = true }) {
     const { ListPendingDocumentsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListPendingDocumentsRequest();
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setUseruuid(userUuid);
     requestInstance.setRoleuuid(roleUuid);
+    requestInstance.setPageToken(pageToken);
+    requestInstance.setPageSize(pageSize);
 
     return this.getService().listPendingDocuments(requestInstance)
       .then(pendingDocumentsResponse => {
@@ -1477,6 +1503,263 @@ class BusinessData {
           };
         }
         return calloutResponse;
+      });
+  }
+
+  /**
+   * Get all event type or get key value type from value
+   * @param {number} keyFind
+   */
+  getEventTypeRecordLog(keyFind) {
+    const { RecordLog } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(RecordLog.EventType).find(key => RecordLog.EventType[key] === keyFind);
+    }
+    return RecordLog.EventType;
+  }
+
+  convertRecordLog(recordLogToConvert) {
+    if (recordLogToConvert) {
+      return {
+        logUuid: recordLogToConvert.getLoguuid(),
+        recordId: recordLogToConvert.getRecordid(),
+        tableName: recordLogToConvert.getTablename(),
+        columnName: recordLogToConvert.getColumnname(),
+        displayColumnName: recordLogToConvert.getDisplaycolumnname(),
+        sessionUuid: recordLogToConvert.getSessionuuid(),
+        userUuid: recordLogToConvert.getUseruuid(),
+        userName: recordLogToConvert.getUsername(),
+        transactionName: recordLogToConvert.getTransactionname(),
+        oldValue: this.convertValueFromGRPC(recordLogToConvert.getOldvalue()),
+        newValue: this.convertValueFromGRPC(recordLogToConvert.getNewvalue()),
+        oldDisplayValue: recordLogToConvert.getOlddisplayvalue(),
+        newDisplayValue: recordLogToConvert.getNewdisplayvalue(),
+        description: recordLogToConvert.getDescription(),
+        eventType: recordLogToConvert.getEventType(),
+        eventTypeName: this.getEventTypeRecordLog(recordLogToConvert.getEventType()),
+        logDate: recordLogToConvert.getLogdate()
+      }
+    }
+    return {
+      logUuid: undefined,
+      recordId: undefined,
+      tableName: undefined,
+      columnName: undefined,
+      displayColumnName: undefined,
+      sessionUuid: undefined,
+      userUuid: undefined,
+      userName: undefined,
+      transactionName: undefined,
+      oldValue: undefined,
+      oldDisplayValue: undefined,
+      newValue: undefined,
+      newDisplayValue: undefined,
+      description: undefined,
+      eventType: undefined,
+      logDate: undefined
+    }
+  }
+
+  /**
+   * Request Records Logs List
+   */
+  requestListRecordsLogs({ tableName, recordId, pageToken, pageSize, isConvert = true }) {
+    const { ListRecordLogsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListRecordLogsRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
+    //  return
+    return this.getService().listProcessLogs(request)
+      .then(recordLogsResponse => {
+        if (isConvert) {
+          return {
+            recordCount: recordLogsResponse.getRecordcount(),
+            recordLogsList: recordLogsResponse.getRecordlogsList().map(recordItem => {
+              return this.convertRecordLog(recordItem);
+            }),
+            nextPageToken: recordLogsResponse.getNextPageToken()
+          };
+        }
+        return recordLogsResponse;
+      });
+  }
+
+   /**
+   * Get all workflow state or get key value type from value
+   * @param {number} keyFind
+        RUNNING: 0,
+        COMPLETED: 1,
+        ABORTED: 2,
+        TERMINATED: 3,
+        SUSPENDED: 4,
+        NOT_STARTED: 5,
+   */
+  getWorkflowState(keyFind) {
+    const { WorkflowProcess } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(WorkflowProcess.WorkflowState).find(key => WorkflowProcess.WorkflowState[key] === keyFind);
+    }
+    return WorkflowProcess.WorkflowState;
+  }
+
+  /**
+   * Get all workflow priority or get key value type from value
+   * @param {number} keyFind
+        URGENT: 0,
+        HIGH: 1,
+        MEDIUM: 2,
+        LOW: 3,
+        MINOR: 4,
+   */
+  getWorkflowPriority(keyFind) {
+    const { WorkflowProcess } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(WorkflowProcess.Priority).find(key => WorkflowProcess.Priority[key] === keyFind);
+    }
+    return WorkflowProcess.Priority;
+  }
+
+  /**
+   * Get all workflow event type or get key value type from value
+   * @param {number} keyFind
+        PROCESS_CREATED = 0;
+        PROCESS_COMPLETED = 1;
+        STATE_CHANGED = 2;
+   */
+  getWorkflowEventType(keyFind) {
+    const { WorkflowEvent } = require('./src/grpc/proto/businessdata_pb.js');
+    if (keyFind !== undefined) {
+      return Object.keys(WorkflowEvent.EventType).find(key => WorkflowEvent.EventType[key] === keyFind);
+    }
+    return WorkflowEvent.EventType;
+  }
+
+  convertWorkflowProcess(workflowProcessToConvert) {
+    if (workflowProcessToConvert) {
+      return {
+        processUuid: workflowProcessToConvert.getProcessuuid(),
+        workflowUuid: workflowProcessToConvert.getWorkflowuuid(),
+        workflowName: workflowProcessToConvert.getWorkflowname(),
+        recordId: workflowProcessToConvert.getRecordid(),
+        tableName: workflowProcessToConvert.getTablename(),
+        userUuid: workflowProcessToConvert.getUseruuid(),
+        userName: workflowProcessToConvert.getUsername(),
+        responsibleUuid: workflowProcessToConvert.getResponsibleuuid(),
+        responsibleName: workflowProcessToConvert.getResponsiblename(),
+        message: workflowProcessToConvert.getMessage(),
+        textMessage: workflowProcessToConvert.getTextmessage(),
+        processed: workflowProcessToConvert.getProcessed(),
+        workflowState: workflowProcessToConvert.getWorkflowstate(),
+        workflowStateName: this.getWorkflowState(workflowProcessToConvert.getWorkflowstate()),
+        priority: workflowProcessToConvert.getPriority(),
+        priorityName: this.getWorkflowPriority(workflowProcessToConvert.getPriority()),
+        workflowEventsList: workflowProcessToConvert.getWorkfloweventsList().map(itemEvent => {
+          return this.convertWorkflowEvent(itemEvent);
+        }),
+        logDate: workflowProcessToConvert.getLongdate()
+      }
+    }
+    return {
+      processUuid: undefined,
+      workflowUuid: undefined,
+      workflowName: undefined,
+      recordId: undefined,
+      tableName: undefined,
+      userUuid: undefined,
+      userName: undefined,
+      responsibleUuid: undefined,
+      responsibleName: undefined,
+      message: undefined,
+      textMessage: undefined,
+      processed: undefined,
+      workflowState: undefined,
+      workflowStateName: undefined,
+      priority: undefined,
+      priorityName: undefined,
+      workflowEventsList: undefined,
+      logDate: undefined
+    }
+  }
+
+  convertWorkflowEvent(workflowEventToConvert) {
+    if (workflowEventToConvert) {
+      return {
+        workflowUuid: workflowEventToConvert.getWorkflowuuid(),
+        workflowName: workflowEventToConvert.getWorkflowname(),
+        nodeUuid: workflowEventToConvert.getNodeuuid(),
+        nodeName: workflowEventToConvert.getNodename(),
+        recordId: workflowEventToConvert.getRecordid(),
+        tableName: workflowEventToConvert.getTablename(),
+        userUuid: workflowEventToConvert.getUseruuid(),
+        userName: workflowEventToConvert.getUsername(),
+        responsibleUuid: workflowEventToConvert.getResponsibleuuid(),
+        responsibleName: workflowEventToConvert.getResulttablename(),
+        textMessage: workflowEventToConvert.getTextmessage(),
+        timeElapsed: workflowEventToConvert.getTimeelapsed(),
+        attributeName: workflowEventToConvert.getAttributename(),
+        oldValue: this.convertValueFromGRPC(workflowEventToConvert.getOldvalue()),
+        newValue: this.convertValueFromGRPC(workflowEventToConvert.getNewvalue()),
+        workflowState: workflowEventToConvert.getWorkflowstate(),
+        workflowStateName: this.getWorkflowState(workflowEventToConvert.getWorkflowState()),
+        eventType: workflowEventToConvert.getEventType(),
+        eventTypeName: this.getWorkflowEventType(workflowEventToConvert.getWorkfloweventtype()),
+        logDate: workflowEventToConvert.getLongdate()
+      }
+    }
+
+    return {
+      workflowUuid: undefined,
+      workflowName: undefined,
+      nodeUuid: undefined,
+      nodeName: undefined,
+      recordId: undefined,
+      tableName: undefined,
+      userUuid: undefined,
+      userName: undefined,
+      responsibleUuid: undefined,
+      responsibleName: undefined,
+      textMessage: undefined,
+      timeElapsed: undefined,
+      attributeName: undefined,
+      oldValue: undefined,
+      newValue: undefined,
+      workflowState: undefined,
+      eventType: undefined,
+      logDate: undefined
+    }
+  }
+
+  /**
+   * Request Workflows Logs List
+   */
+  requestListWorkflowsLogs({ tableName, recordId, pageToken, pageSize, isConvert = true }) {
+    const { ListWorkflowLogsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListWorkflowLogsRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
+    //  return
+    return this.getService().listWorkflowLogs(request)
+      .then(workflowLogsResponse => {
+        if (isConvert) {
+          return {
+            recordCount: workflowLogsResponse.getRecordcount(),
+            workflowLogsList: workflowLogsResponse.getWorkflowLogsList().map(workflowItem => {
+              return this.convertWorkflowProcess(workflowItem);
+            }),
+            nextPageToken: workflowLogsResponse.getNextPageToken()
+          };
+        }
+        return workflowLogsResponse;
       });
   }
 
