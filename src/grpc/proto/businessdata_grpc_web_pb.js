@@ -585,15 +585,15 @@ proto.data.BusinessDataServicePromiseClient.prototype.runCallout =
  * @const
  * @type {!grpc.web.AbstractClientBase.MethodInfo<
  *   !proto.data.RunBusinessProcessRequest,
- *   !proto.data.BusinessProcess>}
+ *   !proto.data.ProcessLog>}
  */
 const methodInfo_BusinessDataService_RunBusinessProcess = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.BusinessProcess,
+  proto.data.ProcessLog,
   /** @param {!proto.data.RunBusinessProcessRequest} request */
   function(request) {
     return request.serializeBinary();
   },
-  proto.data.BusinessProcess.deserializeBinary
+  proto.data.ProcessLog.deserializeBinary
 );
 
 
@@ -602,9 +602,9 @@ const methodInfo_BusinessDataService_RunBusinessProcess = new grpc.web.AbstractC
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.BusinessProcess)}
+ * @param {function(?grpc.web.Error, ?proto.data.ProcessLog)}
  *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.BusinessProcess>|undefined}
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ProcessLog>|undefined}
  *     The XHR Node Readable Stream
  */
 proto.data.BusinessDataServiceClient.prototype.runBusinessProcess =
@@ -623,7 +623,7 @@ proto.data.BusinessDataServiceClient.prototype.runBusinessProcess =
  *     request proto
  * @param {?Object<string, string>} metadata User defined
  *     call metadata
- * @return {!Promise<!proto.data.BusinessProcess>}
+ * @return {!Promise<!proto.data.ProcessLog>}
  *     A native promise that resolves to the response
  */
 proto.data.BusinessDataServicePromiseClient.prototype.runBusinessProcess =
@@ -688,61 +688,6 @@ proto.data.BusinessDataServicePromiseClient.prototype.listBrowserItems =
       request,
       metadata || {},
       methodInfo_BusinessDataService_ListBrowserItems);
-};
-
-
-/**
- * @const
- * @type {!grpc.web.AbstractClientBase.MethodInfo<
- *   !proto.data.ListActivitiesRequest,
- *   !proto.data.ListActivitiesResponse>}
- */
-const methodInfo_BusinessDataService_ListActivities = new grpc.web.AbstractClientBase.MethodInfo(
-  proto.data.ListActivitiesResponse,
-  /** @param {!proto.data.ListActivitiesRequest} request */
-  function(request) {
-    return request.serializeBinary();
-  },
-  proto.data.ListActivitiesResponse.deserializeBinary
-);
-
-
-/**
- * @param {!proto.data.ListActivitiesRequest} request The
- *     request proto
- * @param {?Object<string, string>} metadata User defined
- *     call metadata
- * @param {function(?grpc.web.Error, ?proto.data.ListActivitiesResponse)}
- *     callback The callback function(error, response)
- * @return {!grpc.web.ClientReadableStream<!proto.data.ListActivitiesResponse>|undefined}
- *     The XHR Node Readable Stream
- */
-proto.data.BusinessDataServiceClient.prototype.listActivities =
-    function(request, metadata, callback) {
-  return this.client_.rpcCall(this.hostname_ +
-      '/data.BusinessDataService/ListActivities',
-      request,
-      metadata || {},
-      methodInfo_BusinessDataService_ListActivities,
-      callback);
-};
-
-
-/**
- * @param {!proto.data.ListActivitiesRequest} request The
- *     request proto
- * @param {?Object<string, string>} metadata User defined
- *     call metadata
- * @return {!Promise<!proto.data.ListActivitiesResponse>}
- *     A native promise that resolves to the response
- */
-proto.data.BusinessDataServicePromiseClient.prototype.listActivities =
-    function(request, metadata) {
-  return this.client_.unaryCall(this.hostname_ +
-      '/data.BusinessDataService/ListActivities',
-      request,
-      metadata || {},
-      methodInfo_BusinessDataService_ListActivities);
 };
 
 
@@ -1623,6 +1568,281 @@ proto.data.BusinessDataServicePromiseClient.prototype.listTranslations =
       request,
       metadata || {},
       methodInfo_BusinessDataService_ListTranslations);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListProcessLogsRequest,
+ *   !proto.data.ListProcessLogsResponse>}
+ */
+const methodInfo_BusinessDataService_ListProcessLogs = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListProcessLogsResponse,
+  /** @param {!proto.data.ListProcessLogsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListProcessLogsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListProcessLogsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListProcessLogsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListProcessLogsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listProcessLogs =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListProcessLogs',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListProcessLogs,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListProcessLogsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListProcessLogsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listProcessLogs =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListProcessLogs',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListProcessLogs);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListRecordLogsRequest,
+ *   !proto.data.ListRecordLogsResponse>}
+ */
+const methodInfo_BusinessDataService_ListRecordLogs = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListRecordLogsResponse,
+  /** @param {!proto.data.ListRecordLogsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListRecordLogsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListRecordLogsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListRecordLogsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListRecordLogsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listRecordLogs =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListRecordLogs',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListRecordLogs,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListRecordLogsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListRecordLogsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listRecordLogs =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListRecordLogs',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListRecordLogs);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListRecordChatsRequest,
+ *   !proto.data.ListRecordChatsResponse>}
+ */
+const methodInfo_BusinessDataService_ListRecordChats = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListRecordChatsResponse,
+  /** @param {!proto.data.ListRecordChatsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListRecordChatsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListRecordChatsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListRecordChatsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListRecordChatsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listRecordChats =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListRecordChats',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListRecordChats,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListRecordChatsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListRecordChatsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listRecordChats =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListRecordChats',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListRecordChats);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListChatEntriesRequest,
+ *   !proto.data.ListChatEntriesResponse>}
+ */
+const methodInfo_BusinessDataService_ListChatEntries = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListChatEntriesResponse,
+  /** @param {!proto.data.ListChatEntriesRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListChatEntriesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListChatEntriesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListChatEntriesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListChatEntriesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listChatEntries =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListChatEntries',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListChatEntries,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListChatEntriesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListChatEntriesResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listChatEntries =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListChatEntries',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListChatEntries);
+};
+
+
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListWorkflowLogsRequest,
+ *   !proto.data.ListWorkflowLogsResponse>}
+ */
+const methodInfo_BusinessDataService_ListWorkflowLogs = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListWorkflowLogsResponse,
+  /** @param {!proto.data.ListWorkflowLogsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListWorkflowLogsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListWorkflowLogsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListWorkflowLogsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListWorkflowLogsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listWorkflowLogs =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListWorkflowLogs',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListWorkflowLogs,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListWorkflowLogsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListWorkflowLogsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listWorkflowLogs =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListWorkflowLogs',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListWorkflowLogs);
 };
 
 
