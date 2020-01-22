@@ -1331,7 +1331,7 @@ class BusinessData {
             recordCount: printFormatResponse.getRecordcount(),
             printFormatsList: printFormatResponse.getPrintformatsList().map(printFormatItem => {
               return {
-                uuid: printFormatItem.getUuid(),
+                printFormatUuid: printFormatItem.getUuid(),
                 name: printFormatItem.getName(),
                 description: printFormatItem.getDescription(),
                 tableName: printFormatItem.getTablename(),
@@ -1368,7 +1368,7 @@ class BusinessData {
             recordCount: reportViewsResponse.getRecordcount(),
             reportViewsList: reportViewsResponse.getReportviewsList().map(reportViewItem => {
               return {
-                uuid: reportViewItem.getUuid(),
+                reportViewUuid: reportViewItem.getUuid(),
                 name: reportViewItem.getName(),
                 description: reportViewItem.getDescription(),
                 tableName: reportViewItem.getTablename()
