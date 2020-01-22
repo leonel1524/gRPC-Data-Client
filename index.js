@@ -654,9 +654,9 @@ class BusinessData {
         let valueTo;
         let isAddCodition = true;
         if (parameterItem.isRange) {
-          valueTo = parametersList.find(param => param.columnName === `${parameterItem.columnName}_To`).value;
+          valueTo = parametersList.find(param => param.columnName === `${parameterItem.columnName}_To`);
           if (!this.isEmptyValue(valueTo)) {
-            parameterItem.valueTo = valueTo;
+            parameterItem.valueTo = valueTo.value;
           } else {
             isAddCodition = false;
           }
