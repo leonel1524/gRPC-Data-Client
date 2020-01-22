@@ -9493,8 +9493,10 @@ proto.data.ListProcessLogsRequest.toObject = function(includeInstance, msg) {
     clientrequest: (f = msg.getClientrequest()) && proto.data.ClientRequest.toObject(includeInstance, f),
     useruuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
     instanceuuid: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    pageSize: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    pageToken: jspb.Message.getFieldWithDefault(msg, 5, "")
+    tablename: jspb.Message.getFieldWithDefault(msg, 4, ""),
+    recordid: jspb.Message.getFieldWithDefault(msg, 5, 0),
+    pageSize: jspb.Message.getFieldWithDefault(msg, 6, 0),
+    pageToken: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -9545,10 +9547,18 @@ proto.data.ListProcessLogsRequest.deserializeBinaryFromReader = function(msg, re
       msg.setInstanceuuid(value);
       break;
     case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setTablename(value);
+      break;
+    case 5:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setRecordid(value);
+      break;
+    case 6:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setPageSize(value);
       break;
-    case 5:
+    case 7:
       var value = /** @type {string} */ (reader.readString());
       msg.setPageToken(value);
       break;
@@ -9603,17 +9613,31 @@ proto.data.ListProcessLogsRequest.serializeBinaryToWriter = function(message, wr
       f
     );
   }
+  f = message.getTablename();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
+      f
+    );
+  }
+  f = message.getRecordid();
+  if (f !== 0) {
+    writer.writeInt32(
+      5,
+      f
+    );
+  }
   f = message.getPageSize();
   if (f !== 0) {
     writer.writeInt32(
-      4,
+      6,
       f
     );
   }
   f = message.getPageToken();
   if (f.length > 0) {
     writer.writeString(
-      5,
+      7,
       f
     );
   }
@@ -9684,32 +9708,62 @@ proto.data.ListProcessLogsRequest.prototype.setInstanceuuid = function(value) {
 
 
 /**
- * optional int32 page_size = 4;
+ * optional string tableName = 4;
+ * @return {string}
+ */
+proto.data.ListProcessLogsRequest.prototype.getTablename = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/** @param {string} value */
+proto.data.ListProcessLogsRequest.prototype.setTablename = function(value) {
+  jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
+/**
+ * optional int32 recordId = 5;
+ * @return {number}
+ */
+proto.data.ListProcessLogsRequest.prototype.getRecordid = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
+};
+
+
+/** @param {number} value */
+proto.data.ListProcessLogsRequest.prototype.setRecordid = function(value) {
+  jspb.Message.setProto3IntField(this, 5, value);
+};
+
+
+/**
+ * optional int32 page_size = 6;
  * @return {number}
  */
 proto.data.ListProcessLogsRequest.prototype.getPageSize = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
 };
 
 
 /** @param {number} value */
 proto.data.ListProcessLogsRequest.prototype.setPageSize = function(value) {
-  jspb.Message.setProto3IntField(this, 4, value);
+  jspb.Message.setProto3IntField(this, 6, value);
 };
 
 
 /**
- * optional string page_token = 5;
+ * optional string page_token = 7;
  * @return {string}
  */
 proto.data.ListProcessLogsRequest.prototype.getPageToken = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
 /** @param {string} value */
 proto.data.ListProcessLogsRequest.prototype.setPageToken = function(value) {
-  jspb.Message.setProto3StringField(this, 5, value);
+  jspb.Message.setProto3StringField(this, 7, value);
 };
 
 

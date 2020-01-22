@@ -1123,12 +1123,14 @@ class BusinessData {
    * @param {string}  pageSize
    * @param {boolean} isConvert
    */
-  requestListProcessesLogs({ pageToken, pageSize, isConvert = true }) {
+  requestListProcessesLogs({ tableName, recordId, pageToken, pageSize, isConvert = true }) {
     const { ListProcessLogsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const request = new ListProcessLogsRequest();
     request.setClientrequest(this.getClientRequest());
     request.setPageToken(pageToken);
     request.setPageSize(pageSize);
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
     //  return
     return this.getService().listProcessLogs(request)
       .then(processLogsResponse => {
