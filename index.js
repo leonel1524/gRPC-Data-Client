@@ -1576,13 +1576,13 @@ class BusinessData {
         userUuid: recordLogToConvert.getUseruuid(),
         userName: recordLogToConvert.getUsername(),
         transactionName: recordLogToConvert.getTransactionname(),
-        oldValue: this.convertValueFromGRPC(recordLogToConvert.getOldvalue()),
-        newValue: this.convertValueFromGRPC(recordLogToConvert.getNewvalue()),
+        oldValue: recordLogToConvert.getOldvalue(),
+        newValue: recordLogToConvert.getNewvalue(),
         oldDisplayValue: recordLogToConvert.getOlddisplayvalue(),
         newDisplayValue: recordLogToConvert.getNewdisplayvalue(),
         description: recordLogToConvert.getDescription(),
-        eventType: recordLogToConvert.getEventType(),
-        eventTypeName: this.getEventTypeRecordLog(recordLogToConvert.getEventType()),
+        eventType: recordLogToConvert.getEventtype(),
+        eventTypeName: this.getEventTypeRecordLog(recordLogToConvert.getEventtype()),
         logDate: new Date(recordLogToConvert.getLogdate())
       };
     }
@@ -1625,7 +1625,7 @@ class BusinessData {
     request.setPageSize(pageSize);
 
     //  return
-    return this.getService().listProcessLogs(request)
+    return this.getService().listRecordLogs(request)
       .then(recordLogsResponse => {
         if (isConvert) {
           return {
@@ -1971,8 +1971,8 @@ class BusinessData {
         newValue: this.convertValueFromGRPC(workflowEventToConvert.getNewvalue()),
         workflowState: workflowEventToConvert.getWorkflowstate(),
         workflowStateName: this.getWorkflowState(workflowEventToConvert.getWorkflowState()),
-        eventType: workflowEventToConvert.getEventType(),
-        eventTypeName: this.getWorkflowEventType(workflowEventToConvert.getWorkfloweventtype()),
+        eventType: workflowEventToConvert.getEventtype(),
+        eventTypeName: this.getWorkflowEventType(workflowEventToConvert.getEventtype()),
         logDate: new Date(workflowEventToConvert.getLongdate())
       };
     }
