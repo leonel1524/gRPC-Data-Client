@@ -1686,7 +1686,7 @@ class BusinessData {
         moderationTypeName: this.getModerationTypeRecordChats(
           recordChatToConvert.getModerationtype()
         ),
-        logDate: new Date(recordChatToConvert.getLongdate())
+        logDate: new Date(recordChatToConvert.getLogdate())
       };
     }
     return {
@@ -1803,7 +1803,7 @@ class BusinessData {
         moderatorStatusName: this.getModeratorStatusChatEntry(
           chatEntryToConvert.getModerationtype()
         ),
-        logDate: new Date(chatEntryToConvert.getLongdate())
+        logDate: new Date(chatEntryToConvert.getLogdate())
       };
     }
     return {
@@ -1916,7 +1916,6 @@ class BusinessData {
         userName: workflowProcessToConvert.getUsername(),
         responsibleUuid: workflowProcessToConvert.getResponsibleuuid(),
         responsibleName: workflowProcessToConvert.getResponsiblename(),
-        message: workflowProcessToConvert.getMessage(),
         textMessage: workflowProcessToConvert.getTextmessage(),
         processed: workflowProcessToConvert.getProcessed(),
         workflowState: workflowProcessToConvert.getWorkflowstate(),
@@ -1926,7 +1925,7 @@ class BusinessData {
         workflowEventsList: workflowProcessToConvert.getWorkfloweventsList().map(itemEvent => {
           return this.convertWorkflowEvent(itemEvent);
         }),
-        logDate: new Date(workflowProcessToConvert.getLongdate())
+        logDate: new Date(workflowProcessToConvert.getLogdate())
       };
     }
     return {
@@ -1954,8 +1953,6 @@ class BusinessData {
   convertWorkflowEvent(workflowEventToConvert) {
     if (workflowEventToConvert) {
       return {
-        workflowUuid: workflowEventToConvert.getWorkflowuuid(),
-        workflowName: workflowEventToConvert.getWorkflowname(),
         nodeUuid: workflowEventToConvert.getNodeuuid(),
         nodeName: workflowEventToConvert.getNodename(),
         recordId: workflowEventToConvert.getRecordid(),
@@ -1963,23 +1960,21 @@ class BusinessData {
         userUuid: workflowEventToConvert.getUseruuid(),
         userName: workflowEventToConvert.getUsername(),
         responsibleUuid: workflowEventToConvert.getResponsibleuuid(),
-        responsibleName: workflowEventToConvert.getResulttablename(),
+        responsibleName: workflowEventToConvert.getResponsiblename(),
         textMessage: workflowEventToConvert.getTextmessage(),
         timeElapsed: workflowEventToConvert.getTimeelapsed(),
         attributeName: workflowEventToConvert.getAttributename(),
-        oldValue: this.convertValueFromGRPC(workflowEventToConvert.getOldvalue()),
-        newValue: this.convertValueFromGRPC(workflowEventToConvert.getNewvalue()),
+        oldValue: workflowEventToConvert.getOldvalue(),
+        newValue: workflowEventToConvert.getNewvalue(),
         workflowState: workflowEventToConvert.getWorkflowstate(),
-        workflowStateName: this.getWorkflowState(workflowEventToConvert.getWorkflowState()),
+        workflowStateName: this.getWorkflowState(workflowEventToConvert.getWorkflowstate()),
         eventType: workflowEventToConvert.getEventtype(),
         eventTypeName: this.getWorkflowEventType(workflowEventToConvert.getEventtype()),
-        logDate: new Date(workflowEventToConvert.getLongdate())
+        logDate: new Date(workflowEventToConvert.getLogdate())
       };
     }
 
     return {
-      workflowUuid: undefined,
-      workflowName: undefined,
       nodeUuid: undefined,
       nodeName: undefined,
       recordId: undefined,
@@ -2023,7 +2018,7 @@ class BusinessData {
         if (isConvert) {
           return {
             recordCount: workflowLogsResponse.getRecordcount(),
-            workflowLogsList: workflowLogsResponse.getWorkflowLogsList().map(workflowItem => {
+            workflowLogsList: workflowLogsResponse.getWorkflowlogsList().map(workflowItem => {
               return this.convertWorkflowProcess(workflowItem);
             }),
             nextPageToken: workflowLogsResponse.getNextPageToken()
