@@ -75,111 +75,6 @@ class BusinessData {
   }
 
   /**
-   * convert the value obtained from gRPC according to the type of value
-   * @param {object} valueToConvert
-   * @returns {mixed}
-   */
-  convertValueFromGRPC(valueToConvert) {
-    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
-
-    if (valueToConvert === undefined || valueToConvert === null) {
-      return undefined;
-    }
-
-    var returnValue;
-    switch (valueToConvert.getValuetype()) {
-      // data type Null or undefined
-      default:
-      case Value.ValueType.NULL:
-        returnValue = undefined;
-        break;
-      // data type Number (integer)
-      case Value.ValueType.INTEGER:
-        returnValue = valueToConvert.getIntvalue();
-        break;
-      // data type Number (integer)
-      case Value.ValueType.LONG:
-        returnValue = valueToConvert.getLongvalue();
-        break;
-      // data type Number (float)
-      case Value.ValueType.DOUBLE:
-        returnValue = valueToConvert.getDoublevalue();
-        break;
-      // data type Boolean
-      case Value.ValueType.BOOLEAN:
-        returnValue = valueToConvert.getBooleanvalue();
-        break;
-      // data type String
-      case Value.ValueType.STRING:
-        returnValue = valueToConvert.getStringvalue();
-        break;
-      // data type Date
-      case Value.ValueType.DATE:
-        returnValue = new Date(valueToConvert.getLongvalue());
-        break;
-    }
-    return returnValue;
-  }
-
-  /**
-   * Convert values map to compatible format
-   * @param {map} mapToConvert
-   * @param {string} returnType
-   * @param {string} keyName, used in array pairs, default value is 'key'
-   */
-  convertValuesMap({ mapToConvert, returnType = 'map', keyName = 'key' }) {
-    let returnValues;
-    switch (returnType) {
-      case 'object':
-        returnValues = {};
-        mapToConvert.forEach((value, key) => {
-          returnValues[key] = this.convertValueFromGRPC(value);
-        });
-        break;
-
-      case 'array':
-        returnValues = [];
-        mapToConvert.forEach((value, key) => {
-          const item = {}
-          item[keyName] = key;
-          item.value = this.convertValueFromGRPC(value);
-          returnValues.push(item);
-        });
-        break;
-
-      default:
-      case 'map':
-        returnValues = new Map();
-        mapToConvert.forEach((value, key) => {
-          returnValues.set(key, this.convertValueFromGRPC(value));
-        });
-        break;
-    }
-
-    return returnValues;
-  }
-
-  convertEntity({ entityToConvert, formatToConvert = 'object' }) {
-    if (entityToConvert) {
-      return {
-        id: entityToConvert.getId(),
-        uuid: entityToConvert.getUuid(),
-        tableName: entityToConvert.getTablename(),
-        values: this.convertValuesMap({
-          mapToConvert: entityToConvert.getValuesMap(),
-          returnType: formatToConvert
-        })
-      };
-    }
-    return {
-      id: undefined,
-      uuid: undefined,
-      tableName: undefined,
-      values: undefined
-    };
-  }
-
-  /**
    * Create a entity from CreateEntityRequest object
    * @param {string} tableName
    * @param {array}  attributesList [{ value, columnName }]
@@ -195,8 +90,10 @@ class BusinessData {
     request.setTablename(tableName);
 
     if (attributesList && attributesList.length) {
+      const { convertParameterToGRPC } = require('./src/convertUtils.js');
+
       attributesList.forEach(attribute => {
-        const convertedAttribute = this.convertParameter({
+        const convertedAttribute = convertParameterToGRPC({
           columnName: attribute.columnName,
           value: attribute.value
         });
@@ -207,7 +104,9 @@ class BusinessData {
     return this.getService().createEntity(request)
       .then(responseCreateEntity => {
         if (isConvert) {
-          return this.convertEntity({
+          const { convertEntityFromGRPC } = require('./src/convertUtils');
+
+          return convertEntityFromGRPC({
             entityToConvert: responseCreateEntity,
             formatToConvert
           });
@@ -236,8 +135,10 @@ class BusinessData {
     request.setUuid(recordUuid);
 
     if (attributesList && attributesList.length) {
+      const { convertParameterToGRPC } = require('./src/convertUtils.js');
+
       attributesList.forEach(attribute => {
-        const convertedAttribute = this.convertParameter(attribute);
+        const convertedAttribute = convertParameterToGRPC(attribute);
         request.addAttributes(convertedAttribute);
       });
     }
@@ -245,7 +146,9 @@ class BusinessData {
     return this.getService().updateEntity(request)
       .then(responseUpdateEntity => {
         if (isConvert) {
-          return this.convertEntity({
+          const { convertEntityFromGRPC } = require('./src/convertUtils');
+
+          return convertEntityFromGRPC({
             entityToConvert: responseUpdateEntity,
             formatToConvert
           });
@@ -270,14 +173,17 @@ class BusinessData {
     request.setClientrequest(this.getClientRequest());
     request.setRecordid(recordId);
     request.setUuid(recordUuid);
-    request.setCriteria(
-      this.convertCriteriaToGRPC({ tableName })
-    );
+
+    const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
+    const criteriaForRequestEntity = convertCriteriaToGRPC({ tableName });
+    request.setCriteria(criteriaForRequestEntity);
 
     return this.getService().getEntity(request)
     .then(getEntityResponse => {
       if (isConvert) {
-        return this.convertEntity({
+        const { convertEntityFromGRPC } = require('./src/convertUtils');
+
+        return convertEntityFromGRPC({
           entityToConvert: getEntityResponse,
           formatToConvert
         });
@@ -305,7 +211,8 @@ class BusinessData {
     const request = new ListEntitiesRequest();
     request.setClientrequest(this.getClientRequest());
 
-    const criteriaForList = this.convertCriteriaToGRPC({ tableName, query, whereClause, conditionsList, orderByClause });
+    const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
+    const criteriaForList = convertCriteriaToGRPC({ tableName, query, whereClause, conditionsList, orderByClause });
     request.setCriteria(criteriaForList);
     request.setPageToken(pageToken);
     request.setPageSize(pageSize);
@@ -313,10 +220,12 @@ class BusinessData {
     return this.getService().listEntities(request)
       .then(entitiesListResponse => {
         if (isConvert) {
+          const { convertEntityFromGRPC } = require('./src/convertUtils');
+
           return {
             recordCount: entitiesListResponse.getRecordcount(),
             recordsList: entitiesListResponse.getRecordsList().map(entityItem => {
-              return this.convertEntity({
+              return convertEntityFromGRPC({
                 entityToConvert: entityItem,
                 formatToConvert
               });
@@ -357,6 +266,7 @@ class BusinessData {
    */
   requestRollbackEntity({ tableName, recordId, eventTypeExecuted, isConvert = true, formatToConvert = 'object' }) {
     const { RollbackEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const { getRollbackEntityRequestEventType } = require('./src/convertUtils.js');
 
     const rollbackRequest = new RollbackEntityRequest();
     rollbackRequest.setClientrequest(this.getClientRequest());
@@ -364,14 +274,16 @@ class BusinessData {
     rollbackRequest.setRecordid(recordId);
 
     // set event type
-    let eventType = this.getEventType(); // all events
+    let eventType = getRollbackEntityRequestEventType(); // all events
     eventType = eventType[eventTypeExecuted];
     rollbackRequest.setEventtype(eventType);
 
     return this.getService().rollbackEntity(rollbackRequest)
       .then(rollBackResponse => {
         if (isConvert) {
-          return this.convertEntity({
+          const { convertEntityFromGRPC } = require('./src/convertUtils');
+
+          return convertEntityFromGRPC({
             entityToConvert: rollBackResponse,
             formatToConvert
           });
@@ -381,98 +293,21 @@ class BusinessData {
   }
 
   /**
-   * Get all event type or get key value type from value
-   * @param {number} keyFind
-   */
-  getEventType(keyFind) {
-    const { RollbackEntityRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(RollbackEntityRequest.EventType).find(key => RollbackEntityRequest.EventType[key] === keyFind);
-    }
-    return RollbackEntityRequest.EventType;
-  }
-
-  /**
-   * Get Criteria from Table Name
-   * @param {string} tableName
-   * @param {string} query
-   * @param {string} whereClause
-   * @param {array}  conditionsList
-   * @param {string} orderByClause
-   * @return {Criteria} instance
-   * TODO: Add support to orderByColumnsList
-   */
-  convertCriteriaToGRPC({ tableName, query, whereClause, referenceUuid, conditionsList = [], orderByClause, valuesList = [], orderByColumnList = [], limit }) {
-    const { Criteria } = require('./src/grpc/proto/businessdata_pb.js');
-    const criteria = new Criteria();
-
-    criteria.setTablename(tableName);
-    criteria.setQuery(query);
-    criteria.setWhereclause(whereClause);
-    criteria.setReferenceuuid(referenceUuid);
-
-    // add values
-    if (valuesList && valuesList.length) {
-      valuesList.forEach(itemValue => {
-        const value = this.convertValueToGRPC(itemValue);
-        criteria.addValues(value);
-      });
-    }
-
-    // add conditions
-    if (conditionsList && conditionsList.length) {
-      conditionsList.forEach(itemCondition => {
-        const convertCondition = this.convertConditionToGRPC(itemCondition);
-        criteria.addConditions(convertCondition);
-      });
-    }
-
-    criteria.setOrderbyclause(orderByClause);
-    criteria.setLimit(limit);
-
-    //  Return criteria
-    return criteria;
-  }
-
-  /**
-   * Convert criteria to json structure
-   * @param {Criteria} criteriaToConvert
-   * TODO: Add convert condition from gRPC and order by column from gRPC
-   */
-  convertCriteriaFromGRPC(criteriaToConvert) {
-    return {
-      tableName: criteriaToConvert.getTablename(),
-      query: criteriaToConvert.getQuery(),
-      whereClause: criteriaToConvert.getWhereclause(),
-      orderByClause: criteriaToConvert.getOrderbyclause(),
-      referenceUuid: criteriaToConvert.getReferenceuuid(),
-      conditionsList: criteriaToConvert.getConditionsList().map(condition => {
-        return condition;
-      }),
-      valuesList: criteriaToConvert.getValuesList().map(value => {
-        return this.convertValueFromGRPC(value);
-      }),
-      orderByColumnList: criteriaToConvert.getOrderbycolumnList().map(orderBy => {
-        return orderBy;
-      }),
-      limit: criteriaToConvert.getLimit()
-    };
-  }
-
-  /**
    * Request Object from query
    * @param {string} query
    */
-  getDefaultValue(query) {
+  requestGetDefaultValue(query) {
     const { GetDefaultValueRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    defaultValueInstance = new GetDefaultValueRequest();
+    const defaultValueInstance = new GetDefaultValueRequest();
 
-    defaultValueInstance.setClientrequest(clientRequest);
+    defaultValueInstance.setClientrequest(this.getClientRequest());
     defaultValueInstance.setQuery(query);
 
     return this.getService().getDefaultValue(defaultValueInstance)
       .then(defaultValueResponse => {
-        return this.convertValueFromGRPC(defaultValueResponse);
+        const { convertValueFromGRPC } = require('./src/convertUtils.js');
+
+        return convertValueFromGRPC(defaultValueResponse);
       });
   }
 
@@ -501,21 +336,6 @@ class BusinessData {
       });
   }
 
-  convertPrivateAccess(privateAccessToConvert) {
-    if (privateAccessToConvert) {
-      return {
-        tableName: privateAccessToConvert.getTablename(),
-        recordId: privateAccessToConvert.getRecordid(),
-        userUuid: privateAccessToConvert.getUseruuid()
-      };
-    }
-    return {
-      tableName: undefined,
-      recordId: undefined,
-      userUuid: undefined
-    };
-  }
-
   /**
    * Get Private Access
    * @param {string} tableName
@@ -535,7 +355,8 @@ class BusinessData {
     return this.getService().getPrivateAccess(privateAccessInstance)
       .then(privateAccessResponse => {
         if (isConvert) {
-          return this.convertPrivateAccess(privateAccessResponse);
+          const { convertPrivateAccessFromGRPC } = require('./src/convertUtils.js');
+          return convertPrivateAccessFromGRPC(privateAccessResponse);
         }
         return privateAccessResponse;
       });
@@ -560,7 +381,8 @@ class BusinessData {
     return this.getService().lockPrivateAccess(requestInstance)
       .then(privateAccessResponse => {
         if (isConvert) {
-          return this.convertPrivateAccess(privateAccessResponse);
+          const { convertPrivateAccessFromGRPC } = require('./src/convertUtils.js');
+          return convertPrivateAccessFromGRPC(privateAccessResponse);
         }
         return privateAccessResponse;
       });
@@ -586,7 +408,8 @@ class BusinessData {
     return this.getService().unlockPrivateAccess(requestInstance)
       .then(privateAccessResponse => {
         if (isConvert) {
-          return this.convertPrivateAccess(privateAccessResponse);
+          const { convertPrivateAccessFromGRPC } = require('./src/convertUtils.js');
+          return convertPrivateAccessFromGRPC(privateAccessResponse);
         }
         return privateAccessResponse;
       });
@@ -617,17 +440,12 @@ class BusinessData {
     return this.getService().listReferences(requestReference)
       .then(referenceResponse => {
         if (isConvert) {
+          const { convertRecordReferenceInfoFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: referenceResponse.getRecordcount(),
             referencesList: referenceResponse.getReferencesList().map(referenceItem => {
-              return {
-                uuid: referenceItem.getUuid(),
-                windowUuid: referenceItem.getWindowuuid(),
-                displayName: referenceItem.getDisplayname(),
-                tableName: referenceItem.getTablename(),
-                whereClause: referenceItem.getWhereclause(),
-                recordCount: referenceItem.getRecordcount(),
-              };
+              return convertRecordReferenceInfoFromGRPC(referenceItem);
             }),
             nextPageToken: referenceResponse.getNextPageToken()
           };
@@ -648,6 +466,8 @@ class BusinessData {
    */
   requestGetReportOutput({ parametersList = [], tableName, printFormatUuid, reportViewUuid, isSummary, reportName, reportType, isConvert = true }) {
     const { GetReportOutputRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
+
     const reportOutputInstance = new GetReportOutputRequest();
     reportOutputInstance.setClientrequest(this.getClientRequest());
     reportOutputInstance.setPrintformatuuid(printFormatUuid);
@@ -656,7 +476,7 @@ class BusinessData {
     reportOutputInstance.setReportviewuuid(reportViewUuid);
     reportOutputInstance.setReportname(reportName);
 
-    const criteriaForReport = this.convertCriteriaToGRPC({ tableName });
+    const criteriaForReport = convertCriteriaToGRPC({ tableName });
     if (parametersList && parametersList.length) {
       parametersList.forEach(parameterItem => {
         let valueTo;
@@ -671,7 +491,8 @@ class BusinessData {
         }
 
         if (isAddCodition) {
-          const convertedCondition = this.convertConditionToGRPC(parameterItem);
+          const { convertConditionToGRPC } = require('./src/convertUtils.js');
+          const convertedCondition = convertConditionToGRPC(parameterItem);
           criteriaForReport.addConditions(convertedCondition);
         }
       });
@@ -681,7 +502,8 @@ class BusinessData {
     return this.getService().getReportOutput(reportOutputInstance)
       .then(reportOutputResponse => {
         if (isConvert) {
-          return this.convertReportOutput(reportOutputResponse);
+          const { convertReportOutputFromGRPC } = require('./src/convertUtils.js');
+          return convertReportOutputFromGRPC(reportOutputResponse);
         }
         return reportOutputResponse;
       });
@@ -693,8 +515,10 @@ class BusinessData {
    * @param {string} directQuery
    * @param {string|number} value current value to get display column
    */
-  requestLookupFromReference({ tableName, directQuery, value }) {
-    const criteriaForLookup = this.convertCriteriaToGRPC({
+  requestLookupFromReference({ tableName, directQuery, value, isConvert = true }) {
+    const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
+
+    const criteriaForLookup = convertCriteriaToGRPC({
       tableName,
       query: directQuery,
       valuesList: [ value ]
@@ -707,28 +531,12 @@ class BusinessData {
 
     return this.getService().getLookupItem(requestLookup)
       .then(lookupItemRepsonse => {
-        return this.convertLookupFromGRPC(lookupItemRepsonse);
+        if (isConvert) {
+          const { convertLookupFromGRPC } = require('./src/convertUtils.js');
+          return convertLookupFromGRPC(lookupItemRepsonse);
+        }
+        return lookupItemRepsonse;
       });
-  }
-
-  convertLookupFromGRPC(lookupToConvert) {
-    if (lookupToConvert) {
-      return {
-        id: lookupToConvert.getId(),
-        uuid: lookupToConvert.getUuid(),
-        tableName: lookupToConvert.getTablename(),
-        values: this.convertValuesMap({
-          mapToConvert: lookupToConvert.getValuesMap(),
-          returnType: 'object'
-        })
-      };
-    }
-    return {
-      id: undefined,
-      uuid: undefined,
-      tableName: undefined,
-      values: undefined
-    };
   }
 
   /**
@@ -738,9 +546,10 @@ class BusinessData {
    * @param {string}  pageToken
    * @param {string}  pageSize
    */
-  requestListLookupFromReference({ tableName, query, pageToken, pageSize }) {
+  requestListLookupFromReference({ tableName, query, pageToken, pageSize, isConvert = true }) {
     const { ListLookupItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const criteriaForLookup = this.convertCriteriaToGRPC({ tableName, query });
+    const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
+    const criteriaForLookup = convertCriteriaToGRPC({ tableName, query });
 
     const requestLookup = new ListLookupItemsRequest();
     requestLookup.setClientrequest(this.getClientRequest());
@@ -750,174 +559,19 @@ class BusinessData {
 
     return this.getService().listLookupItems(requestLookup)
       .then(lookupsListRepsonse => {
-        return {
-          recordCount: lookupsListRepsonse.getRecordcount(),
-          recordsList: lookupsListRepsonse.getRecordsList().map(lookupItem => {
-            return this.convertLookupFromGRPC(lookupItem);
-          }),
-          nextPageToken: lookupsListRepsonse.getNextPageToken()
-        };
-      });
-  }
+        if (isConvert) {
+          const { convertLookupFromGRPC } = require('./src/convertUtils.js');
 
-  /**
-   * Return value converted, compatible with grpc
-   * @param {mixed} value
-   * @returns {Value}
-   */
-  convertValueToGRPC(value) {
-    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
-    const valueConverted = new Value();
-
-    // evaluate type value
-    if (value === undefined || value === null) {
-      valueConverted.setValuetype(Value.ValueType.NULL);
-    } else if (typeof(value) === 'number') {
-      if (Number.isInteger(value)) {
-        if (String(value).length > 11) {
-          valueConverted.setLongvalue(value);
-          valueConverted.setValuetype(Value.ValueType.LONG);
-        } else {
-          valueConverted.setIntvalue(value);
-          valueConverted.setValuetype(Value.ValueType.INTEGER);
+          return {
+            recordCount: lookupsListRepsonse.getRecordcount(),
+            recordsList: lookupsListRepsonse.getRecordsList().map(lookupItem => {
+              return convertLookupFromGRPC(lookupItem);
+            }),
+            nextPageToken: lookupsListRepsonse.getNextPageToken()
+          };
         }
-      } else {
-        valueConverted.setDoublevalue(value);
-        valueConverted.setValuetype(Value.ValueType.DOUBLE);
-      }
-    } else if (typeof(value) === 'boolean') {
-      valueConverted.setBooleanvalue(value);
-      valueConverted.setValuetype(Value.ValueType.BOOLEAN);
-    } else if (Object.prototype.toString.call(value) === '[object Date]') {
-      valueConverted.setLongvalue(value.getTime());
-      valueConverted.setValuetype(Value.ValueType.DATE);
-    } else {
-      valueConverted.setStringvalue(value);
-      valueConverted.setValuetype(Value.ValueType.STRING);
-    }
-
-    return valueConverted;
-  }
-
-  /**
-   * Get all values type or get key value type from value
-   * @param {number} keyFind
-   */
-  getValueTypes(keyFind) {
-    const { Value } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(Value.ValueType).find(key => Value.ValueType[key] === keyFind);
-    } else {
-      return Value.ValueType;
-    }
-  }
-
-  /**
-   * Convert a parameter defined by columnName and value to Value Object
-   * @param {string} columnName
-   * @param {mixed}  value
-   * @returns KeyValue Object
-   */
-  convertParameter({ columnName, value }) {
-    const { KeyValue } = require('./src/grpc/proto/businessdata_pb.js');
-    const keyValue = new KeyValue();
-    keyValue.setKey(columnName);
-
-    keyValue.setValue(
-      this.convertValueToGRPC(
-        value
-      )
-    );
-    //  Return converted value
-    return keyValue;
-  }
-
-  /**
-   * Convert a parameter defined by columnName and value to Value Object
-   * TODO: Add support to operator with parameter
-   * @param {string} columnName
-   * @param {mixed}  value
-   * @param {mixed}  valueTo
-   * @param {array}  values
-   * @returns Object
-   */
-  convertConditionToGRPC({ columnName, value, valueTo, values = [] }) {
-    const { Condition } = require('./src/grpc/proto/businessdata_pb.js');
-    const conditionInstance = new Condition();
-
-    conditionInstance.setColumnname(columnName);
-
-    // set value and value to
-    if (value !== undefined && value !== null) {
-      conditionInstance.setValue(
-        this.convertValueToGRPC(value)
-      );
-    }
-    if (valueTo !== undefined && valueTo !== null) {
-      conditionInstance.setValueto(
-        this.convertValueToGRPC(valueTo)
-      );
-    }
-
-    // set operator
-    if (typeof value === 'string') {
-      conditionInstance.setOperator(Condition.Operator.LIKE); // 2
-    } else if (valueTo !== undefined && valueTo !== null) {
-      conditionInstance.setOperator(Condition.Operator.BETWEEN) // 8
-    } else {
-      conditionInstance.setOperator(Condition.Operator.EQUAL); // 0
-    }
-
-    if (values && values.length) {
-      conditionInstance.setOperator(Condition.Operator.IN); // 11
-      values.forEach(itemValue => {
-        conditionInstance.addValues(
-          this.convertValueToGRPC(
-            itemValue
-          )
-        );
+        return lookupsListRepsonse;
       });
-    }
-
-    //  Return converted condition
-    return conditionInstance;
-  }
-
-  /**
-   * Get all operator or get key value type from value
-   * @param {number} keyFind
-   */
-  getOperators(keyFind) {
-    const { Condition } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(Condition.Operator).find(key => Condition.Operator[key] === keyFind);
-    } else {
-      return Condition.Operator;
-    }
-  }
-
-  /**
-   * Convert a list of parameter defined by columnName and value to Value Object
-   * @param {number} selectionId keyColumn Value
-   * @param {string} selectionUuid TODO: Add support to uuid record
-   * @param {array}  selectionValues [{ columName, value }]
-   *
-   * Return a list of KeyValue Object
-   */
-  convertSelection({ selectionId, selectionUuid, selectionValues = [] }) {
-    const { KeyValueSelection } = require('./src/grpc/proto/businessdata_pb.js');
-    const selectionInstance = new KeyValueSelection();
-    // set selection id from record
-    selectionInstance.setSelectionid(selectionId);
-    //  Convert values to selection
-    selectionValues.forEach(selectionItem => {
-      const convertedSelection = this.convertParameter({
-        columnName: selectionItem.columnName,
-        value: selectionItem.value
-      });
-      selectionInstance.addValues(convertedSelection);
-    });
-    return selectionInstance;
   }
 
   /**
@@ -950,8 +604,10 @@ class BusinessData {
     }
     // process params
     if (parametersList && parametersList.length) {
+      const { convertParameterToGRPC } = require('./src/convertUtils.js');
+
       parametersList.forEach(parameterItem => {
-        const convertedParameter = this.convertParameter({
+        const convertedParameter = convertParameterToGRPC({
           columnName: parameterItem.columnName,
           value: parameterItem.value
         });
@@ -967,9 +623,11 @@ class BusinessData {
 
     // browser selection list records
     if (selectionsList && selectionsList.length) {
+      const { convertSelectionToGRPC } = require('./src/convertUtils.js');
+
       selectionsList.forEach(record => {
         // selection format = { selectionId: number, selectionValues: array }
-        const convertedRecord = this.convertSelection(record);
+        const convertedRecord = convertSelectionToGRPC(record);
         processRequest.addSelections(convertedRecord);
       });
     }
@@ -977,90 +635,11 @@ class BusinessData {
     return this.getService().runBusinessProcess(processRequest)
       .then(runProcessResponse => {
         if (isConvert) {
-          return this.convertProcessLog(runProcessResponse);
+          const { convertProcessLogFromGRPC } = require('./src/convertUtils.js');
+          return convertProcessLogFromGRPC(runProcessResponse);
         }
         return runProcessResponse;
       });
-  }
-
-  convertProcessLog(processLogToConvert) {
-    if (processLogToConvert) {
-      return {
-        uuid: processLogToConvert.getUuid(),
-        instanceUuid: processLogToConvert.getInstanceuuid(),
-        isError: processLogToConvert.getIserror(),
-        summary: processLogToConvert.getSummary(),
-        resultTableName: processLogToConvert.getResulttablename(),
-        isProcessing: processLogToConvert.getIsprocessing(),
-        lastRun: processLogToConvert.getLastrun(),
-        logsList: processLogToConvert.getLogsList().map(log => {
-          return {
-            recordId: log.getRecordid(),
-            log: log.getLog()
-          };
-        }),
-        parametersList: this.convertValuesMap({
-          mapToConvert: processLogToConvert.getParametersMap(),
-          returnType: 'object'
-        }),
-        output: this.convertReportOutput(processLogToConvert.getOutput())
-      };
-    }
-    return {
-      uuid: undefined,
-      instanceUuid: undefined,
-      isError: undefined,
-      summary: undefined,
-      resultTableName: undefined,
-      isProcessing: undefined,
-      lastRun: undefined,
-      logsList: undefined,
-      parametersList: undefined,
-      output: undefined
-    };
-  }
-
-  convertReportOutput(reportOutputToConvert) {
-    if (reportOutputToConvert) {
-      return {
-        uuid: reportOutputToConvert.getUuid(),
-        name: reportOutputToConvert.getName(),
-        description: reportOutputToConvert.getDescription(),
-        fileName: reportOutputToConvert.getFilename(),
-        output: reportOutputToConvert.getOutput(),
-        mimeType: reportOutputToConvert.getMimetype(),
-        dataCols: reportOutputToConvert.getDatacols(),
-        dataRows: reportOutputToConvert.getDatarows(),
-        headerName: reportOutputToConvert.getHeadername(),
-        footerName: reportOutputToConvert.getFootername(),
-        printFormatUuid: reportOutputToConvert.getPrintformatuuid(),
-        reportViewUuid: reportOutputToConvert.getReportviewuuid(),
-        tableName: reportOutputToConvert.getTablename(),
-        outputStream: reportOutputToConvert.getOutputstream(),
-        outputStream_asB64: reportOutputToConvert.getOutputstream_asB64(),
-        outputStream_asU8: reportOutputToConvert.getOutputstream_asU8(),
-        reportType: reportOutputToConvert.getReporttype()
-      };
-    }
-    return {
-      uuid: undefined,
-      name: undefined,
-      description: undefined,
-      fileName: undefined,
-      output: undefined,
-      mimeType: undefined,
-      dataCols: undefined,
-      dataRows: undefined,
-      headerName: undefined,
-      footerName: undefined,
-      printFormatUuid: undefined,
-      reportViewUuid: undefined,
-      tableName: undefined,
-      outputStream: undefined,
-      outputStream_asB64: undefined,
-      outputStream_asU8: undefined,
-      reportType: undefined
-    };
   }
 
   /**
@@ -1087,25 +666,29 @@ class BusinessData {
 
     // isQueryCriteria fields parameters list
     if (parametersList && parametersList.length) {
+      const { convertParameterToGRPC } = require('./src/convertUtils.js');
+
       parametersList.forEach(parameterItem => {
-        const convertedParameter = this.convertParameter({
+        const convertedParameter = convertParameterToGRPC({
           columnName: parameterItem.columnName,
           value: parameterItem.value
         });
         browserRequest.addParameters(convertedParameter);
       });
     }
-
-    const browserCriteria = this.convertCriteriaToGRPC({ query, whereClause, orderByClause });
+    const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
+    const browserCriteria = convertCriteriaToGRPC({ query, whereClause, orderByClause });
     browserRequest.setCriteria(browserCriteria);
 
     return this.getService().listBrowserItems(browserRequest)
       .then(browserSearchResponse => {
         if (isConvert) {
+          const { convertEntityFromGRPC } = require('./src/convertUtils');
+
           return {
             recordCount: browserSearchResponse.getRecordcount(),
             recordsList: browserSearchResponse.getRecordsList().map(entityItem => {
-              return this.convertEntity({
+              return convertEntityFromGRPC({
                 entityToConvert: entityItem,
                 formatToConvert
               });
@@ -1135,212 +718,17 @@ class BusinessData {
     return this.getService().listProcessLogs(request)
       .then(processLogsResponse => {
         if (isConvert) {
+          const { convertProcessLogFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: processLogsResponse.getRecordcount(),
             processLogsList: processLogsResponse.getProcesslogsList().map(processItem => {
-              return this.convertProcessLog(processItem);
+              return convertProcessLogFromGRPC(processItem);
             }),
             nextPageToken: processLogsResponse.getNextPageToken()
           };
         }
         return processLogsResponse;
-      });
-  }
-
-  /**
-   * Request Recent Items Activity List
-   * @param {string}  pageToken
-   * @param {string}  pageSize
-   * @param {boolean} isConvert
-   */
-  requestListRecentItems({ pageToken, pageSize, isConvert = true }) {
-    const { ListRecentItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const request = new ListRecentItemsRequest();
-    request.setClientrequest(this.getClientRequest());
-    request.setPageToken(pageToken);
-    request.setPageSize(pageSize);
-    return this.getService().listRecentItems(request)
-      .then(recentItemsResponse => {
-        if (isConvert) {
-          return {
-            recordCount: recentItemsResponse.getRecordcount(),
-            recentItemsList: recentItemsResponse.getRecentitemsList().map(recentItem => {
-              return {
-                menuUuid: recentItem.getMenuuuid(),
-                menuName: recentItem.getMenuname(),
-                menuDescription: recentItem.getMenudescription(),
-                windowUuid: recentItem.getWindowuuid(),
-                tabUuid: recentItem.getTabuuid(),
-                tableId: recentItem.getTableid(),
-                recordId: recentItem.getRecordid(),
-                displayName: recentItem.getDisplayname(),
-                recordUuid: recentItem.getRecorduuid(),
-                updated: new Date(recentItem.getUpdated()),
-                referenceUuid: recentItem.getReferenceuuid(),
-                action: recentItem.getAction()
-              };
-            }),
-            nextPageToken: recentItemsResponse.getNextPageToken()
-          };
-        }
-        return recentItemsResponse;
-      });
-  }
-
-  /**
-   * Request Favorites List
-   * @param {string}  userUuid
-   * @param {string}  pageToken
-   * @param {string}  pageSize
-   * @param {boolean} isConvert
-   */
-  requestListFavorites({ userUuid, pageToken, pageSize, isConvert = true }) {
-    const { ListFavoritesRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const requestInstance = new ListFavoritesRequest();
-    requestInstance.setClientrequest(this.getClientRequest());
-    requestInstance.setUseruuid(userUuid);
-    requestInstance.setPageToken(pageToken);
-    requestInstance.setPageSize(pageSize);
-
-    return this.getService().listFavorites(requestInstance)
-      .then(favoritesResponse => {
-        if (isConvert) {
-          return {
-            recordCount: favoritesResponse.getRecordcount(),
-            favoritesList: favoritesResponse.getFavoritesList().map(favoriteItem => {
-              return {
-                menuUuid: favoriteItem.getMenuuuid(),
-                menuName: favoriteItem.getMenuname(),
-                menuDescription: favoriteItem.getMenudescription(),
-                referenceUuid: favoriteItem.getReferenceuuid(),
-                action: favoriteItem.getAction()
-              };
-            }),
-            nextPageToken: favoritesResponse.getNextPageToken()
-          };
-        }
-        return favoritesResponse;
-      });
-  }
-
-  /**
-   * Request Dashboards List
-   * @param {string}  roleUuid
-   * @param {string}  pageToken
-   * @param {string}  pageSize
-   */
-  requestListDashboards({ roleUuid, pageToken, pageSize }) {
-    const { ListDashboardsRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const request = new ListDashboardsRequest();
-    request.setClientrequest(this.getClientRequest());
-    request.setRoleuuid(roleUuid);
-    request.setPageToken(pageToken);
-    request.setPageSize(pageSize);
-
-    return this.getService().listDashboards(request)
-      .then(dashboardResponse => {
-        return {
-          recordCount: dashboardResponse.getRecordcount(),
-          dashboardsList: dashboardResponse.getDashboardsList().map(dashboardItem => {
-            return {
-              windowUuid: dashboardItem.getWindowuuid(),
-              browserUuid: dashboardItem.getBrowseruuid(),
-              dashboardName: dashboardItem.getDashboardname(),
-              dashboardDescription: dashboardItem.getDashboarddescription(),
-              dashboardHtml: dashboardItem.getDashboardhtml(),
-              columnNo: dashboardItem.getColumnno(),
-              lineNo: dashboardItem.getLineno(),
-              isCollapsible: dashboardItem.getIscollapsible(),
-              isOpenByDefault: dashboardItem.getIsopenbydefault(),
-              isEventRequired: dashboardItem.getIseventrequired(),
-              fileName: dashboardItem.getFilename()
-            };
-          }),
-          nextPageToken: dashboardResponse.getNextPageToken()
-        };
-      });
-  }
-
-  /**
-   * Get languages flagged as System Language or Base Language
-   * @param {string}  pageToken
-   * @param {string}  pageSize
-   */
-  requestListLanguages({ pageToken, pageSize }) {
-    const { ListLanguagesRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const request = new ListLanguagesRequest();
-
-    request.setClientrequest(this.getClientRequest());
-    request.setPageToken(pageToken);
-    request.setPageSize(pageSize);
-
-    return this.getService().listLanguages(request)
-      .then(languageResponse => {
-        return {
-          recordCount: languageResponse.getRecordcount(),
-          languagesList: languageResponse.getLanguagesList().map(languageItem => {
-            return {
-              language: languageItem.getLanguage(),
-              languageName: languageItem.getLanguagename(),
-              languageISO: languageItem.getLanguageiso(),
-              countryCode: languageItem.getCountrycode(),
-              isBaseLanguage: languageItem.getIsbaselanguage(),
-              isSystemLanguage: languageItem.getIssystemlanguage(),
-              isDecimalPoint: languageItem.getIsdecimalpoint(),
-              datePattern: languageItem.getDatepattern(),
-              timePattern: languageItem.getTimepattern()
-            };
-          }),
-          nextPageToken: languageResponse.getNextPageToken()
-        };
-      });
-  }
-
-  /**
-   * Get languages flagged as System Language or Base Language
-   * @param {string}  tableName
-   * @param {string}  recordUuid
-   * @param {number}  recordId
-   * @param {string}  language
-   * @param {string}  pageToken
-   * @param {string}  pageSize
-   */
-  requestTranslations({
-    tableName,
-    recordUuid,
-    recordId,
-    language,
-    pageToken,
-    pageSize
-  }) {
-    const { ListTranslationsRequest } = require('./src/grpc/proto/businessdata_pb.js');
-    const request = new ListTranslationsRequest();
-
-    request.setClientrequest(this.getClientRequest());
-    request.setPageToken(pageToken);
-    request.setPageSize(pageSize);
-    //  Set values
-    request.setTablename(tableName);
-    request.setRecorduuid(recordUuid);
-    request.setRecordid(recordId);
-    request.setLanguage(language);
-
-    return this.getService().listTranslations(request)
-      .then(translationResponse => {
-        return {
-          recordCount: translationResponse.getRecordcount(),
-          translationsList: translationResponse.getTranslationsList().map(translationItem => {
-            return {
-              language: translationItem.getLanguage(),
-              translationUuid: translationItem.getTranslationuuid(),
-              values: this.convertValuesMap({
-                mapToConvert: translationItem.getValuesMap(),
-                returnType: 'object'
-              }),
-            };
-          }),
-          nextPageToken: translationResponse.getNextPageToken()
-        };
       });
   }
 
@@ -1356,6 +744,7 @@ class BusinessData {
   requestListPrintFormats({ tableName, reportViewUuid, processUuid, pageToken, pageSize, isConvert = true }) {
     const { ListPrintFormatsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListPrintFormatsRequest();
+
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setTablename(tableName);
     requestInstance.setReportviewuuid(reportViewUuid);
@@ -1366,17 +755,12 @@ class BusinessData {
     return this.getService().listPrintFormats(requestInstance)
       .then(printFormatResponse => {
         if (isConvert) {
+          const { convertPrintFromatFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: printFormatResponse.getRecordcount(),
             printFormatsList: printFormatResponse.getPrintformatsList().map(printFormatItem => {
-              return {
-                printFormatUuid: printFormatItem.getUuid(),
-                name: printFormatItem.getName(),
-                description: printFormatItem.getDescription(),
-                tableName: printFormatItem.getTablename(),
-                isDefault: printFormatItem.getIsdefault(),
-                reportViewUuid: printFormatItem.getReportviewuuid()
-              };
+              return convertPrintFromatFromGRPC(printFormatItem);
             }),
             nextPageToken: printFormatResponse.getNextPageToken()
           };
@@ -1405,15 +789,12 @@ class BusinessData {
     return this.getService().listReportViews(requestInstance)
       .then(reportViewsResponse => {
         if (isConvert) {
+          const { convertReportViewFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: reportViewsResponse.getRecordcount(),
             reportViewsList: reportViewsResponse.getReportviewsList().map(reportViewItem => {
-              return {
-                reportViewUuid: reportViewItem.getUuid(),
-                name: reportViewItem.getName(),
-                description: reportViewItem.getDescription(),
-                tableName: reportViewItem.getTablename()
-              };
+              return convertReportViewFromGRPC(reportViewItem);
             }),
             nextPageToken: reportViewsResponse.getNextPageToken()
           };
@@ -1428,9 +809,10 @@ class BusinessData {
    * @param {string}  pageToken
    * @param {string}  pageSize
    */
-  requestListDrillTables({ tableName, pageToken, pageSize }) {
+  requestListDrillTables({ tableName, pageToken, pageSize, isConvert = true }) {
     const { ListDrillTablesRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListDrillTablesRequest();
+
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setTablename(tableName);
     requestInstance.setPageToken(pageToken);
@@ -1438,16 +820,77 @@ class BusinessData {
 
     return this.getService().listDrillTables(requestInstance)
       .then(drillTableResponse => {
+        if (isConvert) {
+          const { convertDrillTableFromGRPC } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: drillTableResponse.getRecordcount(),
+            drillTablesList: drillTableResponse.getDrilltablesList().map(itemDrillTable => {
+              return convertDrillTableFromGRPC(itemDrillTable);
+            }),
+            nextPageToken: drillTableResponse.getNextPageToken()
+          };
+        }
+        return drillTableResponse;
+      });
+  }
+
+  /**
+   * Request Dashboards List
+   * @param {string}  roleUuid
+   * @param {string}  pageToken
+   * @param {string}  pageSize
+   */
+  requestListDashboards({ roleUuid, pageToken, pageSize }) {
+    const { ListDashboardsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListDashboardsRequest();
+    request.setClientrequest(this.getClientRequest());
+    request.setRoleuuid(roleUuid);
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
+    return this.getService().listDashboards(request)
+      .then(dashboardResponse => {
+        const { convertDashboardFromGRPC } = require('./src/convertUtils.js');
+
         return {
-          recordCount: drillTableResponse.getRecordcount(),
-          drillTablesList: drillTableResponse.getDrilltablesList().map(itemDrillTable => {
-            return {
-              tableName: itemDrillTable.getTablename(),
-              printName: itemDrillTable.getPrintname()
-            };
+          recordCount: dashboardResponse.getRecordcount(),
+          dashboardsList: dashboardResponse.getDashboardsList().map(dashboardItem => {
+            return convertDashboardFromGRPC(dashboardItem);
           }),
-          nextPageToken: drillTableResponse.getNextPageToken()
+          nextPageToken: dashboardResponse.getNextPageToken()
         };
+      });
+  }
+
+  /**
+   * Request Recent Items Activity List
+   * @param {string}  pageToken
+   * @param {string}  pageSize
+   * @param {boolean} isConvert
+   */
+  requestListRecentItems({ pageToken, pageSize, isConvert = true }) {
+    const { ListRecentItemsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListRecentItemsRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
+    return this.getService().listRecentItems(request)
+      .then(recentItemsResponse => {
+        if (isConvert) {
+          const { convertRecentItemFromGRPC } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: recentItemsResponse.getRecordcount(),
+            recentItemsList: recentItemsResponse.getRecentitemsList().map(recentItem => {
+              return convertRecentItemFromGRPC(recentItem);
+            }),
+            nextPageToken: recentItemsResponse.getNextPageToken()
+          };
+        }
+        return recentItemsResponse;
       });
   }
 
@@ -1462,6 +905,7 @@ class BusinessData {
   requestListPendingDocuments({ userUuid, roleUuid, pageToken, pageSize, isConvert = true }) {
     const { ListPendingDocumentsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListPendingDocumentsRequest();
+
     requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setUseruuid(userUuid);
     requestInstance.setRoleuuid(roleUuid);
@@ -1471,26 +915,127 @@ class BusinessData {
     return this.getService().listPendingDocuments(requestInstance)
       .then(pendingDocumentsResponse => {
         if (isConvert) {
+          const { convertPendingDocumentFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: pendingDocumentsResponse.getRecordcount(),
-            pendingDocumentsList: pendingDocumentsResponse.getPendingdocumentsList().map(document => {
-              return {
-                windowUuid: document.getWindowuuid(),
-                formUuid: document.getFormuuid(),
-                documentName: document.getDocumentname(),
-                documentDescription: document.getDocumentdescription(),
-                sequence: document.getSequence(),
-                recordCount: document.getRecordcount(),
-                criteria: this.convertCriteriaFromGRPC(
-                  document.getCriteria()
-                )
-              };
+            pendingDocumentsList: pendingDocumentsResponse.getPendingdocumentsList().map(documentItem => {
+              return convertPendingDocumentFromGRPC(documentItem);
             }),
             nextPageToken: pendingDocumentsResponse.getNextPageToken()
           };
         }
-
         return pendingDocumentsResponse;
+      });
+  }
+
+  /**
+   * Request Favorites List
+   * @param {string}  userUuid
+   * @param {string}  pageToken
+   * @param {string}  pageSize
+   * @param {boolean} isConvert
+   */
+  requestListFavorites({ userUuid, pageToken, pageSize, isConvert = true }) {
+    const { ListFavoritesRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const requestInstance = new ListFavoritesRequest();
+
+    requestInstance.setClientrequest(this.getClientRequest());
+    requestInstance.setUseruuid(userUuid);
+    requestInstance.setPageToken(pageToken);
+    requestInstance.setPageSize(pageSize);
+
+    return this.getService().listFavorites(requestInstance)
+      .then(favoritesResponse => {
+        if (isConvert) {
+          const { convertFavoriteFromGRPC } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: favoritesResponse.getRecordcount(),
+            favoritesList: favoritesResponse.getFavoritesList().map(favoriteItem => {
+              return convertFavoriteFromGRPC(favoriteItem);
+            }),
+            nextPageToken: favoritesResponse.getNextPageToken()
+          };
+        }
+        return favoritesResponse;
+      });
+  }
+
+  /**
+   * Get languages flagged as System Language or Base Language
+   * @param {string}  pageToken
+   * @param {string}  pageSize
+   */
+  requestListLanguages({ pageToken, pageSize, isConvert = true }) {
+    const { ListLanguagesRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListLanguagesRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
+    return this.getService().listLanguages(request)
+      .then(languageResponse => {
+        if (isConvert) {
+          const { convertLanguageFromGRPC } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: languageResponse.getRecordcount(),
+            languagesList: languageResponse.getLanguagesList().map(languageItem => {
+              return convertLanguageFromGRPC(languageItem);
+            }),
+            nextPageToken: languageResponse.getNextPageToken()
+          };
+        }
+        return languageResponse;
+      });
+  }
+
+  /**
+   * Get languages flagged as System Language or Base Language
+   * @param {string}  tableName
+   * @param {string}  recordUuid
+   * @param {number}  recordId
+   * @param {string}  language
+   * @param {string}  pageToken
+   * @param {string}  pageSize
+   */
+  requestTranslations({
+    tableName,
+    recordUuid,
+    recordId,
+    language,
+    pageToken,
+    pageSize,
+    isConvert = true
+  }) {
+    const { ListTranslationsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListTranslationsRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+    //  Set values
+    request.setTablename(tableName);
+    request.setRecorduuid(recordUuid);
+    request.setRecordid(recordId);
+    request.setLanguage(language);
+
+    return this.getService().listTranslations(request)
+      .then(translationResponse => {
+        if (isConvert) {
+          const { convertTranslationFromGRPC } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: translationResponse.getRecordcount(),
+            translationsList: translationResponse.getTranslationsList().map(translationItem => {
+              return convertTranslationFromGRPC(translationItem);
+            }),
+            nextPageToken: translationResponse.getNextPageToken()
+          };
+        }
+        return translationResponse;
       });
   }
 
@@ -1507,6 +1052,7 @@ class BusinessData {
    */
   requestRunCallout({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, callout, attributesList = [], isConvert = true }) {
     const { RunCalloutRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const { convertValueToGRPC } = require('./src/convertUtils.js');
 
     const calloutRequestInstance = new RunCalloutRequest();
     calloutRequestInstance.setClientrequest(this.getClientRequest());
@@ -1516,20 +1062,22 @@ class BusinessData {
     calloutRequestInstance.setTablename(tableName);
     calloutRequestInstance.setColumnname(columnName);
     calloutRequestInstance.setValue(
-      this.convertValueToGRPC(
+      convertValueToGRPC(
         value
       )
     );
     calloutRequestInstance.setOldvalue(
-      this.convertValueToGRPC(
+      convertValueToGRPC(
         oldValue
       )
     );
     calloutRequestInstance.setCallout(callout);
 
     if (attributesList.length) {
+      const { convertParameterToGRPC } = require('./src/convertUtils.js');
+
       attributesList.forEach(attribute => {
-        const convertedAttribute = this.convertParameter({
+        const convertedAttribute = convertParameterToGRPC({
           columnName: attribute.columnName,
           value: attribute.value
         });
@@ -1540,9 +1088,11 @@ class BusinessData {
     return this.getService().runCallout(calloutRequestInstance)
       .then(calloutResponse => {
         if (isConvert) {
+          const { convertValuesMapFromGRPC } = require('./src/convertUtils.js');
+
           return {
             result: calloutResponse.getResult(),
-            values: this.convertValuesMap({
+            values: convertValuesMapFromGRPC({
               mapToConvert: calloutResponse.getValuesMap(),
               returnType: 'object'
             })
@@ -1550,60 +1100,6 @@ class BusinessData {
         }
         return calloutResponse;
       });
-  }
-
-  /**
-   * Get all event type or get key value type from value
-   * @param {number} keyFind
-   */
-  getEventTypeRecordLog(keyFind) {
-    const { RecordLog } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(RecordLog.EventType).find(key => RecordLog.EventType[key] === keyFind);
-    }
-    return RecordLog.EventType;
-  }
-
-  convertRecordLog(recordLogToConvert) {
-    if (recordLogToConvert) {
-      return {
-        logUuid: recordLogToConvert.getLoguuid(),
-        recordId: recordLogToConvert.getRecordid(),
-        tableName: recordLogToConvert.getTablename(),
-        columnName: recordLogToConvert.getColumnname(),
-        displayColumnName: recordLogToConvert.getDisplaycolumnname(),
-        sessionUuid: recordLogToConvert.getSessionuuid(),
-        userUuid: recordLogToConvert.getUseruuid(),
-        userName: recordLogToConvert.getUsername(),
-        transactionName: recordLogToConvert.getTransactionname(),
-        oldValue: recordLogToConvert.getOldvalue(),
-        newValue: recordLogToConvert.getNewvalue(),
-        oldDisplayValue: recordLogToConvert.getOlddisplayvalue(),
-        newDisplayValue: recordLogToConvert.getNewdisplayvalue(),
-        description: recordLogToConvert.getDescription(),
-        eventType: recordLogToConvert.getEventtype(),
-        eventTypeName: this.getEventTypeRecordLog(recordLogToConvert.getEventtype()),
-        logDate: new Date(recordLogToConvert.getLogdate())
-      };
-    }
-    return {
-      logUuid: undefined,
-      recordId: undefined,
-      tableName: undefined,
-      columnName: undefined,
-      displayColumnName: undefined,
-      sessionUuid: undefined,
-      userUuid: undefined,
-      userName: undefined,
-      transactionName: undefined,
-      oldValue: undefined,
-      oldDisplayValue: undefined,
-      newValue: undefined,
-      newDisplayValue: undefined,
-      description: undefined,
-      eventType: undefined,
-      logDate: undefined
-    };
   }
 
   /**
@@ -1628,79 +1124,18 @@ class BusinessData {
     return this.getService().listRecordLogs(request)
       .then(recordLogsResponse => {
         if (isConvert) {
+          const { convertRecordLogFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: recordLogsResponse.getRecordcount(),
             recordLogsList: recordLogsResponse.getRecordlogsList().map(recordItem => {
-              return this.convertRecordLog(recordItem);
+              return convertRecordLogFromGRPC(recordItem);
             }),
             nextPageToken: recordLogsResponse.getNextPageToken()
           };
         }
         return recordLogsResponse;
       });
-  }
-
-  /**
-   * Get all confidential type or get key value type from value
-   * @param {number} keyFind
-        PUBLIC: 0,
-        PARTER: 1,
-        INTERNAL: 2,
-   */
-  getConfidentialTypeRecordChats(keyFind) {
-    const { RecordChat } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(RecordChat.ConfidentialType).find(key => RecordChat.ConfidentialType[key] === keyFind);
-    }
-    return RecordChat.ConfidentialType;
-  }
-
-  /**
-   * Get all moderation type or get key value type from value
-   * @param {number} keyFind
-        NOT_MODERATED: 0,
-        BEFORE_PUBLISHING: 1,
-        AFTER_PUBLISHING: 2,
-   */
-  getModerationTypeRecordChats(keyFind) {
-    const { RecordChat } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(RecordChat.ModerationType).find(key => RecordChat.ModerationType[key] === keyFind);
-    }
-    return RecordChat.ModerationType;
-  }
-
-  convertRecordChats(recordChatToConvert) {
-    if (recordChatToConvert) {
-      return {
-        chatUuid: recordChatToConvert.getChatuuid(),
-        recordId: recordChatToConvert.getRecordid(),
-        tableName: recordChatToConvert.getTablename(),
-        chatTypeUuid: recordChatToConvert.getChattypeuuid(),
-        description: recordChatToConvert.getDescription(),
-        confidentialType: recordChatToConvert.getConfidentialtype(),
-        confidentialTypeName: this.getConfidentialTypeRecordChats(
-          recordChatToConvert.getConfidentialtype()
-        ),
-        moderationType: recordChatToConvert.getModerationtype(),
-        moderationTypeName: this.getModerationTypeRecordChats(
-          recordChatToConvert.getModerationtype()
-        ),
-        logDate: new Date(recordChatToConvert.getLogdate())
-      };
-    }
-    return {
-      chatUuid: undefined,
-      recordId: undefined,
-      tableName: undefined,
-      chatTypeUuid: undefined,
-      description: undefined,
-      confidentialType: undefined,
-      confidentialTypeName: undefined,
-      moderationType: undefined,
-      moderationTypeName: undefined,
-      logDate: undefined
-    };
   }
 
   /**
@@ -1725,101 +1160,18 @@ class BusinessData {
     return this.getService().listRecordChats(request)
       .then(recordChatResponse => {
         if (isConvert) {
+          const { convertRecordChatsFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: recordChatResponse.getRecordcount(),
             recordChatsList: recordChatResponse.getRecordchatsList().map(recordChatsItem => {
-              return this.convertRecordChat(recordChatsItem);
+              return convertRecordChatsFromGRPC(recordChatsItem);
             }),
             nextPageToken: recordChatResponse.getNextPageToken()
           };
         }
         return recordChatResponse;
       });
-  }
-
-  /**
-   * Get all confidential type or get key value type from value
-   * @param {number} keyFind
-        PUBLIC = 0;
-        PARTER = 1;
-        INTERNAL = 2;
-   */
-  getConfidentialTypeChatEntry(keyFind) {
-    const { ChatEntry } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(ChatEntry.ConfidentialType).find(key => ChatEntry.ConfidentialType[key] === keyFind);
-    }
-    return ChatEntry.ConfidentialType;
-  }
-
-  /**
-   * Get all moderation status or get key value type from value
-   * @param {number} keyFind
-        NOT_DISPLAYED = 0;
-        PUBLISHED = 1;
-        SUSPICIUS = 2;
-        TO_BE_REVIEWED = 3;
-   */
-  getModeratorStatusChatEntry(keyFind) {
-    const { ChatEntry } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(ChatEntry.ModeratorStatus).find(key => ChatEntry.ModeratorStatus[key] === keyFind);
-    }
-    return ChatEntry.ModeratorStatus;
-  }
-
-  /**
-   * Get all chat entry type or get key value type from value
-   * @param {number} keyFind
-        NOTE_FLAT = 0;
-        FORUM_THREADED = 1;
-        WIKI = 2;
-   */
-  getChatEntryType(keyFind) {
-    const { ChatEntry } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(ChatEntry.getChatEntryType).find(key => ChatEntry.getChatEntryType[key] === keyFind);
-    }
-    return ChatEntry.getChatEntryType;
-  }
-
-  convertChatEntry(chatEntryToConvert) {
-    if (chatEntryToConvert) {
-      return {
-        chatEntryUuid: chatEntryToConvert.getChatuuid(),
-        subject: chatEntryToConvert.getRecordid(),
-        characterData: chatEntryToConvert.getTablename(),
-        userUuid: chatEntryToConvert.getChattypeuuid(),
-        userName: chatEntryToConvert.getDescription(),
-        chatEntryType: chatEntryType.getChatentrytype(),
-        chatEntryTypeName: this.getChatEntryType(
-          chatEntryType.getChatentrytype()
-        ),
-        confidentialType: chatEntryToConvert.getConfidentialtype(),
-        confidentialTypeName: this.getConfidentialTypeChatEntry(
-          chatEntryToConvert.getConfidentialtype()
-        ),
-        moderatorStatus: chatEntryToConvert.getModerationtype(),
-        moderatorStatusName: this.getModeratorStatusChatEntry(
-          chatEntryToConvert.getModerationtype()
-        ),
-        logDate: new Date(chatEntryToConvert.getLogdate())
-      };
-    }
-    return {
-      chatEntryUuid: undefined,
-      subject: undefined,
-      characterData: undefined,
-      userUuid: undefined,
-      userName: undefined,
-      chatEntryType: undefined,
-      chatEntryTypeName: undefined,
-      confidentialType: undefined,
-      confidentialTypeName: undefined,
-      moderatorStatus: undefined,
-      moderatorStatusName: undefined,
-      logDate: undefined
-    };
   }
 
   /**
@@ -1842,156 +1194,18 @@ class BusinessData {
     return this.getService().listChatEntries(request)
       .then(chatEntriesResponse => {
         if (isConvert) {
+          const { convertChatEntryFromGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: chatEntriesResponse.getRecordcount(),
-            chatEntriesList: chatEntriesResponse.getChatEntriesList().map(chatEntryItem => {
-              return this.convertChatEntry(chatEntryItem);
+            chatEntriesList: chatEntriesResponse.getChatentriesList().map(chatEntryItem => {
+              return convertChatEntryFromGRPC(chatEntryItem);
             }),
             nextPageToken: chatEntriesResponse.getNextPageToken()
           };
         }
         return chatEntriesResponse;
       });
-  }
-
-   /**
-   * Get all workflow state or get key value type from value
-   * @param {number} keyFind
-        RUNNING: 0,
-        COMPLETED: 1,
-        ABORTED: 2,
-        TERMINATED: 3,
-        SUSPENDED: 4,
-        NOT_STARTED: 5,
-   */
-  getWorkflowState(keyFind) {
-    const { WorkflowProcess } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(WorkflowProcess.WorkflowState).find(key => WorkflowProcess.WorkflowState[key] === keyFind);
-    }
-    return WorkflowProcess.WorkflowState;
-  }
-
-  /**
-   * Get all workflow priority or get key value type from value
-   * @param {number} keyFind
-        URGENT: 0,
-        HIGH: 1,
-        MEDIUM: 2,
-        LOW: 3,
-        MINOR: 4,
-   */
-  getWorkflowPriority(keyFind) {
-    const { WorkflowProcess } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(WorkflowProcess.Priority).find(key => WorkflowProcess.Priority[key] === keyFind);
-    }
-    return WorkflowProcess.Priority;
-  }
-
-  /**
-   * Get all workflow event type or get key value type from value
-   * @param {number} keyFind
-        PROCESS_CREATED = 0;
-        PROCESS_COMPLETED = 1;
-        STATE_CHANGED = 2;
-   */
-  getWorkflowEventType(keyFind) {
-    const { WorkflowEvent } = require('./src/grpc/proto/businessdata_pb.js');
-    if (keyFind !== undefined) {
-      return Object.keys(WorkflowEvent.EventType).find(key => WorkflowEvent.EventType[key] === keyFind);
-    }
-    return WorkflowEvent.EventType;
-  }
-
-  convertWorkflowProcess(workflowProcessToConvert) {
-    if (workflowProcessToConvert) {
-      return {
-        processUuid: workflowProcessToConvert.getProcessuuid(),
-        workflowUuid: workflowProcessToConvert.getWorkflowuuid(),
-        workflowName: workflowProcessToConvert.getWorkflowname(),
-        recordId: workflowProcessToConvert.getRecordid(),
-        tableName: workflowProcessToConvert.getTablename(),
-        userUuid: workflowProcessToConvert.getUseruuid(),
-        userName: workflowProcessToConvert.getUsername(),
-        responsibleUuid: workflowProcessToConvert.getResponsibleuuid(),
-        responsibleName: workflowProcessToConvert.getResponsiblename(),
-        textMessage: workflowProcessToConvert.getTextmessage(),
-        processed: workflowProcessToConvert.getProcessed(),
-        workflowState: workflowProcessToConvert.getWorkflowstate(),
-        workflowStateName: this.getWorkflowState(workflowProcessToConvert.getWorkflowstate()),
-        priority: workflowProcessToConvert.getPriority(),
-        priorityName: this.getWorkflowPriority(workflowProcessToConvert.getPriority()),
-        workflowEventsList: workflowProcessToConvert.getWorkfloweventsList().map(itemEvent => {
-          return this.convertWorkflowEvent(itemEvent);
-        }),
-        logDate: new Date(workflowProcessToConvert.getLogdate())
-      };
-    }
-    return {
-      processUuid: undefined,
-      workflowUuid: undefined,
-      workflowName: undefined,
-      recordId: undefined,
-      tableName: undefined,
-      userUuid: undefined,
-      userName: undefined,
-      responsibleUuid: undefined,
-      responsibleName: undefined,
-      message: undefined,
-      textMessage: undefined,
-      processed: undefined,
-      workflowState: undefined,
-      workflowStateName: undefined,
-      priority: undefined,
-      priorityName: undefined,
-      workflowEventsList: undefined,
-      logDate: undefined
-    };
-  }
-
-  convertWorkflowEvent(workflowEventToConvert) {
-    if (workflowEventToConvert) {
-      return {
-        nodeUuid: workflowEventToConvert.getNodeuuid(),
-        nodeName: workflowEventToConvert.getNodename(),
-        recordId: workflowEventToConvert.getRecordid(),
-        tableName: workflowEventToConvert.getTablename(),
-        userUuid: workflowEventToConvert.getUseruuid(),
-        userName: workflowEventToConvert.getUsername(),
-        responsibleUuid: workflowEventToConvert.getResponsibleuuid(),
-        responsibleName: workflowEventToConvert.getResponsiblename(),
-        textMessage: workflowEventToConvert.getTextmessage(),
-        timeElapsed: workflowEventToConvert.getTimeelapsed(),
-        attributeName: workflowEventToConvert.getAttributename(),
-        oldValue: workflowEventToConvert.getOldvalue(),
-        newValue: workflowEventToConvert.getNewvalue(),
-        workflowState: workflowEventToConvert.getWorkflowstate(),
-        workflowStateName: this.getWorkflowState(workflowEventToConvert.getWorkflowstate()),
-        eventType: workflowEventToConvert.getEventtype(),
-        eventTypeName: this.getWorkflowEventType(workflowEventToConvert.getEventtype()),
-        logDate: new Date(workflowEventToConvert.getLogdate())
-      };
-    }
-
-    return {
-      nodeUuid: undefined,
-      nodeName: undefined,
-      recordId: undefined,
-      tableName: undefined,
-      userUuid: undefined,
-      userName: undefined,
-      responsibleUuid: undefined,
-      responsibleName: undefined,
-      textMessage: undefined,
-      timeElapsed: undefined,
-      attributeName: undefined,
-      oldValue: undefined,
-      newValue: undefined,
-      workflowState: undefined,
-      eventType: undefined,
-      logDate: undefined
-    };
   }
 
   /**
@@ -2016,15 +1230,42 @@ class BusinessData {
     return this.getService().listWorkflowLogs(request)
       .then(workflowLogsResponse => {
         if (isConvert) {
+          const { convertWorkflowProcessFomGRPC } = require('./src/convertUtils.js');
+
           return {
             recordCount: workflowLogsResponse.getRecordcount(),
             workflowLogsList: workflowLogsResponse.getWorkflowlogsList().map(workflowItem => {
-              return this.convertWorkflowProcess(workflowItem);
+              return convertWorkflowProcessFomGRPC(workflowItem);
             }),
             nextPageToken: workflowLogsResponse.getNextPageToken()
           };
         }
         return workflowLogsResponse;
+      });
+  }
+
+  requestListWorkflows({ tableName, pageToken, pageSize, isConvert = true }) {
+    const { ListWorkflowsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new ListWorkflowsRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setTablename(tableName);
+    request.setPageToken(pageToken);
+    request.setPageSize(pageSize);
+
+    return this.getService().listWorkflows(request)
+      .then(workflowResponse => {
+        if (isConvert) {
+          const { convertWorkflowDefinitionFromGRPC } = require('./src/convertUtils.js');
+          return {
+            recordCount: workflowResponse.getRecordcount(),
+            workflowsList: workflowResponse.getWorkflowList.map(workflowItem => {
+              return convertWorkflowDefinitionFromGRPC(workflowItem);
+            }),
+            nextPageToken: workflowResponse.getNextPageToken()
+          };
+        }
+        return workflowResponse;
       });
   }
 
