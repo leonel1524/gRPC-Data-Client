@@ -715,7 +715,7 @@ const convertUtils = {
     convertRecordLogFromGRPC(recordLogToConvert) {
       if (recordLogToConvert) {
         return {
-          logUuid: recordLogToConvert.getLoguuid(),
+          logId: recordLogToConvert.getLogid(),
           recordId: recordLogToConvert.getRecordid(),
           tableName: recordLogToConvert.getTablename(),
           columnName: recordLogToConvert.getColumnname(),
@@ -858,30 +858,30 @@ const convertUtils = {
     getChatEntryChatEntryType(keyFind) {
       const { ChatEntry } = require('./grpc/proto/businessdata_pb.js');
       if (keyFind !== undefined) {
-        return Object.keys(ChatEntry.getChatEntryType).find(key => ChatEntry.getChatEntryType[key] === keyFind);
+        return Object.keys(ChatEntry.ChatEntryType).find(key => ChatEntry.ChatEntryType[key] === keyFind);
       }
-      return ChatEntry.getChatEntryType;
+      return ChatEntry.ChatEntryType;
     },
 
     convertChatEntryFromGRPC(chatEntryToConvert) {
       if (chatEntryToConvert) {
         return {
-          chatEntryUuid: chatEntryToConvert.getChatuuid(),
-          subject: chatEntryToConvert.getRecordid(),
-          characterData: chatEntryToConvert.getTablename(),
-          userUuid: chatEntryToConvert.getChattypeuuid(),
-          userName: chatEntryToConvert.getDescription(),
-          chatEntryType: chatEntryType.getChatentrytype(),
+          chatEntryUuid: chatEntryToConvert.getChatentryuuid(),
+          subject: chatEntryToConvert.getSubject(),
+          characterData: chatEntryToConvert.getCharacterdata(),
+          userUuid: chatEntryToConvert.getUseruuid(),
+          userName: chatEntryToConvert.getUsername(),
+          chatEntryType: chatEntryToConvert.getChatentrytype(),
           chatEntryTypeName: convertUtils.getChatEntryChatEntryType(
-            chatEntryType.getChatentrytype()
+            chatEntryToConvert.getChatentrytype()
           ),
           confidentialType: chatEntryToConvert.getConfidentialtype(),
           confidentialTypeName: convertUtils.getChatEntryConfidentialType(
             chatEntryToConvert.getConfidentialtype()
           ),
-          moderatorStatus: chatEntryToConvert.getModerationtype(),
+          moderatorStatus: chatEntryToConvert.getModeratorstatus(),
           moderatorStatusName: convertUtils.getChatEntryModeratorStatus(
-            chatEntryToConvert.getModerationtype()
+            chatEntryToConvert.getModeratorstatus()
           ),
           logDate: new Date(chatEntryToConvert.getLogdate())
         };
