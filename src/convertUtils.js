@@ -481,7 +481,7 @@ const convertUtils = {
             mapToConvert: processLogToConvert.getParametersMap(),
             returnType: 'object'
           }),
-          output: convertUtils.convertReportOutput(processLogToConvert.getOutput())
+          output: convertUtils.convertReportOutputFromGRPC(processLogToConvert.getOutput())
         };
       }
       return {
