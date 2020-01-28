@@ -1014,8 +1014,8 @@ const convertUtils = {
           attributeName: workflowEventToConvert.getAttributename(),
           oldValue: workflowEventToConvert.getOldvalue(),
           newValue: workflowEventToConvert.getNewvalue(),
-          workflowState: workflowEventToConvert.getWorkflowProcessWorkflowState(),
-          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(workflowEventToConvert.getWorkflowProcessWorkflowState()),
+          workflowState: workflowEventToConvert.getWorkflowstate(),
+          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(workflowEventToConvert.getWorkflowstate()),
           eventType: workflowEventToConvert.getEventtype(),
           eventTypeName: convertUtils.getWorkflowEventWorkflowEventType(workflowEventToConvert.getEventtype()),
           logDate: new Date(workflowEventToConvert.getLogdate())
