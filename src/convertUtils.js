@@ -718,20 +718,24 @@ const convertUtils = {
           logId: recordLogToConvert.getLogid(),
           recordId: recordLogToConvert.getRecordid(),
           tableName: recordLogToConvert.getTablename(),
-          columnName: recordLogToConvert.getColumnname(),
-          displayColumnName: recordLogToConvert.getDisplaycolumnname(),
           sessionUuid: recordLogToConvert.getSessionuuid(),
           userUuid: recordLogToConvert.getUseruuid(),
           userName: recordLogToConvert.getUsername(),
           transactionName: recordLogToConvert.getTransactionname(),
-          oldValue: recordLogToConvert.getOldvalue(),
-          newValue: recordLogToConvert.getNewvalue(),
-          oldDisplayValue: recordLogToConvert.getOlddisplayvalue(),
-          newDisplayValue: recordLogToConvert.getNewdisplayvalue(),
-          description: recordLogToConvert.getDescription(),
           eventType: recordLogToConvert.getEventtype(),
           eventTypeName: convertUtils.getRecordLogEventType(recordLogToConvert.getEventtype()),
-          logDate: new Date(recordLogToConvert.getLogdate())
+          logDate: new Date(recordLogToConvert.getLogdate()),
+          changeLogs: recordLogsResponse.getChangelogsList().map(changeLog => {
+            return {
+              columnName: changeLog.getColumnname(),
+              displayColumnName: changeLog.getDisplaycolumnname(),
+              oldValue: changeLog.getOldvalue(),
+              newValue: changeLog.getNewvalue(),
+              oldDisplayValue: changeLog.getOlddisplayvalue(),
+              newDisplayValue: changeLog.getNewdisplayvalue(),
+              description: changeLog.getDescription()
+            }
+          })
         };
       }
       return {
