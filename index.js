@@ -212,7 +212,13 @@ class BusinessData {
     request.setClientrequest(this.getClientRequest());
 
     const { convertCriteriaToGRPC } = require('./src/convertUtils.js');
-    const criteriaForList = convertCriteriaToGRPC({ tableName, query, whereClause, conditionsList, orderByClause });
+    const criteriaForList = convertCriteriaToGRPC({
+      tableName,
+      query,
+      whereClause,
+      conditionsList,
+      orderByClause
+    });
     request.setCriteria(criteriaForList);
     request.setPageToken(pageToken);
     request.setPageSize(pageSize);
@@ -1269,6 +1275,14 @@ class BusinessData {
       });
   }
 
+  /**
+   * Get all operator or get key value type from value
+   * @param {number} keyToFind
+   */
+  getConditionOperators(keyToFind) {
+    const { getConditionOperators } = require('./src/convertUtils.js');
+    return getConditionOperators(keyToFind);
+  }
 }
 
 module.exports = BusinessData;

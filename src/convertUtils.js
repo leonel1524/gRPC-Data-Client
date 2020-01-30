@@ -318,12 +318,12 @@ const convertUtils = {
 
     /**
      * Get all operator or get key value type from value
-     * @param {number} keyFind
+     * @param {number} keyToFind
      */
-    getConditionOperators(keyFind) {
+    getConditionOperators(keyToFind) {
       const { Condition } = require('./grpc/proto/businessdata_pb.js');
-      if (keyFind !== undefined) {
-        return Object.keys(Condition.Operator).find(key => Condition.Operator[key] === keyFind);
+      if (keyToFind !== undefined) {
+        return Object.keys(Condition.Operator).find(key => Condition.Operator[key] === keyToFind);
       } else {
         return Condition.Operator;
       }
@@ -338,11 +338,17 @@ const convertUtils = {
      * @param {array}  values
      * @returns Object
      */
-    convertConditionToGRPC({ columnName, value, valueTo, values = [] }) {
+    convertConditionToGRPC({ columnName, value, valueTo, values = [], operator = 'EQUAL' }) {
       const { Condition } = require('./grpc/proto/businessdata_pb.js');
       const conditionInstance = new Condition();
 
       conditionInstance.setColumnname(columnName);
+
+      // set operator
+      conditionInstance.setOperator(Condition.Operator.EQUAL); // 0
+      if (operator) {
+        conditionInstance.setOperator(Condition.Operator[operator]); // 2
+      }
 
       // set value and value to
       if (value !== undefined && value !== null) {
@@ -355,24 +361,11 @@ const convertUtils = {
           convertUtils.convertValueToGRPC(valueTo)
         );
       }
-
-      // set operator
-      if (typeof value === 'string') {
-        conditionInstance.setOperator(Condition.Operator.LIKE); // 2
-      } else if (valueTo !== undefined && valueTo !== null) {
-        conditionInstance.setOperator(Condition.Operator.BETWEEN) // 8
-      } else {
-        conditionInstance.setOperator(Condition.Operator.EQUAL); // 0
-      }
-
+      // set values
       if (values && values.length) {
-        conditionInstance.setOperator(Condition.Operator.IN); // 11
         values.forEach(itemValue => {
-          conditionInstance.addValues(
-            convertUtils.convertValueToGRPC(
-              itemValue
-            )
-          );
+          const valueConverted = convertUtils.convertValueToGRPC(itemValue);
+          conditionInstance.addValues(valueConverted);
         });
       }
 
