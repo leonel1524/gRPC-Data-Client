@@ -1901,5 +1901,60 @@ proto.data.BusinessDataServicePromiseClient.prototype.listWorkflows =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.CreateChatEntryRequest,
+ *   !proto.data.ChatEntry>}
+ */
+const methodInfo_BusinessDataService_CreateChatEntry = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ChatEntry,
+  /** @param {!proto.data.CreateChatEntryRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ChatEntry.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.CreateChatEntryRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ChatEntry)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ChatEntry>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.createChatEntry =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/CreateChatEntry',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_CreateChatEntry,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.CreateChatEntryRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ChatEntry>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.createChatEntry =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/CreateChatEntry',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_CreateChatEntry);
+};
+
+
 module.exports = proto.data;
 
