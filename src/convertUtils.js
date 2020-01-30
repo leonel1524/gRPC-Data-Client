@@ -725,7 +725,7 @@ const convertUtils = {
           eventType: recordLogToConvert.getEventtype(),
           eventTypeName: convertUtils.getRecordLogEventType(recordLogToConvert.getEventtype()),
           logDate: new Date(recordLogToConvert.getLogdate()),
-          changeLogs: recordLogsResponse.getChangelogsList().map(changeLog => {
+          changeLogs: recordLogToConvert.getChangelogsList().map(changeLog => {
             return {
               columnName: changeLog.getColumnname(),
               displayColumnName: changeLog.getDisplaycolumnname(),
