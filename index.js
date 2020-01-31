@@ -1214,6 +1214,33 @@ class BusinessData {
       });
   }
 
+    /**
+   * Request Chats Entries
+   * @param {string}  tableName
+   * @param {number}  recordId
+   * @param {string}  comment
+   * @param {boolean} isConvert
+   */
+  requestCreateChatEntry({ tableName, recordId, comment, isConvert = true }) {
+    const { CreateChatEntryRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const request = new CreateChatEntryRequest();
+
+    request.setClientrequest(this.getClientRequest());
+    request.setTablename(tableName);
+    request.setRecordid(recordId);
+    request.setComment(comment);
+
+    //  return
+    return this.getService().CreateChatEntry(request)
+      .then(chatEntryResponse => {
+        if (isConvert) {
+          const { convertChatEntryFromGRPC } = require('./src/convertUtils.js');
+          return convertChatEntryFromGRPC(chatEntryResponse);
+        }
+        return chatEntryResponse;
+      });
+  }
+
   /**
    * Request Workflows Logs List
    * @param {string}  tableName

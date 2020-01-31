@@ -898,7 +898,20 @@ const convertUtils = {
         logDate: undefined
       };
     },
-
+    convertCreateChatEntryFromGRPC(createChatEntry) {
+      if (createChatEntry) {
+        return {
+          tableName: createChatEntry.getTablename(),
+          recordId: createChatEntry.getRecordid(),
+          comment: createChatEntry.getComment(),
+        };
+      }
+      return {
+        tableName: undefined,
+        recordId: undefined,
+        comment: undefined
+      };
+    },
      /**
      * Get all workflow state or get key value type from value
      * @param {number} keyFind
