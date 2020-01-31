@@ -1231,7 +1231,7 @@ class BusinessData {
     request.setComment(comment);
 
     //  return
-    return this.getService().CreateChatEntry(request)
+    return this.getService().createChatEntry(request)
       .then(chatEntryResponse => {
         if (isConvert) {
           const { convertChatEntryFromGRPC } = require('./src/convertUtils.js');
