@@ -1956,5 +1956,60 @@ proto.data.BusinessDataServicePromiseClient.prototype.createChatEntry =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListDocumentActionsRequest,
+ *   !proto.data.ListDocumentActionsResponse>}
+ */
+const methodInfo_BusinessDataService_ListDocumentActions = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListDocumentActionsResponse,
+  /** @param {!proto.data.ListDocumentActionsRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListDocumentActionsResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListDocumentActionsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListDocumentActionsResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListDocumentActionsResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listDocumentActions =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListDocumentActions',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDocumentActions,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListDocumentActionsRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListDocumentActionsResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listDocumentActions =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListDocumentActions',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDocumentActions);
+};
+
+
 module.exports = proto.data;
 
