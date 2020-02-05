@@ -156,7 +156,7 @@ const convertUtils = {
         });
         selectionInstance.addValues(convertedSelection);
       });
-      return selec,tionInstance;
+      return selectionInstance;
     },
 
     /**
@@ -863,6 +863,7 @@ const convertUtils = {
     convertChatEntryFromGRPC(chatEntryToConvert) {
       if (chatEntryToConvert) {
         return {
+          chatUuid: chatEntryToConvert.getChatuuid(),
           chatEntryUuid: chatEntryToConvert.getChatentryuuid(),
           subject: chatEntryToConvert.getSubject(),
           characterData: chatEntryToConvert.getCharacterdata(),
@@ -884,6 +885,7 @@ const convertUtils = {
         };
       }
       return {
+        chatUuid: undefined,
         chatEntryUuid: undefined,
         subject: undefined,
         characterData: undefined,
@@ -961,10 +963,14 @@ const convertUtils = {
           responsibleName: workflowProcessToConvert.getResponsiblename(),
           textMessage: workflowProcessToConvert.getTextmessage(),
           processed: workflowProcessToConvert.getProcessed(),
-          workflowState: workflowProcessToConvert.getWorkflowProcessWorkflowState(),
-          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(workflowProcessToConvert.getWorkflowProcessWorkflowState()),
+          workflowState: workflowProcessToConvert.getWorkflowState(),
+          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(
+            workflowProcessToConvert.getWorkflowState()
+          ),
           priority: workflowProcessToConvert.getPriority(),
-          priorityName: convertUtils.getWorkflowProcessWorkflowPriority(workflowProcessToConvert.getPriority()),
+          priorityName: convertUtils.getWorkflowProcessWorkflowPriority(
+            workflowProcessToConvert.getPriority()
+          ),
           workflowEventsList: workflowProcessToConvert.getWorkfloweventsList().map(itemEvent => {
             return convertUtils.convertWorkflowEventFromGRPC(itemEvent);
           }),
@@ -1302,6 +1308,21 @@ const convertUtils = {
         conditionTypeName: undefined,
         operation: undefined,
         operationName: undefined
+      };
+    },
+
+    convertDocumentAction(documentActionToConvert) {
+      if (documentActionToConvert) {
+        return {
+          value: documentActionToConvert.getValue(),
+          name: documentActionToConvert.getName(),
+          description: documentActionToConvert.getDescription()
+        };
+      }
+      return {
+        value: undefined,
+        name: undefined,
+	      description: undefined
       };
     }
 

@@ -51,7 +51,7 @@ class BusinessData {
   /**
    * Checks if value is empty. Deep-checks arrays and objects
    * Note: isEmpty([]) == true, isEmpty({}) == true, isEmpty([{0:false},"",0]) == true, isEmpty({0:1}) == false
-   * @param   {boolean|array|object|number|string} value
+   * @param   {boolean|array|object|number|string|date|map|function} value
    * @returns {boolean}
    */
   isEmptyValue(value) {
@@ -1007,7 +1007,7 @@ class BusinessData {
    * @param {string}  pageToken
    * @param {string}  pageSize
    */
-  requestTranslations({
+  requestListTranslations({
     tableName,
     recordUuid,
     recordId,
@@ -1214,7 +1214,7 @@ class BusinessData {
       });
   }
 
-    /**
+  /**
    * Request Chats Entries
    * @param {string}  tableName
    * @param {number}  recordId
@@ -1292,7 +1292,7 @@ class BusinessData {
           const { convertWorkflowDefinitionFromGRPC } = require('./src/convertUtils.js');
           return {
             recordCount: workflowResponse.getRecordcount(),
-            workflowsList: workflowResponse.getWorkflowList.map(workflowItem => {
+            workflowsList: workflowResponse.getWorkflowsList().map(workflowItem => {
               return convertWorkflowDefinitionFromGRPC(workflowItem);
             }),
             nextPageToken: workflowResponse.getNextPageToken()
@@ -1310,6 +1310,50 @@ class BusinessData {
     const { getConditionOperators } = require('./src/convertUtils.js');
     return getConditionOperators(keyToFind);
   }
+
+  /**
+   * Request Document Actions List
+   * @param {string} tableName
+   * @param {number} recordId
+   * @param {string} recordUuid
+   * @param {string} documentStatus
+   * @param {string} documentAction
+   * @param {number} pageSize
+   * @param {string} pageToken
+   */
+  requestListDocumentActions({ tableName, recordId, recordUuid, documentStatus, documentAction, pageSize, pageToken, isConvert = true }) {
+    const { ListDocumentActionsRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const requestInstance = new ListDocumentActionsRequest;
+
+    requestInstance.setTablename(tableName);
+    requestInstance.setRecordid(recordId);
+    requestInstance.setRecorduuid(recordUuid);
+    requestInstance.setDocumentstatus(documentStatus);
+    requestInstance.setDocumentaction(documentAction);
+    requestInstance.setPageSize(pageSize);
+    requestInstance.setPageToken(pageToken);
+
+    return this.getService().listDocumentActions(requestInstance)
+      .then(listDocumentActionsResponse => {
+        if (isConvert) {
+          const { convertDocumentAction } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: listDocumentActionsResponse.getRecordcount(),
+            documentActionsList: listDocumentActionsResponse.getDocumentactionsList()
+              .map(documentActionItem => {
+                return convertDocumentAction(documentActionItem);
+              }),
+            defaultDocumentAction: convertDocumentAction(
+              listDocumentActionsResponse.getDefaultdocumentaction()
+            ),
+            nextPageToken: listDocumentActionsResponse.getNextPageToken()
+          };
+        }
+        return listDocumentActionsResponse;
+      })
+  }
+
 }
 
 module.exports = BusinessData;
