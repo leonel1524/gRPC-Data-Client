@@ -963,7 +963,6 @@ const convertUtils = {
           responsibleName: workflowProcessToConvert.getResponsiblename(),
           textMessage: workflowProcessToConvert.getTextmessage(),
           processed: workflowProcessToConvert.getProcessed(),
-          workflowState: workflowProcessToConvert.getWorkflowState(),
           workflowStateName: convertUtils.getWorkflowProcessWorkflowState(
             workflowProcessToConvert.getWorkflowState()
           ),
@@ -1122,7 +1121,6 @@ const convertUtils = {
           help: workflowDefinitionToConvert.getHelp(),
           tableName: workflowDefinitionToConvert.getTablename(),
           responsibleUuid: workflowDefinitionToConvert.getResponsibleuuid(),
-          responsibleName: workflowDefinitionToConvert.getResulttablename(),
           priority: workflowDefinitionToConvert.getPriority(),
           validFrom: workflowDefinitionToConvert.getValidfrom(),
           isDefault: workflowDefinitionToConvert.getIsdefault(),

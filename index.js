@@ -1325,6 +1325,7 @@ class BusinessData {
     const { ListDocumentActionsRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const requestInstance = new ListDocumentActionsRequest;
 
+    requestInstance.setClientrequest(this.getClientRequest());
     requestInstance.setTablename(tableName);
     requestInstance.setRecordid(recordId);
     requestInstance.setRecorduuid(recordUuid);
@@ -1332,7 +1333,6 @@ class BusinessData {
     requestInstance.setDocumentaction(documentAction);
     requestInstance.setPageSize(pageSize);
     requestInstance.setPageToken(pageToken);
-
     return this.getService().listDocumentActions(requestInstance)
       .then(listDocumentActionsResponse => {
         if (isConvert) {
