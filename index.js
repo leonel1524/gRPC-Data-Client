@@ -93,10 +93,7 @@ class BusinessData {
       const { convertParameterToGRPC } = require('./src/convertUtils.js');
 
       attributesList.forEach(attribute => {
-        const convertedAttribute = convertParameterToGRPC({
-          columnName: attribute.columnName,
-          value: attribute.value
-        });
+        const convertedAttribute = convertParameterToGRPC(attribute);
         request.addAttributes(convertedAttribute);
       });
     }
@@ -613,10 +610,7 @@ class BusinessData {
       const { convertParameterToGRPC } = require('./src/convertUtils.js');
 
       parametersList.forEach(parameterItem => {
-        const convertedParameter = convertParameterToGRPC({
-          columnName: parameterItem.columnName,
-          value: parameterItem.value
-        });
+        const convertedParameter = convertParameterToGRPC(parameterItem);
         processRequest.addParameters(convertedParameter);
       });
     }
@@ -675,10 +669,7 @@ class BusinessData {
       const { convertParameterToGRPC } = require('./src/convertUtils.js');
 
       parametersList.forEach(parameterItem => {
-        const convertedParameter = convertParameterToGRPC({
-          columnName: parameterItem.columnName,
-          value: parameterItem.value
-        });
+        const convertedParameter = convertParameterToGRPC(parameterItem);
         browserRequest.addParameters(convertedParameter);
       });
     }
@@ -1068,14 +1059,12 @@ class BusinessData {
     calloutRequestInstance.setTablename(tableName);
     calloutRequestInstance.setColumnname(columnName);
     calloutRequestInstance.setValue(
-      convertValueToGRPC(
-        value
-      )
+      convertValueToGRPC({ value })
     );
     calloutRequestInstance.setOldvalue(
-      convertValueToGRPC(
-        oldValue
-      )
+      convertValueToGRPC({
+        value: oldValue 
+      })
     );
     calloutRequestInstance.setCallout(callout);
 
@@ -1083,10 +1072,7 @@ class BusinessData {
       const { convertParameterToGRPC } = require('./src/convertUtils.js');
 
       attributesList.forEach(attribute => {
-        const convertedAttribute = convertParameterToGRPC({
-          columnName: attribute.columnName,
-          value: attribute.value
-        });
+        const convertedAttribute = convertParameterToGRPC(attribute);
         calloutRequestInstance.addAttributes(convertedAttribute);
       });
     }
