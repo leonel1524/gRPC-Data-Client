@@ -68,25 +68,81 @@ const convertUtils = {
      * @param {mixed} value
      * @returns {Value}
      */
-    convertValueToGRPC(value) {
+    convertValueToGRPC({ value, valueType }) {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
       const valueConverted = new Value();
 
       // evaluate type value
       if (value === undefined || value === null) {
         valueConverted.setValuetype(Value.ValueType.NULL);
-      } else if (typeof(value) === 'number') {
-        if (Number.isInteger(value)) {
-          if (String(value).length > 11) {
+        return valueConverted;
+      }
+      if (valueType) {
+        valueConverted.setValuetype(Value.ValueType[valueType]);
+
+        switch (Value.ValueType[valueType]) {
+          // data type Number (integer)
+          case Value.ValueType.INTEGER:
+            if (String(value).length < 11) {
+              valueConverted.setIntvalue(value);
+            } else {
+              valueConverted.setLongvalue(value);
+              valueConverted.setValuetype(Value.ValueType.LONG);
+            }
+            break;
+          // data type Number (float)
+          case Value.ValueType.DOUBLE:
+            // TODO: Verify value types Double and Float
+            if (Number.isInteger(value)) {
+              value = value.toFixed(2);
+            }
+            valueConverted.setDoublevalue(value);
+            break;
+          // data type Boolean
+          case Value.ValueType.BOOLEAN:
+            if (typeof value === 'string') {
+              if (value.trim() === 'N') {
+                value = false;
+              }
+            }
+            valueConverted.setBooleanvalue(Boolean(value));
+            break;
+          // data type String
+          case Value.ValueType.STRING:
+            valueConverted.setStringvalue(String(value));
+            break;
+          // data type Date
+          case Value.ValueType.DATE:
+            if (Object.prototype.toString.call(value) === '[object Date]') {
+              value = value.getTime();
+            }
             valueConverted.setLongvalue(value);
-            valueConverted.setValuetype(Value.ValueType.LONG);
-          } else {
-            valueConverted.setIntvalue(value);
-            valueConverted.setValuetype(Value.ValueType.INTEGER);
+            break;
+          // data type Null or undefined
+          default:
+          case Value.ValueType.NULL:
+            valueConverted.setValuetype(Value.ValueType.NULL);
+            break;
+        }
+        return valueConverted;
+      }
+
+      if (typeof(value) === 'number') {
+        if (valueType === 'DOUBLE') {
+          // TODO: Verify value types Double and Float
+          if (Number.isInteger(value)) {
+            value = value.toFixed(2);
           }
-        } else {
           valueConverted.setDoublevalue(value);
           valueConverted.setValuetype(Value.ValueType.DOUBLE);
+        } else {
+          if (String(value).length < 11) {
+            valueConverted.setIntvalue(value);
+            valueConverted.setValuetype(Value.ValueType.INTEGER);
+          } else {
+            valueConverted.setLongvalue(value);
+            valueConverted.setValuetype(Value.ValueType.LONG);
+          }
         }
       } else if (typeof(value) === 'boolean') {
         valueConverted.setBooleanvalue(value);
@@ -121,15 +177,16 @@ const convertUtils = {
      * @param {mixed}  value
      * @returns KeyValue Object
      */
-    convertParameterToGRPC({ columnName, value }) {
+    convertParameterToGRPC({ columnName, value, valueType }) {
       const { KeyValue } = require('./grpc/proto/businessdata_pb.js');
       const keyValue = new KeyValue();
       keyValue.setKey(columnName);
 
       keyValue.setValue(
-        convertUtils.convertValueToGRPC(
-          value
-        )
+        convertUtils.convertValueToGRPC({
+          value,
+          valueType
+        })
       );
       //  Return converted value
       return keyValue;
@@ -296,7 +353,7 @@ const convertUtils = {
       // add values
       if (valuesList && valuesList.length) {
         valuesList.forEach(itemValue => {
-          const value = convertUtils.convertValueToGRPC(itemValue);
+          const value = convertUtils.convertValueToGRPC({ value: itemValue });
           criteria.addValues(value);
         });
       }
@@ -353,18 +410,18 @@ const convertUtils = {
       // set value and value to
       if (value !== undefined && value !== null) {
         conditionInstance.setValue(
-          convertUtils.convertValueToGRPC(value)
+          convertUtils.convertValueToGRPC({ value })
         );
       }
       if (valueTo !== undefined && valueTo !== null) {
         conditionInstance.setValueto(
-          convertUtils.convertValueToGRPC(valueTo)
+          convertUtils.convertValueToGRPC({ value: valueTo })
         );
       }
       // set values
       if (values && values.length) {
         values.forEach(itemValue => {
-          const valueConverted = convertUtils.convertValueToGRPC(itemValue);
+          const valueConverted = convertUtils.convertValueToGRPC({ value: itemValue });
           conditionInstance.addValues(valueConverted);
         });
       }
