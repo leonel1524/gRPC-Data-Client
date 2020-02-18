@@ -963,9 +963,7 @@ const convertUtils = {
           responsibleName: workflowProcessToConvert.getResponsiblename(),
           textMessage: workflowProcessToConvert.getTextmessage(),
           processed: workflowProcessToConvert.getProcessed(),
-          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(
-            workflowProcessToConvert.getWorkflowState()
-          ),
+          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(),
           priority: workflowProcessToConvert.getPriority(),
           priorityName: convertUtils.getWorkflowProcessWorkflowPriority(
             workflowProcessToConvert.getPriority()
@@ -1195,7 +1193,6 @@ const convertUtils = {
           description: workflowNodeToConvert.getDescription(),
           help: workflowNodeToConvert.getHelp(),
           responsibleUuid: workflowNodeToConvert.getResponsibleuuid(),
-          responsibleName: workflowNodeToConvert.getResulttablename(),
           documentActionValue: workflowNodeToConvert.getDocumentactionvalue(),
           documentActionName: workflowNodeToConvert.getDocumentactionname(),
           priority: workflowNodeToConvert.getPriority(),
