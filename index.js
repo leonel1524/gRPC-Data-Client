@@ -1047,7 +1047,7 @@ class BusinessData {
    * @param {array}   attributesList
    * @returns {Entity}
    */
-  requestRunCallout({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, callout, attributesList = [], isConvert = true }) {
+  requestRunCallout({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, valueType, callout, attributesList = [], isConvert = true }) {
     const { RunCalloutRequest } = require('./src/grpc/proto/businessdata_pb.js');
     const { convertValueToGRPC } = require('./src/convertUtils.js');
 
@@ -1059,11 +1059,15 @@ class BusinessData {
     calloutRequestInstance.setTablename(tableName);
     calloutRequestInstance.setColumnname(columnName);
     calloutRequestInstance.setValue(
-      convertValueToGRPC({ value })
+      convertValueToGRPC({ 
+        value,
+        valueType
+      })
     );
     calloutRequestInstance.setOldvalue(
       convertValueToGRPC({
-        value: oldValue 
+        value: oldValue,
+        valueType
       })
     );
     calloutRequestInstance.setCallout(callout);
