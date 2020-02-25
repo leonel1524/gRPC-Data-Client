@@ -1020,7 +1020,8 @@ const convertUtils = {
           responsibleName: workflowProcessToConvert.getResponsiblename(),
           textMessage: workflowProcessToConvert.getTextmessage(),
           processed: workflowProcessToConvert.getProcessed(),
-          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(),
+          workflowStateName: convertUtils.getWorkflowProcessWorkflowState(workflowProcessToConvert.getWorkflowstate()),
+          workflowState: workflowProcessToConvert.getWorkflowstate(),
           priority: workflowProcessToConvert.getPriority(),
           priorityName: convertUtils.getWorkflowProcessWorkflowPriority(
             workflowProcessToConvert.getPriority()
@@ -1233,7 +1234,7 @@ const convertUtils = {
         USER_FORM = 11;
         WAIT_SLEEP = 12;
      */
-    getWorkflowNodeAction() {
+    getWorkflowNodeAction(keyFind) {
       const { WorkflowNode } = require('./grpc/proto/businessdata_pb.js');
       if (keyFind !== undefined) {
         return Object.keys(WorkflowNode.Action).find(key => WorkflowNode.Action[key] === keyFind);
@@ -1283,7 +1284,7 @@ const convertUtils = {
     convertWorkflowTransitionFromGRPC(workflowTransitionToConvert) {
       if (workflowTransitionToConvert) {
         return {
-          nodeNextUuid: workflowTransitionToConvert.getNodeuuid(),
+          nodeNextUuid: workflowTransitionToConvert.getNodenextuuid(),
           description: workflowTransitionToConvert.getDescription(),
           isStdUserWorkflow: workflowTransitionToConvert.getIsstduserworkflow(),
           sequence: workflowTransitionToConvert.getSequence(),
