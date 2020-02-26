@@ -296,14 +296,25 @@ const convertUtils = {
 
     /**
      * Get all event type or get key value type from value
-     * @param {number} keyFind
+     * @param {number} valueMatch
+     * @param {string} keyMatch
+     * @returns {number|string|object}
+        INSERT = 0;
+        UPDATE = 1;
+        DELETE = 2;
      */
-    getRollbackEntityRequestEventType(keyFind) {
+    getRollbackEntityRequestEventType({ keyMatch, valueMatch }) {
       const { RollbackEntityRequest } = require('./grpc/proto/businessdata_pb.js');
-      if (keyFind !== undefined) {
-        return Object.keys(RollbackEntityRequest.EventType).find(key => RollbackEntityRequest.EventType[key] === keyFind);
+      const { EventType } = RollbackEntityRequest;
+      if (keyMatch !== undefined) {
+        // return value
+        return EventType[keyMatch];
+      } else if (valueMatch !== undefined) {
+        // retrun key
+        return Object.keys(EventType).find(keyItem => EventType[keyItem] === valueMatch);
       }
-      return RollbackEntityRequest.EventType;
+      // return all event type list
+      return EventType;
     },
 
     /**
@@ -1375,7 +1386,22 @@ const convertUtils = {
       return {
         value: undefined,
         name: undefined,
-	      description: undefined
+        description: undefined
+      };
+    },
+
+    convertDocumentStatus(documentStatusToConvert) {
+      if (documentStatusToConvert) {
+        return {
+          value: documentStatusToConvert.getValue(),
+          name: documentStatusToConvert.getName(),
+          description: documentStatusToConvert.getDescription()
+        };
+      }
+      return {
+        value: undefined,
+        name: undefined,
+        description: undefined
       };
     }
 

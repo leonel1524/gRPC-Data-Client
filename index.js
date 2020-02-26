@@ -63,8 +63,8 @@ class BusinessData {
       return Boolean(!value.trim().length);
     } else if (typeof value === 'function' || typeof value === 'number' || typeof value === 'boolean' || Object.prototype.toString.call(value) === '[object Date]') {
       return false;
-    } else if (Object.prototype.toString.call(value) === '[object Map]' && value.size === 0) {
-      return true;
+    } else if (Object.prototype.toString.call(value) === '[object Map]' || Object.prototype.toString.call(value) === '[object Set]') {
+      return Boolean(!value.size);
     } else if (Array.isArray(value)) {
       return Boolean(!value.length);
     } else if (typeof value === 'object') {
@@ -277,8 +277,7 @@ class BusinessData {
     rollbackRequest.setRecordid(recordId);
 
     // set event type
-    let eventType = getRollbackEntityRequestEventType(); // all events
-    eventType = eventType[eventTypeExecuted];
+    const eventType = getRollbackEntityRequestEventType({ keyMatch: eventTypeExecuted });
     rollbackRequest.setEventtype(eventType);
 
     return this.getService().rollbackEntity(rollbackRequest)
@@ -1059,7 +1058,7 @@ class BusinessData {
     calloutRequestInstance.setTablename(tableName);
     calloutRequestInstance.setColumnname(columnName);
     calloutRequestInstance.setValue(
-      convertValueToGRPC({ 
+      convertValueToGRPC({
         value,
         valueType
       })
@@ -1341,6 +1340,45 @@ class BusinessData {
           };
         }
         return listDocumentActionsResponse;
+      })
+  }
+
+  /**
+   * Request Document Actions List
+   * @param {string} tableName
+   * @param {number} recordId
+   * @param {string} recordUuid
+   * @param {string} documentStatus
+   * @param {string} documentAction
+   * @param {number} pageSize
+   * @param {string} pageToken
+   */
+  requestListDocumentStatuses({ tableName, recordId, recordUuid, documentStatus, pageSize, pageToken, isConvert = true }) {
+    const { ListDocumentStatusesRequest } = require('./src/grpc/proto/businessdata_pb.js');
+    const requestInstance = new ListDocumentStatusesRequest;
+
+    requestInstance.setClientrequest(this.getClientRequest());
+    requestInstance.setTablename(tableName);
+    requestInstance.setRecordid(recordId);
+    requestInstance.setRecorduuid(recordUuid);
+    requestInstance.setDocumentstatus(documentStatus);
+    requestInstance.setPageSize(pageSize);
+    requestInstance.setPageToken(pageToken);
+    return this.getService().listDocumentStatuses(requestInstance)
+      .then(listDocumentStatusesResponse => {
+        if (isConvert) {
+          const { convertDocumentStatus } = require('./src/convertUtils.js');
+
+          return {
+            recordCount: listDocumentStatusesResponse.getRecordcount(),
+            documentStatusesList: listDocumentStatusesResponse.getDocumentstatusesList()
+              .map(documentStatus => {
+                return convertDocumentStatus(documentStatus);
+              }),
+            nextPageToken: listDocumentStatusesResponse.getNextPageToken()
+          };
+        }
+        return listDocumentStatusesResponse;
       })
   }
 
