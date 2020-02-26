@@ -2011,5 +2011,60 @@ proto.data.BusinessDataServicePromiseClient.prototype.listDocumentActions =
 };
 
 
+/**
+ * @const
+ * @type {!grpc.web.AbstractClientBase.MethodInfo<
+ *   !proto.data.ListDocumentStatusesRequest,
+ *   !proto.data.ListDocumentStatusesResponse>}
+ */
+const methodInfo_BusinessDataService_ListDocumentStatuses = new grpc.web.AbstractClientBase.MethodInfo(
+  proto.data.ListDocumentStatusesResponse,
+  /** @param {!proto.data.ListDocumentStatusesRequest} request */
+  function(request) {
+    return request.serializeBinary();
+  },
+  proto.data.ListDocumentStatusesResponse.deserializeBinary
+);
+
+
+/**
+ * @param {!proto.data.ListDocumentStatusesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @param {function(?grpc.web.Error, ?proto.data.ListDocumentStatusesResponse)}
+ *     callback The callback function(error, response)
+ * @return {!grpc.web.ClientReadableStream<!proto.data.ListDocumentStatusesResponse>|undefined}
+ *     The XHR Node Readable Stream
+ */
+proto.data.BusinessDataServiceClient.prototype.listDocumentStatuses =
+    function(request, metadata, callback) {
+  return this.client_.rpcCall(this.hostname_ +
+      '/data.BusinessDataService/ListDocumentStatuses',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDocumentStatuses,
+      callback);
+};
+
+
+/**
+ * @param {!proto.data.ListDocumentStatusesRequest} request The
+ *     request proto
+ * @param {?Object<string, string>} metadata User defined
+ *     call metadata
+ * @return {!Promise<!proto.data.ListDocumentStatusesResponse>}
+ *     A native promise that resolves to the response
+ */
+proto.data.BusinessDataServicePromiseClient.prototype.listDocumentStatuses =
+    function(request, metadata) {
+  return this.client_.unaryCall(this.hostname_ +
+      '/data.BusinessDataService/ListDocumentStatuses',
+      request,
+      metadata || {},
+      methodInfo_BusinessDataService_ListDocumentStatuses);
+};
+
+
 module.exports = proto.data;
 
