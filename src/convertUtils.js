@@ -18,18 +18,18 @@ const convertUtils = {
 
     /**
      * convert the value obtained from gRPC according to the type of value
-     * @param {object} valueToConvert
+     * @param {object} value
      * @returns {mixed}
      */
-    convertValueFromGRPC(valueToConvert) {
+    convertValueFromGRPC(value) {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
 
-      if (valueToConvert === undefined || valueToConvert === null) {
+      if (value === undefined || value === null) {
         return undefined;
       }
 
       var returnValue;
-      switch (valueToConvert.getValuetype()) {
+      switch (value.getValuetype()) {
         // data type Null or undefined
         default:
         case Value.ValueType.NULL:
@@ -37,125 +37,249 @@ const convertUtils = {
           break;
         // data type Number (integer)
         case Value.ValueType.INTEGER:
-          returnValue = valueToConvert.getIntvalue();
-          break;
-        // data type Number (integer)
-        case Value.ValueType.LONG:
-          returnValue = valueToConvert.getLongvalue();
+          returnValue = convertUtils.getIntegerFromValue(value);
           break;
         // data type Number (float)
-        case Value.ValueType.DOUBLE:
-          returnValue = valueToConvert.getDoublevalue();
+        case Value.ValueType.DECIMAL:
+          returnValue = convertUtils.getDecimalFromValue(value);
           break;
         // data type Boolean
         case Value.ValueType.BOOLEAN:
-          returnValue = valueToConvert.getBooleanvalue();
+          returnValue = convertUtils.getBooleanFromValue(value);
           break;
         // data type String
         case Value.ValueType.STRING:
-          returnValue = valueToConvert.getStringvalue();
+          returnValue = convertUtils.getStringFromValue(value);
           break;
         // data type Date
         case Value.ValueType.DATE:
-          returnValue = new Date(valueToConvert.getLongvalue());
+          returnValue = convertUtils.getDateFromValue(value);
           break;
       }
       return returnValue;
     },
 
     /**
+  	 * Get Decimal from Value
+  	 * @param value
+  	 * @return
+  	 */
+  	getDecimalFromValue(value) {
+      var decimalValue = value.getDecimalvalue();
+      if (decimalValue === undefined || decimalValue === null) {
+  			return undefined;
+  		}
+      //  Convert it
+      return Number(decimalValue.getDecimalvalue());
+  	},
+    /**
+  	 * Get Date from a value
+  	 * @param value value to convert
+  	 * @return
+  	 */
+  	getDateFromValue(value) {
+  		if(value.getLongvalue() > 0) {
+        return new Date(value.getLongvalue());
+  		}
+  	},
+
+  	/**
+  	 * Get String from a value
+  	 * @param value
+  	 * @param uppercase
+  	 * @return
+  	 */
+  	getStringFromValue(value, uppercase) {
+  		var stringValue = value.getStringvalue();
+  		if (value === undefined || value === null) {
+  			return undefined;
+  		}
+  		//	To Upper case
+  		if(uppercase) {
+  			stringValue = stringValue.toUpperCase();
+  		}
+  		return stringValue;
+  	},
+
+  	/**
+  	 * Get integer from a value
+  	 * @param value
+  	 * @return
+  	 */
+  	getIntegerFromValue(value) {
+  		return value.getIntvalue();
+  	},
+
+  	/**
+  	 * Get Boolean from a value
+  	 * @param value
+  	 * @return
+  	 */
+  	getBooleanFromValue(value) {
+  		return value.getBooleanvalue();
+  	},
+
+    /**
+     * Get value from Integer
+     * @param value
+     * @return
+     */
+    getValueFromInteger(value) {
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
+      var convertedValue = new Value();
+      if (String(value).length < 11) {
+        convertedValue.setIntvalue(value);
+        convertedValue.setValuetype(Value.ValueType.INTEGER);
+      } else {
+        convertedValue = convertUtils.getValueFromDecimal(value);
+      }
+      return convertedValue;
+    },
+
+    /**
+     * Get value from a string
+     * @param value
+     * @return
+     */
+    getValueFromString(value) {
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
+      var convertedValue = new Value();
+      convertedValue.setStringvalue(String(value));
+      convertedValue.setValuetype(Value.ValueType.STRING);
+      return convertedValue;
+    },
+
+    /**
+     * Get value from a boolean value
+     * @param value
+     * @return
+     */
+    getValueFromBoolean(value) {
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
+      var convertedValue = new Value();
+      if (typeof value === 'string') {
+        if (value.trim() === 'Y') {
+          value = false;
+        } else {
+          value = true;
+        }
+      }
+      convertedValue.setBooleanvalue(Boolean(value));
+      convertedValue.setValuetype(Value.ValueType.BOOLEAN);
+      return convertedValue;
+    },
+
+    /**
+     * Get value from a date
+     * @param value
+     * @return
+     */
+    getValueFromDate(value) {
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
+      var convertedValue = new Value();
+      if (Object.prototype.toString.call(value) === '[object Date]') {
+        value = value.getTime();
+        convertedValue.setLongvalue(value);
+        convertedValue.setValuetype(Value.ValueType.DATE);
+      } else {
+        convertedValue.setValuetype(Value.ValueType.NULL);
+      }
+      return convertedValue;
+    },
+
+    /**
+     * Get value from big decimal
+     * @param value
+     * @return
+     */
+    getValueFromDecimal(value) {
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
+      var convertedValue = new Value();
+      var convertedDecimalValue = convertUtils.getDecimalInstance();
+      if (Number.isInteger(value)) {
+        value = value.toFixed(2);
+      }
+      convertedDecimalValue.setDecimalvalue(value.toString());
+      //  Set scale
+      var scale = value.toString().indexOf(".");
+      if (scale == -1){
+  	     scale = 0;
+      } else {
+  	     scale = value.toString().length - scale - 1;
+      }
+      convertedDecimalValue.setScale(scale);
+      convertedValue.setValuetype(Value.ValueType.DECIMAL);
+      convertedValue.setDecimalvalue(convertedDecimalValue);
+      return convertedValue;
+    },
+    getValueFromNull() {
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
+      var convertedValue = new Value();
+      convertedValue.setValuetype(Value.ValueType.NULL);
+      return convertedValue;
+    },
+    getDecimalInstance() {
+      const { Decimal } = require('./grpc/proto/businessdata_pb.js');
+      return new Decimal();
+    },
+    /**
      * Return value converted, compatible with grpc
      * @param {mixed} value
      * @returns {Value}
      */
     convertValueToGRPC({ value, valueType }) {
-      const { Value } = require('./grpc/proto/businessdata_pb.js');
-      const valueConverted = new Value();
-
+      var convertedValue;
       // evaluate type value
       if (value === undefined || value === null) {
-        valueConverted.setValuetype(Value.ValueType.NULL);
-        return valueConverted;
+        return convertUtils.getValueFromNull();
       }
       if (valueType) {
-        valueConverted.setValuetype(Value.ValueType[valueType]);
+        convertedValue.setValuetype(Value.ValueType[valueType]);
 
         switch (Value.ValueType[valueType]) {
           // data type Number (integer)
           case Value.ValueType.INTEGER:
-            if (String(value).length < 11) {
-              valueConverted.setIntvalue(value);
-            } else {
-              valueConverted.setLongvalue(value);
-              valueConverted.setValuetype(Value.ValueType.LONG);
-            }
+            convertedValue = convertUtils.getValueFromInteger(value);
             break;
           // data type Number (float)
-          case Value.ValueType.DOUBLE:
-            // TODO: Verify value types Double and Float
-            if (Number.isInteger(value)) {
-              value = value.toFixed(2);
-            }
-            valueConverted.setDoublevalue(value);
+          case Value.ValueType.DECIMAL:
+            convertedValue = convertUtils.getValueFromDecimal(value);
             break;
           // data type Boolean
           case Value.ValueType.BOOLEAN:
-            if (typeof value === 'string') {
-              if (value.trim() === 'N') {
-                value = false;
-              }
-            }
-            valueConverted.setBooleanvalue(Boolean(value));
+            convertedValue = convertUtils.getValueFromBoolean(value);
             break;
           // data type String
           case Value.ValueType.STRING:
-            valueConverted.setStringvalue(String(value));
+            convertedValue = convertUtils.getValueFromString(value);
             break;
           // data type Date
           case Value.ValueType.DATE:
-            if (Object.prototype.toString.call(value) === '[object Date]') {
-              value = value.getTime();
-            }
-            valueConverted.setLongvalue(value);
+            convertedValue = convertUtils.getValueFromDate(value);
             break;
           // data type Null or undefined
           default:
           case Value.ValueType.NULL:
-            valueConverted.setValuetype(Value.ValueType.NULL);
+            convertedValue = convertUtils.getValueFromNull();
             break;
         }
-        return valueConverted;
+        return convertedValue;
       }
 
       if (typeof(value) === 'number') {
         if (valueType === 'DOUBLE') {
-          // TODO: Verify value types Double and Float
-          if (Number.isInteger(value)) {
-            value = value.toFixed(2);
-          }
-          valueConverted.setDoublevalue(value);
-          valueConverted.setValuetype(Value.ValueType.DOUBLE);
+          convertedValue = convertUtils.getValueFromDecimal(value);
         } else {
-          if (String(value).length < 11) {
-            valueConverted.setIntvalue(value);
-            valueConverted.setValuetype(Value.ValueType.INTEGER);
-          } else {
-            valueConverted.setLongvalue(value);
-            valueConverted.setValuetype(Value.ValueType.LONG);
-          }
+          convertedValue = convertUtils.getValueFromInteger(value);
         }
       } else if (typeof(value) === 'boolean') {
-        valueConverted.setBooleanvalue(value);
-        valueConverted.setValuetype(Value.ValueType.BOOLEAN);
+        convertedValue = convertUtils.getValueFromBoolean(value);
       } else if (Object.prototype.toString.call(value) === '[object Date]') {
-        valueConverted.setLongvalue(value.getTime());
-        valueConverted.setValuetype(Value.ValueType.DATE);
+        convertedValue = convertUtils.getValueFromDate(value);
       } else {
-        valueConverted.setStringvalue(value);
-        valueConverted.setValuetype(Value.ValueType.STRING);
+        convertedValue = convertUtils.getValueFromString(value);
       }
-
-      return valueConverted;
+      return convertedValue;
     },
 
     /**
@@ -432,8 +556,8 @@ const convertUtils = {
       // set values
       if (values && values.length) {
         values.forEach(itemValue => {
-          const valueConverted = convertUtils.convertValueToGRPC({ value: itemValue });
-          conditionInstance.addValues(valueConverted);
+          const convertedValue = convertUtils.convertValueToGRPC({ value: itemValue });
+          conditionInstance.addValues(convertedValue);
         });
       }
 
@@ -1404,7 +1528,6 @@ const convertUtils = {
         description: undefined
       };
     }
-
   }
 
   module.exports = convertUtils
