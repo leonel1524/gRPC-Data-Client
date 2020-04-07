@@ -212,12 +212,6 @@ const convertUtils = {
       convertedValue.setDecimalvalue(convertedDecimalValue);
       return convertedValue;
     },
-    getValueFromNull() {
-      const { Value } = require('./grpc/proto/businessdata_pb.js');
-      var convertedValue = new Value();
-      convertedValue.setValuetype(Value.ValueType.NULL);
-      return convertedValue;
-    },
     getDecimalInstance() {
       const { Decimal } = require('./grpc/proto/businessdata_pb.js');
       return new Decimal();
@@ -228,14 +222,14 @@ const convertUtils = {
      * @returns {Value}
      */
     convertValueToGRPC({ value, valueType }) {
+      console.log(value);
+      const { Value } = require('./grpc/proto/businessdata_pb.js');
       var convertedValue;
       // evaluate type value
       if (value === undefined || value === null) {
         return convertUtils.getValueFromNull();
       }
       if (valueType) {
-        convertedValue.setValuetype(Value.ValueType[valueType]);
-
         switch (Value.ValueType[valueType]) {
           // data type Number (integer)
           case Value.ValueType.INTEGER:
@@ -256,11 +250,6 @@ const convertUtils = {
           // data type Date
           case Value.ValueType.DATE:
             convertedValue = convertUtils.getValueFromDate(value);
-            break;
-          // data type Null or undefined
-          default:
-          case Value.ValueType.NULL:
-            convertedValue = convertUtils.getValueFromNull();
             break;
         }
         return convertedValue;
