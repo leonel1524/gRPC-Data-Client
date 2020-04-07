@@ -60,7 +60,7 @@ const convertUtils = {
   	 */
   	getDecimalFromValue(value) {
       var decimalValue = value.getDecimalvalue();
-      if (decimalValue === undefined || decimalValue === null) {
+      if (!decimalValue) {
   			return undefined;
   		}
       //  Convert it
@@ -72,6 +72,9 @@ const convertUtils = {
   	 * @return
   	 */
   	getDateFromValue(value) {
+      if (!value || value.getLongvalue() === 0) {
+  			return undefined;
+  		}
   		if(value.getLongvalue() > 0) {
         return new Date(value.getLongvalue());
   		}
@@ -85,7 +88,7 @@ const convertUtils = {
   	 */
   	getStringFromValue(value, uppercase) {
   		var stringValue = value.getStringvalue();
-  		if (value === undefined || value === null) {
+  		if (!value) {
   			return undefined;
   		}
   		//	To Upper case
@@ -101,6 +104,9 @@ const convertUtils = {
   	 * @return
   	 */
   	getIntegerFromValue(value) {
+      if (value === undefined || value === null) {
+  			return undefined;
+  		}
   		return value.getIntvalue();
   	},
 
@@ -110,6 +116,9 @@ const convertUtils = {
   	 * @return
   	 */
   	getBooleanFromValue(value) {
+      if (!value) {
+  			return false;
+  		}
   		return value.getBooleanvalue();
   	},
 
@@ -121,12 +130,14 @@ const convertUtils = {
     getValueFromInteger(value) {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
       var convertedValue = new Value();
-      if (String(value).length < 11) {
-        convertedValue.setIntvalue(value);
-        convertedValue.setValuetype(Value.ValueType.INTEGER);
-      } else {
-        convertedValue = convertUtils.getValueFromDecimal(value);
-      }
+      convertedValue.setValuetype(Value.ValueType.INTEGER);
+      if (value !== undefined && value !== null) {
+        if (String(value).length < 11) {
+          convertedValue.setIntvalue(value);
+        } else {
+          convertedValue = convertUtils.getValueFromDecimal(value);
+        }
+  		}
       return convertedValue;
     },
 
@@ -137,9 +148,11 @@ const convertUtils = {
      */
     getValueFromString(value) {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
-      var convertedValue = new Value();
-      convertedValue.setStringvalue(String(value));
+      var convertedValue = new Value
       convertedValue.setValuetype(Value.ValueType.STRING);
+      if (value) {
+        convertedValue.setStringvalue(String(value));
+      }
       return convertedValue;
     },
 
@@ -151,6 +164,7 @@ const convertUtils = {
     getValueFromBoolean(value) {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
       var convertedValue = new Value();
+      convertedValue.setValuetype(Value.ValueType.BOOLEAN);
       if (typeof value === 'string') {
         if (value.trim() === 'Y') {
           value = false;
@@ -159,7 +173,6 @@ const convertUtils = {
         }
       }
       convertedValue.setBooleanvalue(Boolean(value));
-      convertedValue.setValuetype(Value.ValueType.BOOLEAN);
       return convertedValue;
     },
 
@@ -188,18 +201,20 @@ const convertUtils = {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
       var convertedValue = new Value();
       var convertedDecimalValue = convertUtils.getDecimalInstance();
-      if (Number.isInteger(value)) {
-        value = value.toFixed(2);
+      if(value !== undefined && value !== null) {
+        if (Number.isInteger(value)) {
+          value = value.toFixed(2);
+        }
+        convertedDecimalValue.setDecimalvalue(value.toString());
+        //  Set scale
+        var scale = value.toString().indexOf(".");
+        if (scale == -1){
+           scale = 0;
+        } else {
+           scale = value.toString().length - scale - 1;
+        }
+        convertedDecimalValue.setScale(scale);
       }
-      convertedDecimalValue.setDecimalvalue(value.toString());
-      //  Set scale
-      var scale = value.toString().indexOf(".");
-      if (scale == -1){
-  	     scale = 0;
-      } else {
-  	     scale = value.toString().length - scale - 1;
-      }
-      convertedDecimalValue.setScale(scale);
       convertedValue.setValuetype(Value.ValueType.DECIMAL);
       convertedValue.setDecimalvalue(convertedDecimalValue);
       return convertedValue;
@@ -216,10 +231,6 @@ const convertUtils = {
     convertValueToGRPC({ value, valueType }) {
       const { Value } = require('./grpc/proto/businessdata_pb.js');
       var convertedValue;
-      // evaluate type value
-      if (value === undefined || value === null) {
-        return convertUtils.getValueFromNull();
-      }
       if (valueType) {
         switch (Value.ValueType[valueType]) {
           // data type Number (integer)
@@ -245,7 +256,10 @@ const convertUtils = {
         }
         return convertedValue;
       }
-
+      // evaluate type value
+      if (value === undefined || value === null) {
+        return convertUtils.getValueFromString(value);
+      }
       if (typeof(value) === 'number') {
         if (valueType === 'DOUBLE') {
           convertedValue = convertUtils.getValueFromDecimal(value);
