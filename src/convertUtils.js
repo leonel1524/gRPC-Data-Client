@@ -30,12 +30,6 @@ const convertUtils = {
 
       var returnValue;
       switch (value.getValuetype()) {
-        // data type Null or undefined
-        default:
-        case Value.ValueType.NULL:
-          returnValue = undefined;
-          break;
-        // data type Number (integer)
         case Value.ValueType.INTEGER:
           returnValue = convertUtils.getIntegerFromValue(value);
           break;
@@ -180,10 +174,8 @@ const convertUtils = {
       if (Object.prototype.toString.call(value) === '[object Date]') {
         value = value.getTime();
         convertedValue.setLongvalue(value);
-        convertedValue.setValuetype(Value.ValueType.DATE);
-      } else {
-        convertedValue.setValuetype(Value.ValueType.NULL);
       }
+      convertedValue.setValuetype(Value.ValueType.DATE);
       return convertedValue;
     },
 
