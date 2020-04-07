@@ -222,7 +222,6 @@ const convertUtils = {
      * @returns {Value}
      */
     convertValueToGRPC({ value, valueType }) {
-      console.log(value);
       const { Value } = require('./grpc/proto/businessdata_pb.js');
       var convertedValue;
       // evaluate type value
